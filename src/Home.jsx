@@ -8,16 +8,16 @@ const GlobalStyle = () => (
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Noto+Sans+JP:wght@100;300;400&family=Space+Grotesk:wght@300;400;500&display=swap');
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { background: #0A0A0A; color: #FAFAFA; overflow-x: hidden; }
-    ::selection { background: #FAFAFA; color: #0A0A0A; }
+    body { background: #FAFAFA; color: #0A0A0A; overflow-x: hidden; }
+    ::selection { background: #0A0A0A; color: #FAFAFA; }
   `}</style>
 )
 
 // ─── NAVBAR ─────────────────────────────────────────────────────
 function Navbar({ scrollY }) {
-  const bg           = useTransform(scrollY, [0, 80], ["rgba(250,250,250,0)", "rgba(250,250,250,1)"])
-  const borderOpacity= useTransform(scrollY, [0, 80], [0, 1])
-  const textColor    = useTransform(scrollY, [0, 80], ["#FAFAFA", "#0A0A0A"])
+  const bg = useTransform(scrollY, [0, 80], ["rgba(250,250,250,0)", "rgba(250,250,250,1)"])
+  const borderOpacity = useTransform(scrollY, [0, 80], [0, 1])
+  const textColor = "#0A0A0A"
 
   return (
     <motion.nav
@@ -143,7 +143,7 @@ function Hero({ scrollY }) {
       style={{
         minHeight: "100vh", display: "flex", alignItems: "center",
         padding: "120px 48px 80px", position: "relative", overflow: "hidden",
-        background: "#0A0A0A",
+        background: "#FAFAFA",
       }}
     >
       {/* Parallax background kanji */}
@@ -154,7 +154,7 @@ function Hero({ scrollY }) {
           y: springY, opacity: kanjiOpacity,
           fontFamily: "'Noto Sans JP', sans-serif",
           fontWeight: 100, fontSize: "clamp(280px, 30vw, 480px)",
-          color: "#FAFAFA", lineHeight: 1, userSelect: "none",
+          color: "#0A0A0A", lineHeight: 1, userSelect: "none",
           pointerEvents: "none",
         }}
       >語</motion.div>
@@ -171,13 +171,13 @@ function Hero({ scrollY }) {
             fontFamily: "'Space Grotesk', sans-serif",
             fontWeight: 300, fontSize: 11,
             letterSpacing: "0.18em", textTransform: "uppercase",
-            color: "rgba(250,250,250,0.4)",
+            color: "rgba(10,10,10,0.4)",
           }}
         >
           <span>JLPT N5 → N1</span>
-          <span style={{ color: "rgba(250,250,250,0.15)" }}>／</span>
+          <span style={{ color: "rgba(10,10,10,0.15)" }}>／</span>
           <span>始める</span>
-          <span style={{ color: "rgba(250,250,250,0.15)" }}>／</span>
+          <span style={{ color: "rgba(10,10,10,0.15)" }}>／</span>
           <span>2024</span>
         </motion.div>
 
@@ -190,7 +190,7 @@ function Hero({ scrollY }) {
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300, lineHeight: 1.0,
             fontSize: "clamp(64px, 9vw, 140px)",
-            color: "#FAFAFA",
+            color: "#0A0A0A",
             marginBottom: 32,
           }}
         >
@@ -207,7 +207,7 @@ function Hero({ scrollY }) {
           style={{
             fontFamily: "'Space Grotesk', sans-serif",
             fontWeight: 300, fontSize: 15,
-            lineHeight: 1.8, color: "rgba(250,250,250,0.55)",
+            lineHeight: 1.8, color: "rgba(10,10,10,0.55)",
             maxWidth: 440, marginBottom: 56,
           }}
         >
@@ -231,17 +231,17 @@ function Hero({ scrollY }) {
             <div
               key={label}
               style={{
-                borderTop: "2px solid #FAFAFA",
+                borderTop: "2px solid #0A0A0A",
                 paddingTop: 16, paddingBottom: 24,
                 paddingLeft: i === 0 ? 0 : 32,
                 paddingRight: i === 2 ? 0 : 32,
-                borderRight: i < 2 ? "1px solid rgba(250,250,250,0.12)" : "none",
+                borderRight: i < 2 ? "1px solid rgba(10,10,10,0.12)" : "none",
               }}
             >
               <p style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 fontWeight: 600, fontSize: "clamp(40px, 5vw, 60px)",
-                color: "#FAFAFA", lineHeight: 1,
+                color: "#0A0A0A", lineHeight: 1,
               }}>
                 {value}{suffix}
               </p>
@@ -249,7 +249,7 @@ function Hero({ scrollY }) {
                 fontFamily: "'Space Grotesk', sans-serif",
                 fontWeight: 300, fontSize: 9,
                 letterSpacing: "0.2em", textTransform: "uppercase",
-                color: "rgba(250,250,250,0.35)", marginTop: 8,
+                color: "rgba(10,10,10,0.35)", marginTop: 8,
               }}>{label}</p>
             </div>
           ))}
@@ -268,14 +268,14 @@ function Hero({ scrollY }) {
           fontFamily: "'Space Grotesk', sans-serif",
           fontWeight: 300, fontSize: 9,
           letterSpacing: "0.25em", textTransform: "uppercase",
-          color: "rgba(250,250,250,0.3)",
+          color: "rgba(10,10,10,0.3)",
         }}
       >
         <span>SCROLL TO EXPLORE</span>
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-          style={{ width: 1, height: 40, background: "rgba(250,250,250,0.2)" }}
+          style={{ width: 1, height: 40, background: "rgba(10,10,10,0.2)" }}
         />
       </motion.div>
     </section>
@@ -287,9 +287,9 @@ function MarqueeStrip() {
   const words = ["語学", "KANJI", "文法", "GRAMMAR", "語彙", "VOCABULARY", "日本語", "NIHONGO", "N5→N1", "学習"]
   return (
     <div style={{
-      overflow: "hidden", borderTop: "1px solid rgba(250,250,250,0.08)",
-      borderBottom: "1px solid rgba(250,250,250,0.08)",
-      padding: "18px 0", background: "#0A0A0A",
+      overflow: "hidden", borderTop: "1px solid rgba(10,10,10,0.08)",
+      borderBottom: "1px solid rgba(10,10,10,0.08)",
+      padding: "18px 0", background: "#FAFAFA",
     }}>
       <motion.div
         animate={{ x: ["0%", "-50%"] }}
@@ -301,7 +301,7 @@ function MarqueeStrip() {
             fontFamily: i % 2 === 0 ? "'Noto Sans JP'" : "'Space Grotesk'",
             fontWeight: i % 2 === 0 ? 100 : 300,
             fontSize: 13, letterSpacing: "0.2em",
-            color: "rgba(250,250,250,0.25)",
+            color: "rgba(10,10,10,0.25)",
             textTransform: "uppercase",
           }}>{w}</span>
         ))}
@@ -334,7 +334,7 @@ function FeatureCards({ scrollY }) {
   ]
 
   return (
-    <section style={{ padding: "120px 48px", background: "#0A0A0A" }}>
+    <section style={{ padding: "120px 48px", background: "#FAFAFA" }}>
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -345,12 +345,12 @@ function FeatureCards({ scrollY }) {
         <p style={{
           fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
           fontSize: 10, letterSpacing: "0.25em", textTransform: "uppercase",
-          color: "rgba(250,250,250,0.3)", marginBottom: 16,
+          color: "rgba(10,10,10,0.3)", marginBottom: 16,
         }}>The curriculum.</p>
         <h2 style={{
           fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic",
           fontWeight: 300, fontSize: "clamp(36px,5vw,64px)",
-          color: "#FAFAFA", lineHeight: 1.05,
+          color: "#0A0A0A", lineHeight: 1.05,
         }}>Three pillars of fluency.</h2>
       </motion.div>
 
@@ -371,7 +371,7 @@ function FeatureCards({ scrollY }) {
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.4 }}
                 style={{
-                  border: "1px solid rgba(250,250,250,0.08)",
+                  border: "1px solid rgba(10,10,10,0.08)",
                   padding: "48px 40px 56px",
                   position: "relative", overflow: "hidden",
                   cursor: link ? "pointer" : "default",
@@ -382,7 +382,7 @@ function FeatureCards({ scrollY }) {
                   style={{
                     position: "absolute", bottom: -20, right: 24,
                     fontFamily: "'Noto Sans JP', sans-serif",
-                    fontWeight: 100, color: "rgba(250,250,250,0.03)",
+                    fontWeight: 100, color: "rgba(10,10,10,0.03)",
                     lineHeight: 1, userSelect: "none", pointerEvents: "none",
                   }}
                   initial={{ fontSize: 120 }}
@@ -393,25 +393,25 @@ function FeatureCards({ scrollY }) {
                 <p style={{
                   fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
                   fontSize: 10, letterSpacing: "0.25em",
-                  color: "rgba(250,250,250,0.25)", marginBottom: 48,
+                  color: "rgba(10,10,10,0.25)", marginBottom: 48,
                 }}>{num}</p>
 
                 <p style={{
                   fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 100,
-                  fontSize: 40, color: "rgba(250,250,250,0.6)",
+                  fontSize: 40, color: "rgba(10,10,10,0.6)",
                   marginBottom: 8, lineHeight: 1,
                 }}>{ja}</p>
 
                 <p style={{
                   fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
                   fontSize: 11, letterSpacing: "0.2em",
-                  color: "#FAFAFA", marginBottom: 28,
+                  color: "#0A0A0A", marginBottom: 28,
                 }}>{en}</p>
 
                 <p style={{
                   fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
                   fontSize: 13, lineHeight: 1.8,
-                  color: "rgba(250,250,250,0.45)", marginBottom: 40,
+                  color: "rgba(10,10,10,0.45)", marginBottom: 40,
                 }}>{desc}</p>
 
                 {link ? (
@@ -420,8 +420,8 @@ function FeatureCards({ scrollY }) {
                     style={{
                       fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
                       fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase",
-                      color: "#FAFAFA", textDecoration: "none",
-                      borderBottom: "1px solid rgba(250,250,250,0.3)",
+                      color: "#0A0A0A", textDecoration: "none",
+                      borderBottom: "1px solid rgba(10,10,10,0.3)",
                       paddingBottom: 2,
                     }}
                   >EXPLORE →</Link>
@@ -429,8 +429,8 @@ function FeatureCards({ scrollY }) {
                   <span style={{
                     fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
                     fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase",
-                    color: "rgba(250,250,250,0.3)",
-                    borderBottom: "1px solid rgba(250,250,250,0.1)",
+                    color: "rgba(10,10,10,0.3)",
+                    borderBottom: "1px solid rgba(10,10,10,0.1)",
                     paddingBottom: 2,
                   }}>COMING SOON</span>
                 )}
@@ -453,6 +453,7 @@ function QuoteSection() {
       padding: "140px 48px",
       background: "#FAFAFA",
       display: "flex", flexDirection: "column", alignItems: "center",
+      borderTop: "1px solid rgba(10,10,10,0.08)",
     }}>
       <div style={{ maxWidth: 800, textAlign: "center" }}>
         <motion.div
@@ -507,7 +508,7 @@ function CTASection() {
   return (
     <section style={{
       padding: "120px 48px",
-      background: "#0A0A0A",
+      background: "#FAFAFA",
       display: "flex", flexDirection: "column", alignItems: "center",
       textAlign: "center",
     }}>
@@ -520,12 +521,12 @@ function CTASection() {
         <p style={{
           fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
           fontSize: 10, letterSpacing: "0.25em", textTransform: "uppercase",
-          color: "rgba(250,250,250,0.3)", marginBottom: 24,
+          color: "rgba(10,10,10,0.3)", marginBottom: 24,
         }}>Start today.</p>
         <h2 style={{
           fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic",
           fontWeight: 300, fontSize: "clamp(40px,6vw,80px)",
-          color: "#FAFAFA", lineHeight: 1.05, marginBottom: 56,
+          color: "#0A0A0A", lineHeight: 1.05, marginBottom: 56,
         }}>
           Begin your path<br />to Japanese mastery.
         </h2>
@@ -536,7 +537,7 @@ function CTASection() {
           animate={{ scale: pressed ? 0.97 : 1 }}
           transition={{ duration: 0.15 }}
           style={{
-            background: "#FAFAFA", color: "#0A0A0A",
+            background: "#0A0A0A", color: "#FAFAFA",
             border: "none", borderRadius: 0,
             padding: "20px 56px",
             fontFamily: "'Space Grotesk', sans-serif",
@@ -557,8 +558,8 @@ function Footer() {
   return (
     <footer style={{
       padding: "40px 48px",
-      background: "#0A0A0A",
-      borderTop: "1px solid rgba(250,250,250,0.06)",
+      background: "#FAFAFA",
+      borderTop: "1px solid rgba(10,10,10,0.06)",
       display: "flex", alignItems: "center", justifyContent: "space-between",
     }}>
       <div style={{
