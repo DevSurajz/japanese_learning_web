@@ -1,8 +1,6 @@
 import { motion, useScroll, useTransform, useSpring, useInView } from "motion/react"
 import { useRef, useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-
-// ─── GLOBAL STYLES ────────────────────────────────────────────
 const GlobalStyle = () => (
   <style>{`
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Noto+Sans+JP:wght@100;300;400&family=Space+Grotesk:wght@300;400;500&display=swap');
@@ -12,8 +10,6 @@ const GlobalStyle = () => (
     ::selection { background: #0A0A0A; color: #FAFAFA; }
   `}</style>
 )
-
-// ─── NAVBAR ─────────────────────────────────────────────────────
 function Navbar({ scrollY }) {
   const bg = useTransform(scrollY, [0, 80], ["rgba(250,250,250,0)", "rgba(250,250,250,1)"])
   const borderOpacity = useTransform(scrollY, [0, 80], [0, 1])
@@ -29,7 +25,7 @@ function Navbar({ scrollY }) {
         borderBottom: borderOpacity.get() > 0.01 ? "1px solid rgba(0,0,0,0.08)" : "none",
       }}
     >
-      {/* Logo */}
+      
       <motion.div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <motion.span
           style={{
@@ -47,7 +43,7 @@ function Navbar({ scrollY }) {
         >NihongoPath</motion.span>
       </motion.div>
 
-      {/* Nav Links */}
+      
       <motion.div style={{ display: "flex", gap: 40 }}>
         {[
           { label: "KANJI", to: "/kanji" },
@@ -90,7 +86,7 @@ function Navbar({ scrollY }) {
         )}
       </motion.div>
 
-      {/* CTA */}
+      
       <Link to="/kana" style={{ textDecoration: "none" }}>
         <motion.button
           whileHover={{ opacity: 0.8 }}
@@ -111,8 +107,6 @@ function Navbar({ scrollY }) {
     </motion.nav>
   )
 }
-
-// ─── HERO ────────────────────────────────────────────────────────
 function Hero({ scrollY }) {
   const kanjiY = useTransform(scrollY, [0, 600], [0, -120])
   const kanjiOpacity = useTransform(scrollY, [0, 400], [0.06, 0])
@@ -148,7 +142,7 @@ function Hero({ scrollY }) {
         background: "#FAFAFA",
       }}
     >
-      {/* Parallax background kanji */}
+      
       <motion.div
         style={{
           position: "absolute", right: "8%", top: "50%",
@@ -162,7 +156,7 @@ function Hero({ scrollY }) {
       >語</motion.div>
 
       <div style={{ maxWidth: 680, position: "relative", zIndex: 1 }}>
-        {/* Breadcrumb */}
+        
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -183,7 +177,7 @@ function Hero({ scrollY }) {
           <span>2024</span>
         </motion.div>
 
-        {/* Headline */}
+        
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -201,7 +195,7 @@ function Hero({ scrollY }) {
           <span style={{ display: "block", fontStyle: "italic" }}>Perfectly.</span>
         </motion.h1>
 
-        {/* Body */}
+        
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -217,7 +211,7 @@ function Hero({ scrollY }) {
           Kanji, Grammar, and Vocabulary — built to take you further.
         </motion.p>
 
-        {/* Stats */}
+        
         <motion.div
           ref={ref}
           initial={{ opacity: 0 }}
@@ -258,7 +252,7 @@ function Hero({ scrollY }) {
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
+      
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -283,8 +277,6 @@ function Hero({ scrollY }) {
     </section>
   )
 }
-
-// ─── MARQUEE STRIP ───────────────────────────────────────────────
 function MarqueeStrip() {
   const words = ["語学", "KANJI", "文法", "GRAMMAR", "語彙", "VOCABULARY", "日本語", "NIHONGO", "N5→N1", "学習"]
   return (
@@ -311,8 +303,6 @@ function MarqueeStrip() {
     </div>
   )
 }
-
-// ─── FEATURE CARDS ───────────────────────────────────────────────
 function FeatureCards({ scrollY }) {
   const cards = [
     {
@@ -379,7 +369,7 @@ function FeatureCards({ scrollY }) {
                   cursor: link ? "pointer" : "default",
                 }}
               >
-                {/* BG kanji */}
+                
                 <motion.div
                   style={{
                     position: "absolute", bottom: -20, right: 24,
@@ -444,8 +434,6 @@ function FeatureCards({ scrollY }) {
     </section>
   )
 }
-
-// ─── QUOTE SECTION ───────────────────────────────────────────────
 function QuoteSection() {
   const words = "千里の道も一歩から".split("")
   const subWords = "A journey of a thousand miles begins with a single step.".split(" ")
@@ -502,8 +490,6 @@ function QuoteSection() {
     </section>
   )
 }
-
-// ─── CTA SECTION ─────────────────────────────────────────────────
 function CTASection() {
   const [visitors, setVisitors] = useState(null)
   const effectRun = useRef(false)
@@ -511,15 +497,9 @@ function CTASection() {
   useEffect(() => {
     if (effectRun.current) return
     effectRun.current = true
-
-    // Simple local simulation of a global visit counter.
-    // In production, sync this with a database (e.g., Supabase, Firebase).
     const localVisits = parseInt(localStorage.getItem('np_unique_visits') || "0")
-    // Base amount to look established, plus local visits
     const total = 14205 + localVisits + 1
     localStorage.setItem('np_unique_visits', localVisits + 1)
-    
-    // Animate the counter ticking up
     let start = 14100
     const interval = setInterval(() => {
       start += Math.floor(Math.random() * 5) + 1
@@ -559,7 +539,7 @@ function CTASection() {
           Begin your path<br />to Japanese mastery.
         </h2>
         
-        {/* VISITOR COUNTER */}
+        
         <div style={{
           display: "inline-flex", flexDirection: "column", alignItems: "center",
           border: "1px solid rgba(10,10,10,0.1)",
@@ -587,8 +567,6 @@ function CTASection() {
     </section>
   )
 }
-
-// ─── FOOTER ──────────────────────────────────────────────────────
 function Footer() {
   return (
     <footer style={{
@@ -614,8 +592,6 @@ function Footer() {
     </footer>
   )
 }
-
-// ─── HOME PAGE ───────────────────────────────────────────────────
 export default function Home() {
   const { scrollY } = useScroll()
 

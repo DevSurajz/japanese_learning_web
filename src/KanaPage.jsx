@@ -1,8 +1,6 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { useNavigate } from "react-router-dom"
-
-// ─── DATA ─────────────────────────────────────────────────────────────
 const hiraganaGrid = [
   { kana: "あ", romaji: "a" }, { kana: "い", romaji: "i" }, { kana: "う", romaji: "u" }, { kana: "え", romaji: "e" }, { kana: "お", romaji: "o" },
   { kana: "か", romaji: "ka" }, { kana: "き", romaji: "ki" }, { kana: "く", romaji: "ku" }, { kana: "け", romaji: "ke" }, { kana: "こ", romaji: "ko" },
@@ -52,10 +50,8 @@ const katakanaDakuten = [
 const katakanaHandakuten = [
   { kana: "パ", romaji: "pa" }, { kana: "ピ", romaji: "pi" }, { kana: "プ", romaji: "pu" }, { kana: "ペ", romaji: "pe" }, { kana: "ポ", romaji: "po" },
 ]
-
-// ─── COMPONENT ────────────────────────────────────────────────────────
 function KanaCard({ item, index }) {
-  if (item.empty) return <div /> // empty grid space
+  if (item.empty) return <div /> 
 
   return (
     <motion.div
@@ -77,7 +73,7 @@ function KanaCard({ item, index }) {
       onMouseEnter={e => e.currentTarget.style.boxShadow = "0 10px 30px rgba(0,0,0,0.08)"}
       onMouseLeave={e => e.currentTarget.style.boxShadow = "0 2px 10px rgba(0,0,0,0.03)"}
     >
-      {/* Kana inner box (similar to Kanji page but subtle) */}
+      
       <div style={{
         position: "relative", width: 72, height: 72,
         borderRadius: 12,
@@ -114,7 +110,7 @@ export default function KanaPage() {
         fontFamily: "'Space Grotesk', sans-serif",
       }}
     >
-      {/* ── STICKY HEADER ─────────────────────────────── */}
+      
       <div style={{
         position: "sticky", top: 0, zIndex: 10,
         background: "rgba(248,250,252,0.9)",
@@ -148,10 +144,10 @@ export default function KanaPage() {
         </motion.button>
       </div>
 
-      {/* ── CONTENT ───────────────────────────────────── */}
+      
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "56px 48px 100px" }}>
         
-        {/* Title area */}
+        
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} style={{ marginBottom: 40, textAlign: "center" }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 6,
@@ -169,7 +165,7 @@ export default function KanaPage() {
           </p>
         </motion.div>
 
-        {/* Tabs */}
+        
         <div style={{ display: "flex", justifyContent: "center", marginBottom: 56 }}>
           <div style={{ background: "#e2e8f0", padding: 6, borderRadius: 99, display: "inline-flex", gap: 4 }}>
             {["Hiragana", "Katakana"].map(tab => (
@@ -192,7 +188,7 @@ export default function KanaPage() {
           </div>
         </div>
 
-        {/* Grids */}
+        
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -201,7 +197,7 @@ export default function KanaPage() {
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.3 }}
           >
-            {/* Sections */}
+            
             {[
               {
                 title: "Gojūon (Basic)",

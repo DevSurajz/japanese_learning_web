@@ -39,8 +39,8 @@ export default function VocabPage() {
   const navigate = useNavigate()
   const [search, setSearch]   = useState("")
   const [page, setPage]       = useState(1)
-  const [sortKey, setSortKey] = useState("id")   // "id" | "kana" | "meaning"
-  const [sortDir, setSortDir] = useState(1)       // 1 asc, -1 desc
+  const [sortKey, setSortKey] = useState("id")   
+  const [sortDir, setSortDir] = useState(1)       
   const [typeFilter, setTypeFilter] = useState("All")
 
   const allTypes = useMemo(() => {
@@ -94,7 +94,7 @@ export default function VocabPage() {
         fontFamily: "'Space Grotesk', sans-serif",
       }}
     >
-      {/* ── STICKY HEADER ─────────── */}
+      
       <div style={{
         position: "sticky", top: 0, zIndex: 10,
         background: "rgba(248,250,252,0.95)",
@@ -121,10 +121,10 @@ export default function VocabPage() {
         >← Back to Home</motion.button>
       </div>
 
-      {/* ── CONTENT ───────────────── */}
+      
       <div style={{ maxWidth: 1300, margin: "0 auto", padding: "48px 48px 80px" }}>
 
-        {/* Header */}
+        
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 6,
@@ -164,9 +164,9 @@ export default function VocabPage() {
             </div>
           </div>
 
-          {/* Controls */}
+          
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 28 }}>
-            {/* Search */}
+            
             <div style={{ position: "relative", flexGrow: 1, maxWidth: 380 }}>
               <input
                 type="text" placeholder="Search kana, romaji, or meaning…"
@@ -185,7 +185,7 @@ export default function VocabPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
-            {/* Type filter */}
+            
             <select
               value={typeFilter} onChange={e => handleType(e.target.value)}
               style={{
@@ -199,9 +199,9 @@ export default function VocabPage() {
           </div>
         </motion.div>
 
-        {/* ── TABLE ─────────────────── */}
+        
         <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e2e8f0", overflow: "hidden", boxShadow: "0 1px 6px rgba(0,0,0,0.04)" }}>
-          {/* Table head */}
+          
           <div style={{
             position: "sticky", top: 72, zIndex: 5,
             display: "grid",
@@ -234,7 +234,7 @@ export default function VocabPage() {
             ))}
           </div>
 
-          {/* Rows */}
+          
           <AnimatePresence mode="wait">
             <motion.div key={page + search + sortKey + typeFilter} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
               {pageData.length > 0 ? pageData.map((w, i) => (
@@ -277,7 +277,7 @@ export default function VocabPage() {
           </AnimatePresence>
         </div>
 
-        {/* ── PAGINATION ────────────── */}
+        
         {totalPages > 1 && (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginTop: 36 }}>
             <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}

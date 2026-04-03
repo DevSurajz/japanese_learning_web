@@ -2,8 +2,6 @@ import { vocabPart1 } from './vocabData1'
 import { vocabPart2 } from './vocabData2'
 
 const raw = [...vocabPart1, ...vocabPart2]
-
-// Deduplicate by kana+meaning key
 const seen = new Set()
 export const vocabData = raw
   .filter(w => {
