@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* Reset all Vite defaults */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0A0A0A; }
+#root { min-height: 100vh; }
