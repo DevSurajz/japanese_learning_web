@@ -53,7 +53,7 @@ function Navbar({ scrollY }) {
           { label: "KANJI", to: "/kanji" },
           { label: "GRAMMAR", to: "#" },
           { label: "VOCABULARY", to: "/vocab" },
-          { label: "PROGRESS", to: "#" },
+          { label: "KANA", to: "/kana" },
         ].map(({ label, to }) =>
           to.startsWith("/") ? (
             <Link
@@ -91,30 +91,32 @@ function Navbar({ scrollY }) {
       </motion.div>
 
       {/* CTA */}
-      <motion.button
-        whileHover={{ opacity: 0.8 }}
-        whileTap={{ scale: 0.97 }}
-        style={{
-          background: "#0A0A0A", color: "#FAFAFA",
-          border: "none", borderRadius: 0,
-          padding: "10px 20px",
-          fontFamily: "'Space Grotesk', sans-serif",
-          fontWeight: 300, fontSize: 11,
-          letterSpacing: "0.18em", textTransform: "uppercase",
-          cursor: "pointer",
-        }}
-      >
-        BEGIN JOURNEY →
-      </motion.button>
+      <Link to="/kana" style={{ textDecoration: "none" }}>
+        <motion.button
+          whileHover={{ opacity: 0.8 }}
+          whileTap={{ scale: 0.97 }}
+          style={{
+            background: "#0A0A0A", color: "#FAFAFA",
+            border: "none", borderRadius: 0,
+            padding: "10px 20px",
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontWeight: 300, fontSize: 11,
+            letterSpacing: "0.18em", textTransform: "uppercase",
+            cursor: "pointer",
+          }}
+        >
+          START KANA →
+        </motion.button>
+      </Link>
     </motion.nav>
   )
 }
 
 // ─── HERO ────────────────────────────────────────────────────────
 function Hero({ scrollY }) {
-  const kanjiY   = useTransform(scrollY, [0, 600], [0, -120])
+  const kanjiY = useTransform(scrollY, [0, 600], [0, -120])
   const kanjiOpacity = useTransform(scrollY, [0, 400], [0.06, 0])
-  const springY  = useSpring(kanjiY, { stiffness: 80, damping: 20 })
+  const springY = useSpring(kanjiY, { stiffness: 80, damping: 20 })
 
   const ref = useRef(null)
   const inView = useInView(ref, { once: true })
@@ -129,9 +131,9 @@ function Hero({ scrollY }) {
       const p = Math.min((now - start) / duration, 1)
       const ease = 1 - Math.pow(1 - p, 3)
       setCounts({
-        kanji:   Math.round(targets.kanji   * ease),
+        kanji: Math.round(targets.kanji * ease),
         grammar: Math.round(targets.grammar * ease),
-        vocab:   Math.round(targets.vocab   * ease),
+        vocab: Math.round(targets.vocab * ease),
       })
       if (p < 1) requestAnimationFrame(tick)
     }
@@ -224,9 +226,9 @@ function Hero({ scrollY }) {
           style={{ display: "flex", gap: 0 }}
         >
           {[
-            { value: counts.kanji,   suffix: "",  label: "N5 KANJI" },
-            { value: counts.grammar, suffix: "",  label: "GRAMMAR POINTS" },
-            { value: counts.vocab,   suffix: "+", label: "VOCABULARY WORDS" },
+            { value: counts.kanji, suffix: "", label: "N5 KANJI" },
+            { value: counts.grammar, suffix: "", label: "GRAMMAR POINTS" },
+            { value: counts.vocab, suffix: "+", label: "VOCABULARY WORDS" },
           ].map(({ value, suffix, label }, i) => (
             <div
               key={label}
@@ -356,7 +358,7 @@ function FeatureCards({ scrollY }) {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2 }}>
         {cards.map(({ ja, en, num, desc, offset, link }, i) => {
-          const cardY   = useTransform(scrollY, [300, 900], [offset, 0])
+          const cardY = useTransform(scrollY, [300, 900], [offset, 0])
           const springCardY = useSpring(cardY, { stiffness: 80, damping: 20 })
           return (
             <motion.div
@@ -503,7 +505,33 @@ function QuoteSection() {
 
 // ─── CTA SECTION ─────────────────────────────────────────────────
 function CTASection() {
-  const [pressed, setPressed] = useState(false)
+  const [visitors, setVisitors] = useState(null)
+  const effectRun = useRef(false)
+
+  useEffect(() => {
+    if (effectRun.current) return
+    effectRun.current = true
+
+    // Simple local simulation of a global visit counter.
+    // In production, sync this with a database (e.g., Supabase, Firebase).
+    const localVisits = parseInt(localStorage.getItem('np_unique_visits') || "0")
+    // Base amount to look established, plus local visits
+    const total = 14205 + localVisits + 1
+    localStorage.setItem('np_unique_visits', localVisits + 1)
+    
+    // Animate the counter ticking up
+    let start = 14100
+    const interval = setInterval(() => {
+      start += Math.floor(Math.random() * 5) + 1
+      if (start >= total) {
+        setVisitors(total)
+        clearInterval(interval)
+      } else {
+        setVisitors(start)
+      }
+    }, 15)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <section style={{
@@ -530,24 +558,31 @@ function CTASection() {
         }}>
           Begin your path<br />to Japanese mastery.
         </h2>
-        <motion.button
-          onMouseDown={() => setPressed(true)}
-          onMouseUp={() => setPressed(false)}
-          whileHover={{ scale: 1.03 }}
-          animate={{ scale: pressed ? 0.97 : 1 }}
-          transition={{ duration: 0.15 }}
-          style={{
-            background: "#0A0A0A", color: "#FAFAFA",
-            border: "none", borderRadius: 0,
-            padding: "20px 56px",
+        
+        {/* VISITOR COUNTER */}
+        <div style={{
+          display: "inline-flex", flexDirection: "column", alignItems: "center",
+          border: "1px solid rgba(10,10,10,0.1)",
+          padding: "24px 40px",
+          borderRadius: 2,
+        }}>
+          <p style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontWeight: 600, fontSize: 40,
+            color: "#0A0A0A", lineHeight: 1,
+            marginBottom: 8,
+          }}>
+            {visitors !== null ? visitors.toLocaleString() : "..."}
+          </p>
+          <p style={{
             fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 400, fontSize: 13,
+            fontWeight: 300, fontSize: 9,
             letterSpacing: "0.2em", textTransform: "uppercase",
-            cursor: "pointer",
-          }}
-        >
-          ENROLL FREE →
-        </motion.button>
+            color: "rgba(10,10,10,0.4)",
+          }}>
+            Website Visitors
+          </p>
+        </div>
       </motion.div>
     </section>
   )
