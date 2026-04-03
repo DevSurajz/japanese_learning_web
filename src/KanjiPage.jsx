@@ -113,7 +113,7 @@ function KanjiModal({ item, onClose }) {
               position: "relative",
             }}
           >
-            
+
             <button
               onClick={onClose}
               style={{
@@ -125,7 +125,7 @@ function KanjiModal({ item, onClose }) {
               }}
             >✕</button>
 
-            
+
             <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
               <div style={{
                 position: "relative", width: 110, height: 110, flexShrink: 0,
@@ -146,7 +146,7 @@ function KanjiModal({ item, onClose }) {
                 <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, color: "#94a3b8", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 10 }}>
                   {item.strokes} strokes
                 </p>
-                
+
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                   {Array.from({ length: item.strokes }).map((_, i) => (
                     <motion.div key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: i * 0.04, duration: 0.2 }}
@@ -156,7 +156,7 @@ function KanjiModal({ item, onClose }) {
               </div>
             </div>
 
-            
+
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               {[
                 { label: "On'yomi", data: item.onyomi, bg: "#eef2ff", pillBg: "#c7d2fe", pillText: "#3730a3", labelColor: "#818cf8" },
@@ -177,7 +177,7 @@ function KanjiModal({ item, onClose }) {
               ))}
             </div>
 
-            
+
             <div>
               <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 10, fontWeight: 600, color: "#cbd5e1", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>
                 Example Words
@@ -193,7 +193,7 @@ function KanjiModal({ item, onClose }) {
               </div>
             </div>
 
-            
+
             <motion.button
               whileHover={{ scale: 1.02, background: "#334155" }}
               whileTap={{ scale: 0.98 }}
@@ -207,7 +207,7 @@ function KanjiModal({ item, onClose }) {
                 cursor: "pointer", transition: "background 0.3s",
               }}
             >
-              ✏️ Practice Writing
+              Practice Writing
             </motion.button>
           </motion.div>
         </motion.div>
@@ -239,7 +239,7 @@ function KanjiCard({ item, index, onClick }) {
         onMouseEnter={e => e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,0,0,0.1)"}
         onMouseLeave={e => e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.04)"}
       >
-        
+
         <div style={{
           position: "relative", width: 90, height: 90,
           border: "2px solid #bfdbfe", borderRadius: 14,
@@ -254,17 +254,17 @@ function KanjiCard({ item, index, onClick }) {
           </span>
         </div>
 
-        
+
         <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 13, color: "#334155", textAlign: "center", lineHeight: 1.3 }}>
           {item.meaning}
         </p>
 
-        
+
         <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 10, color: "#cbd5e1", letterSpacing: "0.1em", textTransform: "uppercase" }}>
           {item.strokes} strokes
         </p>
 
-        
+
         <div style={{ display: "flex", flexWrap: "wrap", gap: 5, justifyContent: "center" }}>
           {item.onyomi.length > 0 && (
             <div style={{ display: "flex", alignItems: "center", gap: 4, background: "#eef2ff", borderRadius: 99, padding: "3px 10px" }}>
@@ -317,7 +317,7 @@ export default function KanjiPage() {
         fontFamily: "'Space Grotesk', sans-serif",
       }}
     >
-      
+
       <div style={{
         position: "sticky", top: 0, zIndex: 10,
         background: "rgba(248,250,252,0.9)",
@@ -351,10 +351,10 @@ export default function KanjiPage() {
         </motion.button>
       </div>
 
-      
+
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "56px 48px 80px" }}>
 
-        
+
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 6,
@@ -374,7 +374,7 @@ export default function KanjiPage() {
                 Learn stroke order, meaning, and readings — <strong style={{ color: "#475569", fontWeight: 500 }}>{kanjiData.length} kanji</strong> total
               </p>
             </div>
-            
+
             <div style={{ display: "flex", gap: 0 }}>
               {[
                 { value: kanjiData.length, label: "Total" },
@@ -397,7 +397,7 @@ export default function KanjiPage() {
             </div>
           </div>
 
-          
+
           <div style={{ position: "relative", maxWidth: 420, marginBottom: 48 }}>
             <input
               type="text"
@@ -424,7 +424,7 @@ export default function KanjiPage() {
           </div>
         </motion.div>
 
-        
+
         <AnimatePresence mode="wait">
           <motion.div
             key={page + search}
@@ -448,7 +448,7 @@ export default function KanjiPage() {
           </motion.div>
         </AnimatePresence>
 
-        
+
         {totalPages > 1 && (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 56 }}>
             <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
@@ -489,7 +489,7 @@ export default function KanjiPage() {
         )}
       </div>
 
-      
+
       <KanjiModal item={selected} onClose={() => setSelected(null)} />
     </motion.div>
   )

@@ -148,15 +148,21 @@ function Hero({ scrollY }) {
         background: "#FAFAFA",
       }}
     >
-      {/* Parallax background kanji */}
+      {/* Parallax background kanji — pinned to right-middle */}
       <motion.div
         style={{
-          position: "absolute", right: "8%", top: "50%",
-          transform: "translateY(-50%)",
-          y: springY, opacity: kanjiOpacity,
+          position: "absolute",
+          right: "8%",
+          top: "50%",
+          translateY: "-50%",
+          y: springY,
+          opacity: kanjiOpacity,
           fontFamily: "'Noto Sans JP', sans-serif",
-          fontWeight: 100, fontSize: "clamp(280px, 30vw, 480px)",
-          color: "#0A0A0A", lineHeight: 1, userSelect: "none",
+          fontWeight: 100,
+          fontSize: "clamp(280px, 30vw, 480px)",
+          color: "#0A0A0A",
+          lineHeight: 1,
+          userSelect: "none",
           pointerEvents: "none",
         }}
       >語</motion.div>
@@ -180,7 +186,7 @@ function Hero({ scrollY }) {
           <span style={{ color: "rgba(10,10,10,0.15)" }}>／</span>
           <span>始める</span>
           <span style={{ color: "rgba(10,10,10,0.15)" }}>／</span>
-          <span>2026</span>
+
         </motion.div>
 
         {/* Headline */}
@@ -513,7 +519,7 @@ function CTASection() {
     const localVisits = parseInt(localStorage.getItem('np_unique_visits') || "0")
     const total = 14205 + localVisits + 1
     localStorage.setItem('np_unique_visits', localVisits + 1)
-  
+
     let start = 100
     const interval = setInterval(() => {
       start += Math.floor(Math.random() * 5) + 1
@@ -552,7 +558,7 @@ function CTASection() {
         }}>
           Begin your path<br />to Japanese mastery.
         </h2>
-        
+
         <div style={{
           display: "inline-flex", flexDirection: "column", alignItems: "center",
           border: "1px solid rgba(10,10,10,0.1)",
