@@ -10,10 +10,10 @@ const hiraganaGrid = [
   { kana: "な", romaji: "na" }, { kana: "に", romaji: "ni" }, { kana: "ぬ", romaji: "nu" }, { kana: "ね", romaji: "ne" }, { kana: "の", romaji: "no" },
   { kana: "は", romaji: "ha" }, { kana: "ひ", romaji: "hi" }, { kana: "ふ", romaji: "fu" }, { kana: "へ", romaji: "he" }, { kana: "ほ", romaji: "ho" },
   { kana: "ま", romaji: "ma" }, { kana: "み", romaji: "mi" }, { kana: "む", romaji: "mu" }, { kana: "め", romaji: "me" }, { kana: "も", romaji: "mo" },
-  { kana: "や", romaji: "ya" }, { empty: true },           { kana: "ゆ", romaji: "yu" }, { empty: true },           { kana: "よ", romaji: "yo" },
+  { kana: "や", romaji: "ya" }, { empty: true }, { kana: "ゆ", romaji: "yu" }, { empty: true }, { kana: "よ", romaji: "yo" },
   { kana: "ら", romaji: "ra" }, { kana: "り", romaji: "ri" }, { kana: "る", romaji: "ru" }, { kana: "れ", romaji: "re" }, { kana: "ろ", romaji: "ro" },
-  { kana: "わ", romaji: "wa" }, { empty: true },           { empty: true },           { empty: true },           { kana: "を", romaji: "wo" },
-  { kana: "ん", romaji: "n" },  { empty: true },           { empty: true },           { empty: true },           { empty: true },
+  { kana: "わ", romaji: "wa" }, { empty: true }, { empty: true }, { empty: true }, { kana: "を", romaji: "wo" },
+  { kana: "ん", romaji: "n" }, { empty: true }, { empty: true }, { empty: true }, { empty: true },
 ]
 
 const hiraganaDakuten = [
@@ -35,10 +35,10 @@ const katakanaGrid = [
   { kana: "ナ", romaji: "na" }, { kana: "ニ", romaji: "ni" }, { kana: "ヌ", romaji: "nu" }, { kana: "ネ", romaji: "ne" }, { kana: "ノ", romaji: "no" },
   { kana: "ハ", romaji: "ha" }, { kana: "ヒ", romaji: "hi" }, { kana: "フ", romaji: "fu" }, { kana: "ヘ", romaji: "he" }, { kana: "ホ", romaji: "ho" },
   { kana: "マ", romaji: "ma" }, { kana: "ミ", romaji: "mi" }, { kana: "ム", romaji: "mu" }, { kana: "メ", romaji: "me" }, { kana: "モ", romaji: "mo" },
-  { kana: "ヤ", romaji: "ya" }, { empty: true },           { kana: "ユ", romaji: "yu" }, { empty: true },           { kana: "ヨ", romaji: "yo" },
+  { kana: "ヤ", romaji: "ya" }, { empty: true }, { kana: "ユ", romaji: "yu" }, { empty: true }, { kana: "ヨ", romaji: "yo" },
   { kana: "ラ", romaji: "ra" }, { kana: "リ", romaji: "ri" }, { kana: "ル", romaji: "ru" }, { kana: "レ", romaji: "re" }, { kana: "ロ", romaji: "ro" },
-  { kana: "ワ", romaji: "wa" }, { empty: true },           { empty: true },           { empty: true },           { kana: "ヲ", romaji: "wo" },
-  { kana: "ン", romaji: "n" },  { empty: true },           { empty: true },           { empty: true },           { empty: true },
+  { kana: "ワ", romaji: "wa" }, { empty: true }, { empty: true }, { empty: true }, { kana: "ヲ", romaji: "wo" },
+  { kana: "ン", romaji: "n" }, { empty: true }, { empty: true }, { empty: true }, { empty: true },
 ]
 
 const katakanaDakuten = [
@@ -54,7 +54,7 @@ const katakanaHandakuten = [
 
 
 function KanaCard({ item, index }) {
-  if (item.empty) return <div /> 
+  if (item.empty) return <div />
 
   return (
     <motion.div
@@ -76,7 +76,7 @@ function KanaCard({ item, index }) {
       onMouseEnter={e => e.currentTarget.style.boxShadow = "0 10px 30px rgba(0,0,0,0.08)"}
       onMouseLeave={e => e.currentTarget.style.boxShadow = "0 2px 10px rgba(0,0,0,0.03)"}
     >
-      
+
       <div style={{
         position: "relative", width: 72, height: 72,
         borderRadius: 12,
@@ -96,8 +96,12 @@ function KanaCard({ item, index }) {
   )
 }
 
+import { useWindowWidth } from "./hooks.js"
+
 export default function KanaPage() {
   const navigate = useNavigate()
+  const width = useWindowWidth()
+  const isMobile = width < 768
   const [activeTab, setActiveTab] = useState("Hiragana")
 
   return (
@@ -126,7 +130,7 @@ export default function KanaPage() {
           <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 100, fontSize: 18, color: "#64748b" }}>日本語</span>
           <span style={{ fontSize: 13, fontWeight: 500, color: "#1e293b", letterSpacing: "0.02em" }}>NihongoPath</span>
           <span style={{ color: "#cbd5e1", fontSize: 13 }}>/</span>
-          <span style={{ fontSize: 11, color: "#10b981", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600 }}>Kana Reference</span>
+          <span style={{ fontSize: 11, color: "#10b981", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600 }}>{isMobile ? "Kana" : "Kana Reference"}</span>
         </div>
         <motion.button
           whileHover={{ scale: 1.06 }}
@@ -143,13 +147,13 @@ export default function KanaPage() {
             display: "flex", alignItems: "center", gap: 6,
           }}
         >
-          ← Back to Home
+          ← {isMobile ? "Back" : "Back to Home"}
         </motion.button>
       </div>
 
-    
+
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "56px 48px 100px" }}>
-        
+
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} style={{ marginBottom: 40, textAlign: "center" }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 6,
@@ -221,11 +225,11 @@ export default function KanaPage() {
                   </h2>
                   <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 13, color: "#94a3b8" }}>{section.desc}</p>
                 </div>
-                
+
                 <div style={{
                   display: "grid",
-                  gridTemplateColumns: "repeat(5, 1fr)",
-                  gap: 16,
+                  gridTemplateColumns: isMobile ? "repeat(3, 1fr)" : "repeat(5, 1fr)",
+                  gap: isMobile ? 8 : 16,
                 }}>
                   {section.data.map((item, i) => (
                     <KanaCard key={`${sIdx}-${i}`} item={item} index={i} />

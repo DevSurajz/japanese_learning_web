@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Noto+Sans+JP:wght@100;300;400&family=Space+Grotesk:wght@300;400;500&display=swap');
 @import "tailwindcss";
 
 /* Reset all Vite defaults */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #0A0A0A; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: #FAFAFA; color: #0A0A0A; overflow-x: hidden; }
+::selection { background: #0A0A0A; color: #FAFAFA; }
 #root { min-height: 100vh; }

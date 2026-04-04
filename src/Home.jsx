@@ -1,119 +1,200 @@
-import { motion, useScroll, useTransform, useSpring, useInView } from "motion/react"
+import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from "motion/react"
 import { useRef, useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-
-// ─── GLOBAL STYLES ────────────────────────────────────────────
-const GlobalStyle = () => (
-  <style>{`
-    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Noto+Sans+JP:wght@100;300;400&family=Space+Grotesk:wght@300;400;500&display=swap');
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { background: #FAFAFA; color: #0A0A0A; overflow-x: hidden; }
-    ::selection { background: #0A0A0A; color: #FAFAFA; }
-  `}</style>
-)
+import { useWindowWidth } from "./hooks.js"
 
 // ─── NAVBAR ─────────────────────────────────────────────────────
 function Navbar({ scrollY }) {
+  const width = useWindowWidth()
+  const isMobile = width < 768
+
   const bg = useTransform(scrollY, [0, 80], ["rgba(250,250,250,0)", "rgba(250,250,250,1)"])
   const borderOpacity = useTransform(scrollY, [0, 80], [0, 1])
+  const borderBottom = useTransform(borderOpacity, v => v > 0.01 ? "1px solid rgba(0,0,0,0.08)" : "none")
   const textColor = "#0A0A0A"
 
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  const navLinks = [
+    { label: "KANJI", to: "/kanji" },
+    { label: "GRAMMAR", to: "#" },
+    { label: "VOCABULARY", to: "/vocab" },
+    { label: "KANA", to: "/kana" },
+  ]
+
   return (
-    <motion.nav
-      style={{
-        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "24px 48px",
-        background: bg,
-        borderBottom: borderOpacity.get() > 0.01 ? "1px solid rgba(0,0,0,0.08)" : "none",
-      }}
-    >
-      {/* Logo */}
-      <motion.div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <motion.span
-          style={{
-            fontFamily: "'Noto Sans JP', sans-serif",
-            fontWeight: 100, fontSize: 22,
-            color: textColor, letterSpacing: "0.05em",
-          }}
-        >日本語</motion.span>
-        <motion.span
-          style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 300, fontSize: 13,
-            color: textColor, letterSpacing: "0.12em",
-          }}
-        >NihongoPath</motion.span>
-      </motion.div>
+    <>
+      <motion.nav
+        style={{
+          position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: isMobile ? "20px 24px" : "24px 48px",
+          background: bg,
+          borderBottom,
+        }}
+      >
+        {/* Logo */}
+        <Link to="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10 }}>
+          <motion.span
+            style={{
+              fontFamily: "'Noto Sans JP', sans-serif",
+              fontWeight: 100, fontSize: 22,
+              color: textColor, letterSpacing: "0.05em",
+            }}
+          >日本語</motion.span>
+          <motion.span
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontWeight: 300, fontSize: 13,
+              color: textColor, letterSpacing: "0.12em",
+            }}
+          >NihongoPath</motion.span>
+        </Link>
 
-      {/* Nav Links */}
-      <motion.div style={{ display: "flex", gap: 40 }}>
-        {[
-          { label: "KANJI", to: "/kanji" },
-          { label: "GRAMMAR", to: "#" },
-          { label: "VOCABULARY", to: "/vocab" },
-          { label: "KANA", to: "/kana" },
-        ].map(({ label, to }) =>
-          to.startsWith("/") ? (
-            <Link
-              key={label}
-              to={to}
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontWeight: 300, fontSize: 11,
-                letterSpacing: "0.18em", textTransform: "uppercase",
-                textDecoration: "none", cursor: "pointer",
-                color: "inherit",
-              }}
-            >
-              <motion.span style={{ color: textColor }} whileHover={{ opacity: 0.5 }} transition={{ duration: 0.2 }}>
-                {label}
-              </motion.span>
+        {isMobile ? (
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{
+              background: "none", border: "none", cursor: "pointer",
+              fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
+              fontSize: 24, color: textColor,
+            }}
+          >
+            {menuOpen ? "✕" : "☰"}
+          </button>
+        ) : (
+          <>
+            {/* Nav Links */}
+            <motion.div style={{ display: "flex", gap: 40 }}>
+              {navLinks.map(({ label, to }) =>
+                to.startsWith("/") ? (
+                  <Link
+                    key={label}
+                    to={to}
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontWeight: 300, fontSize: 11,
+                      letterSpacing: "0.18em", textTransform: "uppercase",
+                      textDecoration: "none", cursor: "pointer",
+                      color: "inherit",
+                    }}
+                  >
+                    <motion.span style={{ color: textColor }} whileHover={{ opacity: 0.5 }} transition={{ duration: 0.2 }}>
+                      {label}
+                    </motion.span>
+                  </Link>
+                ) : (
+                  <motion.a
+                    key={label}
+                    href="#"
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontWeight: 300, fontSize: 11,
+                      letterSpacing: "0.18em", textDecoration: "none",
+                      color: textColor, cursor: "pointer",
+                    }}
+                    whileHover={{ opacity: 0.5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {label}
+                  </motion.a>
+                )
+              )}
+            </motion.div>
+
+            {/* CTA */}
+            <Link to="/kana" style={{ textDecoration: "none" }}>
+              <motion.button
+                whileHover={{ opacity: 0.8 }}
+                whileTap={{ scale: 0.97 }}
+                style={{
+                  background: "#0A0A0A", color: "#FAFAFA",
+                  border: "none", borderRadius: 0,
+                  padding: "10px 20px",
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontWeight: 300, fontSize: 11,
+                  letterSpacing: "0.18em", textTransform: "uppercase",
+                  cursor: "pointer",
+                }}
+              >
+                START KANA →
+              </motion.button>
             </Link>
-          ) : (
-            <motion.a
-              key={label}
-              href="#"
-              style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontWeight: 300, fontSize: 11,
-                letterSpacing: "0.18em", textDecoration: "none",
-                color: textColor, cursor: "pointer",
-              }}
-              whileHover={{ opacity: 0.5 }}
-              transition={{ duration: 0.2 }}
-            >
-              {label}
-            </motion.a>
-          )
+          </>
         )}
-      </motion.div>
+      </motion.nav>
 
-      {/* CTA */}
-      <Link to="/kana" style={{ textDecoration: "none" }}>
-        <motion.button
-          whileHover={{ opacity: 0.8 }}
-          whileTap={{ scale: 0.97 }}
-          style={{
-            background: "#0A0A0A", color: "#FAFAFA",
-            border: "none", borderRadius: 0,
-            padding: "10px 20px",
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 300, fontSize: 11,
-            letterSpacing: "0.18em", textTransform: "uppercase",
-            cursor: "pointer",
-          }}
-        >
-          START KANA →
-        </motion.button>
-      </Link>
-    </motion.nav>
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {isMobile && menuOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            style={{
+              position: "fixed", top: 68, left: 0, right: 0, zIndex: 99,
+              background: "#FAFAFA",
+              borderBottom: "1px solid rgba(0,0,0,0.08)",
+              display: "flex", flexDirection: "column",
+              padding: "24px", gap: 24, overflow: "hidden",
+            }}
+          >
+            {navLinks.map(({ label, to }) =>
+              to.startsWith("/") ? (
+                <Link
+                  key={label}
+                  to={to}
+                  onClick={() => setMenuOpen(false)}
+                  style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontWeight: 300, fontSize: 14,
+                    letterSpacing: "0.18em", textTransform: "uppercase",
+                    textDecoration: "none", color: textColor,
+                    display: "block",
+                  }}
+                >
+                  {label}
+                </Link>
+              ) : (
+                <a
+                  key={label}
+                  href="#"
+                  onClick={() => setMenuOpen(false)}
+                  style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontWeight: 300, fontSize: 14,
+                    letterSpacing: "0.18em", textDecoration: "none",
+                    color: textColor,
+                    display: "block",
+                  }}
+                >
+                  {label}
+                </a>
+              )
+            )}
+            <Link to="/kana" onClick={() => setMenuOpen(false)} style={{ textDecoration: "none", marginTop: 8 }}>
+              <div style={{
+                background: "#0A0A0A", color: "#FAFAFA",
+                padding: "16px", textAlign: "center",
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontWeight: 300, fontSize: 12,
+                letterSpacing: "0.18em", textTransform: "uppercase",
+              }}>
+                START KANA →
+              </div>
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
 
 // ─── HERO ────────────────────────────────────────────────────────
 function Hero({ scrollY }) {
+  const width = useWindowWidth()
+  const isMobile = width < 768
+
   const kanjiY = useTransform(scrollY, [0, 600], [0, -120])
   const kanjiOpacity = useTransform(scrollY, [0, 400], [0.06, 0])
   const springY = useSpring(kanjiY, { stiffness: 80, damping: 20 })
@@ -144,7 +225,7 @@ function Hero({ scrollY }) {
     <section
       style={{
         minHeight: "100vh", display: "flex", alignItems: "center",
-        padding: "120px 48px 80px", position: "relative", overflow: "hidden",
+        padding: isMobile ? "100px 24px 60px" : "120px 48px 80px", position: "relative", overflow: "hidden",
         background: "#FAFAFA",
       }}
     >
@@ -155,7 +236,7 @@ function Hero({ scrollY }) {
           right: "8%",
           top: "50%",
           translateY: "-50%",
-          y: springY,
+          y: isMobile ? 0 : springY,
           opacity: kanjiOpacity,
           fontFamily: "'Noto Sans JP', sans-serif",
           fontWeight: 100,
@@ -197,7 +278,7 @@ function Hero({ scrollY }) {
           style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300, lineHeight: 1.0,
-            fontSize: "clamp(64px, 9vw, 140px)",
+            fontSize: "clamp(64px, 12vw, 140px)",
             color: "#0A0A0A",
             marginBottom: 32,
           }}
@@ -229,7 +310,7 @@ function Hero({ scrollY }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          style={{ display: "flex", gap: 0 }}
+          style={{ display: "flex", gap: 0, flexDirection: isMobile ? "column" : "row" }}
         >
           {[
             { value: counts.kanji, suffix: "", label: "N5 KANJI" },
@@ -241,14 +322,14 @@ function Hero({ scrollY }) {
               style={{
                 borderTop: "2px solid #0A0A0A",
                 paddingTop: 16, paddingBottom: 24,
-                paddingLeft: i === 0 ? 0 : 32,
-                paddingRight: i === 2 ? 0 : 32,
-                borderRight: i < 2 ? "1px solid rgba(10,10,10,0.12)" : "none",
+                paddingLeft: isMobile ? 0 : (i === 0 ? 0 : 32),
+                paddingRight: isMobile ? 0 : (i === 2 ? 0 : 32),
+                borderRight: isMobile ? "none" : (i < 2 ? "1px solid rgba(10,10,10,0.12)" : "none"),
               }}
             >
               <p style={{
                 fontFamily: "'Cormorant Garamond', serif",
-                fontWeight: 600, fontSize: "clamp(40px, 5vw, 60px)",
+                fontWeight: 600, fontSize: "clamp(40px, 10vw, 60px)",
                 color: "#0A0A0A", lineHeight: 1,
               }}>
                 {value}{suffix}
@@ -265,33 +346,38 @@ function Hero({ scrollY }) {
       </div>
 
       {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        style={{
-          position: "absolute", bottom: 40, left: "50%",
-          transform: "translateX(-50%)",
-          display: "flex", flexDirection: "column", alignItems: "center", gap: 10,
-          fontFamily: "'Space Grotesk', sans-serif",
-          fontWeight: 300, fontSize: 9,
-          letterSpacing: "0.25em", textTransform: "uppercase",
-          color: "rgba(10,10,10,0.3)",
-        }}
-      >
-        <span>SCROLL TO EXPLORE</span>
+      {!isMobile && (
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-          style={{ width: 1, height: 40, background: "rgba(10,10,10,0.2)" }}
-        />
-      </motion.div>
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2 }}
+          style={{
+            position: "absolute", bottom: 40, left: "50%",
+            transform: "translateX(-50%)",
+            display: "flex", flexDirection: "column", alignItems: "center", gap: 10,
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontWeight: 300, fontSize: 9,
+            letterSpacing: "0.25em", textTransform: "uppercase",
+            color: "rgba(10,10,10,0.3)",
+          }}
+        >
+          <span>SCROLL TO EXPLORE</span>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+            style={{ width: 1, height: 40, background: "rgba(10,10,10,0.2)" }}
+          />
+        </motion.div>
+      )}
     </section>
   )
 }
 
 // ─── MARQUEE STRIP ───────────────────────────────────────────────
 function MarqueeStrip() {
+  const width = useWindowWidth()
+  const isMobile = width < 768
+
   const words = ["語学", "KANJI", "文法", "GRAMMAR", "語彙", "VOCABULARY", "日本語", "NIHONGO", "N5→N1", "学習"]
   return (
     <div style={{
@@ -302,13 +388,13 @@ function MarqueeStrip() {
       <motion.div
         animate={{ x: ["0%", "-50%"] }}
         transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
-        style={{ display: "flex", gap: 64, whiteSpace: "nowrap", width: "max-content" }}
+        style={{ display: "flex", gap: isMobile ? 32 : 64, whiteSpace: "nowrap", width: "max-content" }}
       >
         {[...words, ...words].map((w, i) => (
           <span key={i} style={{
             fontFamily: i % 2 === 0 ? "'Noto Sans JP'" : "'Space Grotesk'",
             fontWeight: i % 2 === 0 ? 100 : 300,
-            fontSize: 13, letterSpacing: "0.2em",
+            fontSize: isMobile ? 11 : 13, letterSpacing: "0.2em",
             color: "rgba(10,10,10,0.25)",
             textTransform: "uppercase",
           }}>{w}</span>
@@ -318,7 +404,102 @@ function MarqueeStrip() {
   )
 }
 
+function FeatureCard({ ja, en, num, desc, offset, link, scrollY, delay }) {
+  const width = useWindowWidth()
+  const isMobile = width < 768
+  const isTablet = width >= 768 && width < 1024
+
+  const shouldParallax = !isMobile && !isTablet
+  const cardY = useTransform(scrollY, [300, 900], [shouldParallax ? offset : 0, 0])
+  const springCardY = useSpring(cardY, { stiffness: 80, damping: 20 })
+
+  return (
+    <motion.div
+      style={{ y: springCardY }}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, delay }}
+    >
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        transition={{ duration: 0.4 }}
+        style={{
+          border: "1px solid rgba(10,10,10,0.08)",
+          padding: isMobile ? "32px 24px 40px" : "48px 40px 56px",
+          position: "relative", overflow: "hidden",
+          cursor: link ? "pointer" : "default",
+          height: "100%",
+        }}
+      >
+        {/* BG kanji */}
+        <motion.div
+          style={{
+            position: "absolute", bottom: -20, right: 24,
+            fontFamily: "'Noto Sans JP', sans-serif",
+            fontWeight: 100, color: "rgba(10,10,10,0.03)",
+            lineHeight: 1, userSelect: "none", pointerEvents: "none",
+          }}
+          initial={{ fontSize: 120 }}
+          whileHover={{ fontSize: 160 }}
+          transition={{ duration: 0.5 }}
+        >{ja}</motion.div>
+
+        <p style={{
+          fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
+          fontSize: 10, letterSpacing: "0.25em",
+          color: "rgba(10,10,10,0.25)", marginBottom: isMobile ? 32 : 48,
+        }}>{num}</p>
+
+        <p style={{
+          fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 100,
+          fontSize: 40, color: "rgba(10,10,10,0.6)",
+          marginBottom: 8, lineHeight: 1,
+        }}>{ja}</p>
+
+        <p style={{
+          fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
+          fontSize: 11, letterSpacing: "0.2em",
+          color: "#0A0A0A", marginBottom: 28,
+        }}>{en}</p>
+
+        <p style={{
+          fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
+          fontSize: 13, lineHeight: 1.8,
+          color: "rgba(10,10,10,0.45)", marginBottom: 40,
+        }}>{desc}</p>
+
+        {link ? (
+          <Link
+            to={link}
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
+              fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase",
+              color: "#0A0A0A", textDecoration: "none",
+              borderBottom: "1px solid rgba(10,10,10,0.3)",
+              paddingBottom: 2,
+            }}
+          >EXPLORE →</Link>
+        ) : (
+          <span style={{
+            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
+            fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase",
+            color: "rgba(10,10,10,0.3)",
+            borderBottom: "1px solid rgba(10,10,10,0.1)",
+            paddingBottom: 2,
+          }}>COMING SOON</span>
+        )}
+      </motion.div>
+    </motion.div>
+  )
+}
+
 function FeatureCards({ scrollY }) {
+  const width = useWindowWidth()
+  const isMobile = width < 768
+  const isTablet = width >= 768 && width < 1024
+  const columns = isMobile ? 1 : isTablet ? 2 : 3
+
   const cards = [
     {
       ja: "漢字", en: "KANJI", num: "01",
@@ -341,13 +522,13 @@ function FeatureCards({ scrollY }) {
   ]
 
   return (
-    <section style={{ padding: "120px 48px", background: "#FAFAFA" }}>
+    <section style={{ padding: isMobile ? "64px 24px" : "120px 48px", background: "#FAFAFA" }}>
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        style={{ marginBottom: 72 }}
+        style={{ marginBottom: isMobile ? 48 : 72 }}
       >
         <p style={{
           fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
@@ -356,107 +537,30 @@ function FeatureCards({ scrollY }) {
         }}>The curriculum.</p>
         <h2 style={{
           fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic",
-          fontWeight: 300, fontSize: "clamp(36px,5vw,64px)",
+          fontWeight: 300, fontSize: "clamp(36px,8vw,64px)",
           color: "#0A0A0A", lineHeight: 1.05,
         }}>Three pillars of fluency.</h2>
       </motion.div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2 }}>
-        {cards.map(({ ja, en, num, desc, offset, link }, i) => {
-          const cardY = useTransform(scrollY, [300, 900], [offset, 0])
-          const springCardY = useSpring(cardY, { stiffness: 80, damping: 20 })
-          return (
-            <motion.div
-              key={en}
-              style={{ y: springCardY }}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: i * 0.12 }}
-            >
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.4 }}
-                style={{
-                  border: "1px solid rgba(10,10,10,0.08)",
-                  padding: "48px 40px 56px",
-                  position: "relative", overflow: "hidden",
-                  cursor: link ? "pointer" : "default",
-                }}
-              >
-                {/* BG kanji */}
-                <motion.div
-                  style={{
-                    position: "absolute", bottom: -20, right: 24,
-                    fontFamily: "'Noto Sans JP', sans-serif",
-                    fontWeight: 100, color: "rgba(10,10,10,0.03)",
-                    lineHeight: 1, userSelect: "none", pointerEvents: "none",
-                  }}
-                  initial={{ fontSize: 120 }}
-                  whileHover={{ fontSize: 160 }}
-                  transition={{ duration: 0.5 }}
-                >{ja}</motion.div>
-
-                <p style={{
-                  fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
-                  fontSize: 10, letterSpacing: "0.25em",
-                  color: "rgba(10,10,10,0.25)", marginBottom: 48,
-                }}>{num}</p>
-
-                <p style={{
-                  fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 100,
-                  fontSize: 40, color: "rgba(10,10,10,0.6)",
-                  marginBottom: 8, lineHeight: 1,
-                }}>{ja}</p>
-
-                <p style={{
-                  fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
-                  fontSize: 11, letterSpacing: "0.2em",
-                  color: "#0A0A0A", marginBottom: 28,
-                }}>{en}</p>
-
-                <p style={{
-                  fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
-                  fontSize: 13, lineHeight: 1.8,
-                  color: "rgba(10,10,10,0.45)", marginBottom: 40,
-                }}>{desc}</p>
-
-                {link ? (
-                  <Link
-                    to={link}
-                    style={{
-                      fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
-                      fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase",
-                      color: "#0A0A0A", textDecoration: "none",
-                      borderBottom: "1px solid rgba(10,10,10,0.3)",
-                      paddingBottom: 2,
-                    }}
-                  >EXPLORE →</Link>
-                ) : (
-                  <span style={{
-                    fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
-                    fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase",
-                    color: "rgba(10,10,10,0.3)",
-                    borderBottom: "1px solid rgba(10,10,10,0.1)",
-                    paddingBottom: 2,
-                  }}>COMING SOON</span>
-                )}
-              </motion.div>
-            </motion.div>
-          )
-        })}
+      <div style={{ display: "grid", gridTemplateColumns: `repeat(${columns}, 1fr)`, gap: isMobile ? 16 : 2 }}>
+        {cards.map((card, i) => (
+          <FeatureCard key={card.en} {...card} scrollY={scrollY} delay={i * 0.12} />
+        ))}
       </div>
     </section>
   )
 }
 
 function QuoteSection() {
+  const width = useWindowWidth()
+  const isMobile = width < 768
+
   const words = "千里の道も一歩から".split("")
   const subWords = "A journey of a thousand miles begins with a single step.".split(" ")
 
   return (
     <section style={{
-      padding: "140px 48px",
+      padding: isMobile ? "80px 24px" : "140px 48px",
       background: "#FAFAFA",
       display: "flex", flexDirection: "column", alignItems: "center",
       borderTop: "1px solid rgba(10,10,10,0.08)",
@@ -481,7 +585,7 @@ function QuoteSection() {
               transition={{ delay: i * 0.04, duration: 0.5 }}
               style={{
                 fontFamily: "'Noto Sans JP', sans-serif",
-                fontWeight: 100, fontSize: "clamp(36px,5vw,64px)",
+                fontWeight: 100, fontSize: "clamp(36px,8vw,64px)",
                 color: "#0A0A0A", lineHeight: 1.1,
               }}
             >{char}</motion.span>
@@ -496,7 +600,7 @@ function QuoteSection() {
           style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontStyle: "italic", fontWeight: 300,
-            fontSize: "clamp(18px,2.5vw,26px)",
+            fontSize: "clamp(18px,4vw,26px)",
             color: "rgba(10,10,10,0.45)", lineHeight: 1.5,
           }}
         >
@@ -509,33 +613,12 @@ function QuoteSection() {
 
 // ─── CTA SECTION ─────────────────────────────────────────────────
 function CTASection() {
-  const [visitors, setVisitors] = useState(null)
-  const effectRun = useRef(false)
-
-  useEffect(() => {
-    if (effectRun.current) return
-    effectRun.current = true
-
-    const localVisits = parseInt(localStorage.getItem('np_unique_visits') || "0")
-    const total = 14205 + localVisits + 1
-    localStorage.setItem('np_unique_visits', localVisits + 1)
-
-    let start = 100
-    const interval = setInterval(() => {
-      start += Math.floor(Math.random() * 5) + 1
-      if (start >= total) {
-        setVisitors(total)
-        clearInterval(interval)
-      } else {
-        setVisitors(start)
-      }
-    }, 15)
-    return () => clearInterval(interval)
-  }, [])
+  const width = useWindowWidth()
+  const isMobile = width < 768
 
   return (
     <section style={{
-      padding: "120px 48px",
+      padding: isMobile ? "80px 24px" : "120px 48px",
       background: "#FAFAFA",
       display: "flex", flexDirection: "column", alignItems: "center",
       textAlign: "center",
@@ -553,47 +636,51 @@ function CTASection() {
         }}>Start today.</p>
         <h2 style={{
           fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic",
-          fontWeight: 300, fontSize: "clamp(40px,6vw,80px)",
+          fontWeight: 300, fontSize: "clamp(40px,8vw,80px)",
           color: "#0A0A0A", lineHeight: 1.05, marginBottom: 56,
         }}>
           Begin your path<br />to Japanese mastery.
         </h2>
 
-        <div style={{
-          display: "inline-flex", flexDirection: "column", alignItems: "center",
-          border: "1px solid rgba(10,10,10,0.1)",
-          padding: "24px 40px",
-          borderRadius: 2,
-        }}>
-          <p style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontWeight: 600, fontSize: 40,
-            color: "#0A0A0A", lineHeight: 1,
-            marginBottom: 8,
-          }}>
-            {visitors !== null ? visitors.toLocaleString() : "..."}
-          </p>
-          <p style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 300, fontSize: 9,
-            letterSpacing: "0.2em", textTransform: "uppercase",
-            color: "rgba(10,10,10,0.4)",
-          }}>
-            Website Visitors
-          </p>
-        </div>
+        <Link to="/kana" style={{ textDecoration: "none" }}>
+          <motion.div
+            whileHover={{ opacity: 0.8, scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            style={{
+              display: "inline-flex", flexDirection: "column", alignItems: "center",
+              background: "#0A0A0A",
+              padding: "24px 40px",
+              borderRadius: 2,
+              cursor: "pointer",
+            }}
+          >
+            <p style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontWeight: 300, fontSize: 13,
+              letterSpacing: "0.2em", textTransform: "uppercase",
+              color: "#FAFAFA",
+            }}>
+              START YOUR JOURNEY →
+            </p>
+          </motion.div>
+        </Link>
       </motion.div>
     </section>
   )
 }
 
 function Footer() {
+  const width = useWindowWidth()
+  const isMobile = width < 768
+
   return (
     <footer style={{
-      padding: "40px 48px",
+      padding: isMobile ? "40px 24px" : "40px 48px",
       background: "#FAFAFA",
       borderTop: "1px solid rgba(10,10,10,0.06)",
-      display: "flex", alignItems: "center", justifyContent: "space-between",
+      display: "flex", alignItems: isMobile ? "flex-start" : "center", 
+      justifyContent: isMobile ? "center" : "space-between",
+      flexDirection: isMobile ? "column" : "row", gap: isMobile ? 24 : 0,
     }}>
       <div style={{
         display: "flex", gap: 12, alignItems: "center",
@@ -606,6 +693,7 @@ function Footer() {
       <p style={{
         fontFamily: "'Space Grotesk', sans-serif",
         fontWeight: 300, fontSize: 11, color: "#555", letterSpacing: "0.05em",
+        textAlign: isMobile ? "left" : "right"
       }}>
         © 2026&nbsp;&nbsp;·&nbsp;&nbsp;JLPT N5–N1&nbsp;&nbsp;·&nbsp;&nbsp;Made with 愛
       </p>
@@ -613,13 +701,11 @@ function Footer() {
   )
 }
 
-
 export default function Home() {
   const { scrollY } = useScroll()
 
   return (
     <>
-      <GlobalStyle />
       <Navbar scrollY={scrollY} />
       <main>
         <Hero scrollY={scrollY} />

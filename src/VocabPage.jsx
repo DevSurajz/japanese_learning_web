@@ -2,6 +2,7 @@ import { useState, useMemo } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { useNavigate } from "react-router-dom"
 import { vocabData } from "./vocabData"
+import { useWindowWidth } from "./hooks.js"
 
 const PER_PAGE = 25
 
@@ -37,6 +38,9 @@ function TypeBadge({ type }) {
 
 export default function VocabPage() {
   const navigate = useNavigate()
+  const width = useWindowWidth()
+  const isMobile = width < 768
+  
   const [search, setSearch]   = useState("")
   const [page, setPage]       = useState(1)
   const [sortKey, setSortKey] = useState("id")   
@@ -133,9 +137,9 @@ export default function VocabPage() {
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#8b5cf6", display: "inline-block" }} />
             <span style={{ fontSize: 10, fontWeight: 700, color: "#7c3aed", letterSpacing: "0.15em", textTransform: "uppercase" }}>JLPT N5</span>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 20, marginBottom: 28 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "flex-end", flexDirection: isMobile ? "column" : "row", flexWrap: "wrap", gap: 20, marginBottom: 28 }}>
             <div>
-              <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(36px,4vw,56px)", color: "#0f172a", lineHeight: 1.1 }}>
+              <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(36px,8vw,56px)", color: "#0f172a", lineHeight: 1.1 }}>
                 N5 Vocabulary
               </h1>
               <p style={{ fontSize: 13, color: "#94a3b8", marginTop: 6, fontWeight: 300 }}>
@@ -205,14 +209,14 @@ export default function VocabPage() {
           <div style={{
             position: "sticky", top: 72, zIndex: 5,
             display: "grid",
-            gridTemplateColumns: "52px 1fr 1fr 160px 1fr",
+            gridTemplateColumns: isMobile ? "40px minmax(90px, 1fr) auto minmax(100px, 1fr)" : "52px 1fr 1fr 160px 1fr",
             background: "#f8fafc",
             borderBottom: "2px solid #e2e8f0",
           }}>
             {[
               { key: "id",      label: "#" },
               { key: "kana",    label: "Kana / Written" },
-              { key: "romaji",  label: "Romaji / Reading" },
+              ...(isMobile ? [] : [{ key: "romaji",  label: "Romaji / Reading" }]),
               { key: null,      label: "Type" },
               { key: "meaning", label: "Meaning" },
             ].map(({ key, label }, i) => (
@@ -220,12 +224,12 @@ export default function VocabPage() {
                 key={label}
                 onClick={key ? () => handleSort(key) : undefined}
                 style={{
-                  padding: "12px 16px",
+                  padding: isMobile ? "12px 8px" : "12px 16px",
                   fontSize: 10, fontWeight: 600, letterSpacing: "0.12em",
                   textTransform: "uppercase", color: "#64748b",
                   cursor: key ? "pointer" : "default",
                   userSelect: "none",
-                  borderRight: i < 4 ? "1px solid #e2e8f0" : "none",
+                  borderRight: i < (isMobile ? 3 : 4) ? "1px solid #e2e8f0" : "none",
                   display: "flex", alignItems: "center", gap: 4,
                 }}
               >
@@ -245,7 +249,7 @@ export default function VocabPage() {
                   transition={{ delay: i * 0.012, duration: 0.2 }}
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "52px 1fr 1fr 160px 1fr",
+                    gridTemplateColumns: isMobile ? "40px minmax(90px, 1fr) auto minmax(100px, 1fr)" : "52px 1fr 1fr 160px 1fr",
                     borderBottom: "1px solid #f1f5f9",
                     background: i % 2 === 0 ? "#fff" : "#fafbfc",
                     transition: "background 0.15s",
@@ -253,19 +257,21 @@ export default function VocabPage() {
                   onMouseEnter={e => e.currentTarget.style.background = "#f0f9ff"}
                   onMouseLeave={e => e.currentTarget.style.background = i % 2 === 0 ? "#fff" : "#fafbfc"}
                 >
-                  <div style={{ padding: "12px 16px", fontSize: 12, color: "#94a3b8", fontWeight: 500, borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>{w.id}</div>
-                  <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>
-                    <span style={{ fontFamily: "'Noto Sans JP'", fontWeight: 300, fontSize: 18, color: "#1e293b" }}>{w.kana}</span>
+                  <div style={{ padding: isMobile ? "12px 8px" : "12px 16px", fontSize: 12, color: "#94a3b8", fontWeight: 500, borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>{w.id}</div>
+                  <div style={{ padding: isMobile ? "12px 8px" : "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>
+                    <span style={{ fontFamily: "'Noto Sans JP'", fontWeight: 300, fontSize: isMobile ? 14 : 18, color: "#1e293b" }}>{w.kana}</span>
                   </div>
-                  <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", flexDirection: "column", justifyContent: "center", gap: 2 }}>
-                    <span style={{ fontSize: 13, color: "#475569", fontWeight: 400 }}>{w.romaji}</span>
-                    <span style={{ fontFamily: "'Noto Sans JP'", fontSize: 12, color: "#94a3b8", fontWeight: 100 }}>{w.reading}</span>
-                  </div>
-                  <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>
+                  {!isMobile && (
+                    <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", flexDirection: "column", justifyContent: "center", gap: 2 }}>
+                      <span style={{ fontSize: 13, color: "#475569", fontWeight: 400 }}>{w.romaji}</span>
+                      <span style={{ fontFamily: "'Noto Sans JP'", fontSize: 12, color: "#94a3b8", fontWeight: 100 }}>{w.reading}</span>
+                    </div>
+                  )}
+                  <div style={{ padding: isMobile ? "12px 8px" : "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center", overflow: "hidden" }}>
                     <TypeBadge type={w.type} />
                   </div>
-                  <div style={{ padding: "12px 16px", display: "flex", alignItems: "center" }}>
-                    <span style={{ fontSize: 13, color: "#334155", lineHeight: 1.5 }}>{w.meaning}</span>
+                  <div style={{ padding: isMobile ? "12px 8px" : "12px 16px", display: "flex", alignItems: "center" }}>
+                    <span style={{ fontSize: isMobile ? 12 : 13, color: "#334155", lineHeight: 1.5 }}>{w.meaning}</span>
                   </div>
                 </motion.div>
               )) : (

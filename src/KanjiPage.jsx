@@ -1,85 +1,9 @@
 import { useState, useMemo } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { useNavigate } from "react-router-dom"
-const kanjiData = [
-  { kanji: "一", meaning: "One", strokes: 1, onyomi: ["イチ", "イツ"], kunyomi: ["ひと", "ひとつ"], examples: ["一つ (ひとつ) — one thing", "一月 (いちがつ) — January"] },
-  { kanji: "二", meaning: "Two", strokes: 2, onyomi: ["ニ"], kunyomi: ["ふた", "ふたつ"], examples: ["二つ (ふたつ) — two things", "二月 (にがつ) — February"] },
-  { kanji: "三", meaning: "Three", strokes: 3, onyomi: ["サン"], kunyomi: ["み", "みっつ"], examples: ["三つ (みっつ) — three things", "三月 (さんがつ) — March"] },
-  { kanji: "四", meaning: "Four", strokes: 5, onyomi: ["シ"], kunyomi: ["よ", "よっつ", "よん"], examples: ["四つ (よっつ) — four things", "四月 (しがつ) — April"] },
-  { kanji: "五", meaning: "Five", strokes: 4, onyomi: ["ゴ"], kunyomi: ["いつ", "いつつ"], examples: ["五つ (いつつ) — five things", "五月 (ごがつ) — May"] },
-  { kanji: "六", meaning: "Six", strokes: 4, onyomi: ["ロク"], kunyomi: ["む", "むっつ"], examples: ["六つ (むっつ) — six things", "六月 (ろくがつ) — June"] },
-  { kanji: "七", meaning: "Seven", strokes: 2, onyomi: ["シチ"], kunyomi: ["なな", "ななつ"], examples: ["七つ (ななつ) — seven things", "七月 (しちがつ) — July"] },
-  { kanji: "八", meaning: "Eight", strokes: 2, onyomi: ["ハチ"], kunyomi: ["や", "やっつ"], examples: ["八つ (やっつ) — eight things", "八月 (はちがつ) — August"] },
-  { kanji: "九", meaning: "Nine", strokes: 2, onyomi: ["キュウ", "ク"], kunyomi: ["ここの", "ここのつ"], examples: ["九つ (ここのつ) — nine things", "九月 (くがつ) — September"] },
-  { kanji: "十", meaning: "Ten", strokes: 2, onyomi: ["ジュウ", "ジッ"], kunyomi: ["とお", "と"], examples: ["十 (じゅう) — ten", "十月 (じゅうがつ) — October"] },
-  { kanji: "百", meaning: "Hundred", strokes: 6, onyomi: ["ヒャク"], kunyomi: [], examples: ["百円 (ひゃくえん) — 100 yen", "三百 (さんびゃく) — 300"] },
-  { kanji: "千", meaning: "Thousand", strokes: 3, onyomi: ["セン"], kunyomi: ["ち"], examples: ["千円 (せんえん) — 1000 yen", "三千 (さんぜん) — 3000"] },
-  { kanji: "万", meaning: "Ten Thousand", strokes: 3, onyomi: ["マン", "バン"], kunyomi: [], examples: ["一万円 (いちまんえん) — 10,000 yen", "万年筆 — fountain pen"] },
-  { kanji: "円", meaning: "Yen / Circle", strokes: 4, onyomi: ["エン"], kunyomi: ["まるい"], examples: ["百円 (ひゃくえん) — 100 yen", "円い (まるい) — round"] },
-  { kanji: "時", meaning: "Time / Hour", strokes: 10, onyomi: ["ジ"], kunyomi: ["とき"], examples: ["何時 (なんじ) — what time", "時間 (じかん) — time / hours"] },
-  { kanji: "年", meaning: "Year", strokes: 6, onyomi: ["ネン"], kunyomi: ["とし"], examples: ["今年 (ことし) — this year", "来年 (らいねん) — next year"] },
-  { kanji: "月", meaning: "Moon / Month", strokes: 4, onyomi: ["ゲツ", "ガツ"], kunyomi: ["つき"], examples: ["今月 (こんげつ) — this month", "月曜日 — Monday"] },
-  { kanji: "日", meaning: "Sun / Day", strokes: 4, onyomi: ["ニチ", "ジツ"], kunyomi: ["ひ", "か"], examples: ["今日 (きょう) — today", "日本 (にほん) — Japan"] },
-  { kanji: "上", meaning: "Up / Above", strokes: 3, onyomi: ["ジョウ", "ショウ"], kunyomi: ["うえ", "のぼる"], examples: ["上手 (じょうず) — skilled", "上 (うえ) — above"] },
-  { kanji: "下", meaning: "Down / Below", strokes: 3, onyomi: ["カ", "ゲ"], kunyomi: ["した", "くだる"], examples: ["下手 (へた) — unskilled", "下 (した) — below"] },
-  { kanji: "右", meaning: "Right", strokes: 5, onyomi: ["ウ", "ユウ"], kunyomi: ["みぎ"], examples: ["右手 (みぎて) — right hand", "右折 (うせつ) — turn right"] },
-  { kanji: "左", meaning: "Left", strokes: 5, onyomi: ["サ"], kunyomi: ["ひだり"], examples: ["左手 (ひだりて) — left hand", "左折 (させつ) — turn left"] },
-  { kanji: "中", meaning: "Middle / Inside", strokes: 4, onyomi: ["チュウ"], kunyomi: ["なか"], examples: ["中学校 — middle school", "中 (なか) — inside"] },
-  { kanji: "北", meaning: "North", strokes: 5, onyomi: ["ホク"], kunyomi: ["きた"], examples: ["北口 (きたぐち) — north exit", "北海道 — Hokkaido"] },
-  { kanji: "南", meaning: "South", strokes: 9, onyomi: ["ナン", "ナ"], kunyomi: ["みなみ"], examples: ["南口 (みなみぐち) — south exit", "南米 — South America"] },
-  { kanji: "東", meaning: "East", strokes: 8, onyomi: ["トウ"], kunyomi: ["ひがし"], examples: ["東京 (とうきょう) — Tokyo", "東口 (ひがしぐち) — east exit"] },
-  { kanji: "西", meaning: "West", strokes: 6, onyomi: ["セイ", "サイ"], kunyomi: ["にし"], examples: ["西口 (にしぐち) — west exit", "関西 (かんさい) — Kansai"] },
-  { kanji: "人", meaning: "Person", strokes: 2, onyomi: ["ジン", "ニン"], kunyomi: ["ひと"], examples: ["日本人 (にほんじん) — Japanese person", "人 (ひと) — person"] },
-  { kanji: "今", meaning: "Now / This", strokes: 4, onyomi: ["コン", "キン"], kunyomi: ["いま"], examples: ["今日 (きょう) — today", "今 (いま) — now"] },
-  { kanji: "休", meaning: "Rest", strokes: 6, onyomi: ["キュウ"], kunyomi: ["やすむ"], examples: ["休日 (きゅうじつ) — holiday", "休む (やすむ) — to rest"] },
-  { kanji: "会", meaning: "Meet / Society", strokes: 6, onyomi: ["カイ", "エ"], kunyomi: ["あう"], examples: ["会社 (かいしゃ) — company", "会う (あう) — to meet"] },
-  { kanji: "何", meaning: "What", strokes: 7, onyomi: ["カ"], kunyomi: ["なに", "なん"], examples: ["何 (なに) — what", "何時 (なんじ) — what time"] },
-  { kanji: "先", meaning: "Before / Ahead", strokes: 6, onyomi: ["セン"], kunyomi: ["さき"], examples: ["先生 (せんせい) — teacher", "先 (さき) — ahead"] },
-  { kanji: "入", meaning: "Enter", strokes: 2, onyomi: ["ニュウ"], kunyomi: ["いる", "はいる"], examples: ["入口 (いりぐち) — entrance", "入る (はいる) — enter"] },
-  { kanji: "出", meaning: "Exit / Go out", strokes: 5, onyomi: ["シュツ", "スイ"], kunyomi: ["でる", "だす"], examples: ["出口 (でぐち) — exit", "出る (でる) — to leave"] },
-  { kanji: "分", meaning: "Minute / Understand", strokes: 4, onyomi: ["フン", "ブン"], kunyomi: ["わかる"], examples: ["五分 (ごふん) — 5 minutes", "分かる (わかる) — understand"] },
-  { kanji: "前", meaning: "Before / Front", strokes: 9, onyomi: ["ゼン"], kunyomi: ["まえ"], examples: ["午前 (ごぜん) — AM", "前 (まえ) — in front of"] },
-  { kanji: "午", meaning: "Noon", strokes: 4, onyomi: ["ゴ"], kunyomi: [], examples: ["午前 (ごぜん) — AM", "午後 (ごご) — PM"] },
-  { kanji: "半", meaning: "Half", strokes: 5, onyomi: ["ハン"], kunyomi: ["なかば"], examples: ["半分 (はんぶん) — half", "三時半 — 3:30"] },
-  { kanji: "友", meaning: "Friend", strokes: 4, onyomi: ["ユウ"], kunyomi: ["とも"], examples: ["友達 (ともだち) — friend", "友人 (ゆうじん) — friend (formal)"] },
-  { kanji: "父", meaning: "Father", strokes: 4, onyomi: ["フ"], kunyomi: ["ちち"], examples: ["父 (ちち) — my father", "父親 (ちちおや) — father"] },
-  { kanji: "母", meaning: "Mother", strokes: 5, onyomi: ["ボ"], kunyomi: ["はは"], examples: ["母 (はは) — my mother", "母親 (ははおや) — mother"] },
-  { kanji: "子", meaning: "Child", strokes: 3, onyomi: ["シ", "ス"], kunyomi: ["こ"], examples: ["子供 (こども) — child", "女子 (じょし) — girl"] },
-  { kanji: "女", meaning: "Woman", strokes: 3, onyomi: ["ジョ", "ニョ"], kunyomi: ["おんな"], examples: ["女性 (じょせい) — woman", "女の子 — girl"] },
-  { kanji: "学", meaning: "Study / Learn", strokes: 8, onyomi: ["ガク"], kunyomi: ["まなぶ"], examples: ["学生 (がくせい) — student", "学校 (がっこう) — school"] },
-  { kanji: "生", meaning: "Life / Birth", strokes: 5, onyomi: ["セイ", "ショウ"], kunyomi: ["いきる", "うまれる"], examples: ["学生 (がくせい) — student", "先生 (せんせい) — teacher"] },
-  { kanji: "山", meaning: "Mountain", strokes: 3, onyomi: ["サン"], kunyomi: ["やま"], examples: ["富士山 (ふじさん) — Mt. Fuji", "山 (やま) — mountain"] },
-  { kanji: "川", meaning: "River", strokes: 3, onyomi: ["セン"], kunyomi: ["かわ"], examples: ["川 (かわ) — river", "神奈川 — Kanagawa"] },
-  { kanji: "天", meaning: "Heaven / Sky", strokes: 4, onyomi: ["テン"], kunyomi: ["あめ", "あま"], examples: ["天気 (てんき) — weather", "天ぷら — tempura"] },
-  { kanji: "気", meaning: "Spirit / Energy", strokes: 6, onyomi: ["キ", "ケ"], kunyomi: [], examples: ["天気 (てんき) — weather", "元気 (げんき) — energetic"] },
-  { kanji: "水", meaning: "Water", strokes: 4, onyomi: ["スイ"], kunyomi: ["みず"], examples: ["水曜日 — Wednesday", "水 (みず) — water"] },
-  { kanji: "火", meaning: "Fire", strokes: 4, onyomi: ["カ"], kunyomi: ["ひ"], examples: ["火曜日 — Tuesday", "火事 (かじ) — fire / blaze"] },
-  { kanji: "木", meaning: "Tree / Wood", strokes: 4, onyomi: ["モク", "ボク"], kunyomi: ["き"], examples: ["木曜日 — Thursday", "木 (き) — tree"] },
-  { kanji: "金", meaning: "Gold / Money", strokes: 8, onyomi: ["キン", "コン"], kunyomi: ["かね"], examples: ["金曜日 — Friday", "お金 (おかね) — money"] },
-  { kanji: "土", meaning: "Earth / Soil", strokes: 3, onyomi: ["ド", "ト"], kunyomi: ["つち"], examples: ["土曜日 — Saturday", "土 (つち) — soil"] },
-  { kanji: "本", meaning: "Book / Origin", strokes: 5, onyomi: ["ホン"], kunyomi: ["もと"], examples: ["日本 (にほん) — Japan", "本 (ほん) — book"] },
-  { kanji: "校", meaning: "School", strokes: 10, onyomi: ["コウ"], kunyomi: [], examples: ["学校 (がっこう) — school", "高校 (こうこう) — high school"] },
-  { kanji: "店", meaning: "Shop / Store", strokes: 8, onyomi: ["テン"], kunyomi: ["みせ"], examples: ["店 (みせ) — shop", "お店 (おみせ) — store"] },
-  { kanji: "車", meaning: "Car / Vehicle", strokes: 7, onyomi: ["シャ"], kunyomi: ["くるま"], examples: ["電車 (でんしゃ) — train", "車 (くるま) — car"] },
-  { kanji: "電", meaning: "Electricity", strokes: 13, onyomi: ["デン"], kunyomi: [], examples: ["電車 (でんしゃ) — train", "電話 (でんわ) — telephone"] },
-  { kanji: "駅", meaning: "Station", strokes: 14, onyomi: ["エキ"], kunyomi: [], examples: ["駅 (えき) — station", "東京駅 — Tokyo Station"] },
-  { kanji: "社", meaning: "Company / Shrine", strokes: 7, onyomi: ["シャ", "ジャ"], kunyomi: ["やしろ"], examples: ["会社 (かいしゃ) — company", "神社 (じんじゃ) — shrine"] },
-  { kanji: "空", meaning: "Sky / Empty", strokes: 8, onyomi: ["クウ"], kunyomi: ["そら", "から"], examples: ["空 (そら) — sky", "空港 (くうこう) — airport"] },
-  { kanji: "語", meaning: "Language / Word", strokes: 14, onyomi: ["ゴ"], kunyomi: ["かたる"], examples: ["日本語 (にほんご) — Japanese", "英語 (えいご) — English"] },
-  { kanji: "読", meaning: "Read", strokes: 14, onyomi: ["ドク", "トク"], kunyomi: ["よむ"], examples: ["読む (よむ) — to read", "読書 (どくしょ) — reading"] },
-  { kanji: "書", meaning: "Write", strokes: 10, onyomi: ["ショ"], kunyomi: ["かく"], examples: ["書く (かく) — to write", "教科書 — textbook"] },
-  { kanji: "話", meaning: "Talk / Speech", strokes: 13, onyomi: ["ワ"], kunyomi: ["はなす", "はなし"], examples: ["話す (はなす) — to speak", "電話 (でんわ) — telephone"] },
-  { kanji: "見", meaning: "See / Look", strokes: 7, onyomi: ["ケン"], kunyomi: ["みる"], examples: ["見る (みる) — to see / watch", "意見 (いけん) — opinion"] },
-  { kanji: "行", meaning: "Go", strokes: 6, onyomi: ["コウ", "ギョウ"], kunyomi: ["いく", "おこなう"], examples: ["行く (いく) — to go", "銀行 (ぎんこう) — bank"] },
-  { kanji: "来", meaning: "Come", strokes: 7, onyomi: ["ライ"], kunyomi: ["くる", "きたる"], examples: ["来る (くる) — to come", "来年 (らいねん) — next year"] },
-  { kanji: "食", meaning: "Eat / Food", strokes: 9, onyomi: ["ショク", "ジキ"], kunyomi: ["たべる"], examples: ["食べる (たべる) — to eat", "食事 (しょくじ) — meal"] },
-  { kanji: "飲", meaning: "Drink", strokes: 12, onyomi: ["イン"], kunyomi: ["のむ"], examples: ["飲む (のむ) — to drink", "飲み物 (のみもの) — beverage"] },
-  { kanji: "雨", meaning: "Rain", strokes: 8, onyomi: ["ウ"], kunyomi: ["あめ", "あま"], examples: ["雨 (あめ) — rain", "雨天 (うてん) — rainy weather"] },
-  { kanji: "高", meaning: "High / Tall / Expensive", strokes: 10, onyomi: ["コウ"], kunyomi: ["たかい"], examples: ["高い (たかい) — expensive / tall", "高校 (こうこう) — high school"] },
-]
-
+import { kanjiData } from "./kanjiData"
 const CARDS_PER_PAGE = 20
-function KanjiModal({ item, onClose }) {
+function KanjiModal({ item, onClose, isMobile }) {
   return (
     <AnimatePresence>
       {item && (
@@ -94,7 +18,7 @@ function KanjiModal({ item, onClose }) {
             display: "flex", alignItems: "center", justifyContent: "center",
             background: "rgba(0,0,0,0.5)",
             backdropFilter: "blur(8px)",
-            padding: 24,
+            padding: isMobile ? 24 : 24,
           }}
         >
           <motion.div
@@ -107,8 +31,8 @@ function KanjiModal({ item, onClose }) {
               background: "#fff",
               borderRadius: 24,
               boxShadow: "0 32px 80px rgba(0,0,0,0.18)",
-              width: "100%", maxWidth: 460,
-              padding: 36,
+              width: isMobile ? "90vw" : "100%", maxWidth: 460,
+              padding: isMobile ? 24 : 36,
               display: "flex", flexDirection: "column", gap: 24,
               position: "relative",
             }}
@@ -283,8 +207,13 @@ function KanjiCard({ item, index, onClick }) {
     </motion.div>
   )
 }
+import { useWindowWidth } from "./hooks.js"
+
 export default function KanjiPage() {
   const navigate = useNavigate()
+  const width = useWindowWidth()
+  const isMobile = width < 768
+  const isTablet = width >= 768 && width < 1024
 
   const [search, setSearch] = useState("")
   const [selected, setSelected] = useState(null)
@@ -347,7 +276,7 @@ export default function KanjiPage() {
             display: "flex", alignItems: "center", gap: 6,
           }}
         >
-          ← Back to Home
+          ← {isMobile ? "Back" : "Back to Home"}
         </motion.button>
       </div>
 
@@ -365,9 +294,9 @@ export default function KanjiPage() {
             <span style={{ fontSize: 10, fontWeight: 700, color: "#3b82f6", letterSpacing: "0.15em", textTransform: "uppercase" }}>JLPT N5</span>
           </div>
 
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 24, marginBottom: 32 }}>
+          <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "flex-start" : "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 24, marginBottom: 32 }}>
             <div>
-              <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(40px, 5vw, 64px)", color: "#0f172a", lineHeight: 1.1 }}>
+              <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(40px, 10vw, 64px)", color: "#0f172a", lineHeight: 1.1 }}>
                 N5 Kanji
               </h1>
               <p style={{ fontSize: 14, color: "#94a3b8", marginTop: 8, fontWeight: 300 }}>
@@ -434,7 +363,7 @@ export default function KanjiPage() {
             transition={{ duration: 0.2 }}
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(170px, 1fr))",
+              gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : isTablet ? "repeat(3, 1fr)" : "repeat(4, 1fr)",
               gap: 16,
             }}
           >
@@ -490,7 +419,7 @@ export default function KanjiPage() {
       </div>
 
 
-      <KanjiModal item={selected} onClose={() => setSelected(null)} />
+      <KanjiModal item={selected} onClose={() => setSelected(null)} isMobile={isMobile} />
     </motion.div>
   )
 }
