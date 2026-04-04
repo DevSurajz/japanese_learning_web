@@ -252,14 +252,15 @@ export default function KanjiPage() {
         background: "rgba(248,250,252,0.9)",
         backdropFilter: "blur(12px)",
         borderBottom: "1px solid #e2e8f0",
-        padding: "16px 48px",
+        padding: isMobile ? "12px 16px" : "16px 48px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
+        flexWrap: "nowrap", overflow: "hidden",
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 100, fontSize: 18, color: "#64748b" }}>日本語</span>
-          <span style={{ fontSize: 13, fontWeight: 500, color: "#1e293b", letterSpacing: "0.02em" }}>NihongoPath</span>
-          <span style={{ color: "#cbd5e1", fontSize: 13 }}>/</span>
-          <span style={{ fontSize: 11, color: "#6366f1", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600 }}>N5 Kanji</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, overflow: "hidden" }}>
+          <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 100, fontSize: isMobile ? 14 : 18, color: "#64748b", whiteSpace: "nowrap" }}>日本語</span>
+          <span style={{ fontSize: isMobile ? 11 : 13, fontWeight: 500, color: "#1e293b", letterSpacing: "0.02em", whiteSpace: "nowrap" }}>NihongoPath</span>
+          {!isMobile && <span style={{ color: "#cbd5e1", fontSize: 13 }}>/</span>}
+          {!isMobile && <span style={{ fontSize: 11, color: "#6366f1", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600, whiteSpace: "nowrap" }}>N5 Kanji</span>}
         </div>
         <motion.button
           whileHover={{ scale: 1.06 }}
@@ -268,20 +269,21 @@ export default function KanjiPage() {
           style={{
             background: "#0f172a", color: "#fff",
             border: "none", borderRadius: 99,
-            padding: "8px 20px",
+            padding: isMobile ? "6px 12px" : "8px 20px",
             fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: 11, fontWeight: 400,
+            fontSize: isMobile ? 10 : 11, fontWeight: 400,
             letterSpacing: "0.12em", textTransform: "uppercase",
             cursor: "pointer",
             display: "flex", alignItems: "center", gap: 6,
+            whiteSpace: "nowrap",
           }}
         >
-          ← {isMobile ? "Back" : "Back to Home"}
+          ← Back{isMobile ? "" : " to Home"}
         </motion.button>
       </div>
 
 
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "56px 48px 80px" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: isMobile ? "32px 24px 80px" : "56px 48px 80px" }}>
 
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
@@ -327,7 +329,7 @@ export default function KanjiPage() {
           </div>
 
 
-          <div style={{ position: "relative", maxWidth: 420, marginBottom: 48 }}>
+          <div style={{ position: "relative", width: "100%", maxWidth: isMobile ? "none" : 420, marginBottom: 48 }}>
             <input
               type="text"
               placeholder="Search kanji, meaning, or reading…"
@@ -379,7 +381,7 @@ export default function KanjiPage() {
 
 
         {totalPages > 1 && (
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 56 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: isMobile ? "space-between" : "center", gap: 8, marginTop: 56, width: "100%" }}>
             <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
@@ -390,19 +392,25 @@ export default function KanjiPage() {
                 fontFamily: "'Space Grotesk', sans-serif",
               }}>← Prev</motion.button>
 
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(pg => (
-              <motion.button key={pg} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
-                onClick={() => setPage(pg)}
-                style={{
-                  width: 36, height: 36, borderRadius: "50%",
-                  border: "1px solid",
-                  borderColor: pg === page ? "#0f172a" : "#e2e8f0",
-                  background: pg === page ? "#0f172a" : "#fff",
-                  color: pg === page ? "#fff" : "#64748b",
-                  fontSize: 13, cursor: "pointer",
-                  fontFamily: "'Space Grotesk', sans-serif",
-                }}>{pg}</motion.button>
-            ))}
+            {isMobile ? (
+              <span style={{ fontFamily: "'Space Grotesk'", fontSize: 13, color: "#475569", fontWeight: 500 }}>
+                {page} / {totalPages}
+              </span>
+            ) : (
+              Array.from({ length: totalPages }, (_, i) => i + 1).map(pg => (
+                <motion.button key={pg} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
+                  onClick={() => setPage(pg)}
+                  style={{
+                    width: 36, height: 36, borderRadius: "50%",
+                    border: "1px solid",
+                    borderColor: pg === page ? "#0f172a" : "#e2e8f0",
+                    background: pg === page ? "#0f172a" : "#fff",
+                    color: pg === page ? "#fff" : "#64748b",
+                    fontSize: 13, cursor: "pointer",
+                    fontFamily: "'Space Grotesk', sans-serif",
+                  }}>{pg}</motion.button>
+              ))
+            )}
 
             <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
               onClick={() => setPage(p => Math.min(totalPages, p + 1))}

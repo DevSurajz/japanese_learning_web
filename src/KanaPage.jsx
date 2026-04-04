@@ -1,6 +1,16 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { useNavigate } from "react-router-dom"
+
+function useWindowWidth() {
+  const [width, setWidth] = useState(window.innerWidth)
+  useEffect(() => {
+    const handler = () => setWidth(window.innerWidth)
+    window.addEventListener('resize', handler)
+    return () => window.removeEventListener('resize', handler)
+  }, [])
+  return width
+}
 
 const hiraganaGrid = [
   { kana: "あ", romaji: "a" }, { kana: "い", romaji: "i" }, { kana: "う", romaji: "u" }, { kana: "え", romaji: "e" }, { kana: "お", romaji: "o" },
@@ -54,6 +64,9 @@ const katakanaHandakuten = [
 
 
 function KanaCard({ item, index }) {
+  const width = useWindowWidth()
+  const isMobile = width < 768
+
   if (item.empty) return <div />
 
   return (
@@ -64,11 +77,11 @@ function KanaCard({ item, index }) {
       whileHover={{ scale: 1.05, y: -3 }}
       style={{
         background: "#fff",
-        borderRadius: 16,
+        borderRadius: isMobile ? 12 : 16,
         border: "1px solid #e2e8f0",
         boxShadow: "0 2px 10px rgba(0,0,0,0.03)",
-        padding: "20px 14px",
-        display: "flex", flexDirection: "column", alignItems: "center", gap: 10,
+        padding: isMobile ? "10px 6px" : "20px 14px",
+        display: "flex", flexDirection: "column", alignItems: "center", gap: isMobile ? 6 : 10,
         height: "100%",
         cursor: "default",
         transition: "box-shadow 0.3s ease",
@@ -78,25 +91,23 @@ function KanaCard({ item, index }) {
     >
 
       <div style={{
-        position: "relative", width: 72, height: 72,
-        borderRadius: 12,
+        position: "relative", width: isMobile ? 52 : 72, height: isMobile ? 52 : 72,
+        borderRadius: isMobile ? 10 : 12,
         background: "#f8fafc",
         border: "1px solid #f1f5f9",
         display: "flex", alignItems: "center", justifyContent: "center",
       }}>
-        <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 300, fontSize: 40, color: "#0f172a", lineHeight: 1 }}>
+        <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 300, fontSize: isMobile ? 28 : 40, color: "#0f172a", lineHeight: 1 }}>
           {item.kana}
         </span>
       </div>
 
-      <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 13, color: "#64748b", textTransform: "lowercase", letterSpacing: "0.05em" }}>
+      <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: isMobile ? 11 : 13, color: "#64748b", textTransform: "lowercase", letterSpacing: "0.05em" }}>
         {item.romaji}
       </p>
     </motion.div>
   )
 }
-
-import { useWindowWidth } from "./hooks.js"
 
 export default function KanaPage() {
   const navigate = useNavigate()
@@ -123,14 +134,15 @@ export default function KanaPage() {
         background: "rgba(248,250,252,0.9)",
         backdropFilter: "blur(12px)",
         borderBottom: "1px solid #e2e8f0",
-        padding: "16px 48px",
+        padding: isMobile ? "10px 16px" : "16px 48px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
+        flexWrap: "nowrap", overflow: "hidden",
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 100, fontSize: 18, color: "#64748b" }}>日本語</span>
-          <span style={{ fontSize: 13, fontWeight: 500, color: "#1e293b", letterSpacing: "0.02em" }}>NihongoPath</span>
-          <span style={{ color: "#cbd5e1", fontSize: 13 }}>/</span>
-          <span style={{ fontSize: 11, color: "#10b981", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600 }}>{isMobile ? "Kana" : "Kana Reference"}</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, overflow: "hidden" }}>
+          <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 100, fontSize: isMobile ? 13 : 18, color: "#64748b", whiteSpace: "nowrap" }}>日本語</span>
+          <span style={{ fontSize: isMobile ? 11 : 13, fontWeight: 500, color: "#1e293b", letterSpacing: "0.02em", whiteSpace: "nowrap" }}>NihongoPath</span>
+          <span style={{ display: isMobile ? "none" : "inline", color: "#cbd5e1", fontSize: 13 }}>/</span>
+          <span style={{ display: isMobile ? "none" : "inline", fontSize: 11, color: "#10b981", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600, whiteSpace: "nowrap" }}>Kana Reference</span>
         </div>
         <motion.button
           whileHover={{ scale: 1.06 }}
@@ -139,12 +151,13 @@ export default function KanaPage() {
           style={{
             background: "#0f172a", color: "#fff",
             border: "none", borderRadius: 99,
-            padding: "8px 20px",
+            padding: isMobile ? "6px 10px" : "8px 20px",
             fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: 11, fontWeight: 400,
+            fontSize: isMobile ? 10 : 11, fontWeight: 400,
             letterSpacing: "0.12em", textTransform: "uppercase",
             cursor: "pointer",
             display: "flex", alignItems: "center", gap: 6,
+            whiteSpace: "nowrap",
           }}
         >
           ← {isMobile ? "Back" : "Back to Home"}
@@ -161,7 +174,6 @@ export default function KanaPage() {
             padding: "6px 14px", marginBottom: 20,
           }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#34d399", display: "inline-block" }} />
-            {/* <span style={{ fontSize: 10, fontWeight: 700, color: "#059669", letterSpacing: "0.15em", textTransform: "uppercase" }}>Foundations</span> */}
           </div>
           <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(48px, 6vw, 72px)", color: "#0f172a", lineHeight: 1 }}>
             Kana
@@ -229,7 +241,7 @@ export default function KanaPage() {
                 <div style={{
                   display: "grid",
                   gridTemplateColumns: isMobile ? "repeat(3, 1fr)" : "repeat(5, 1fr)",
-                  gap: isMobile ? 8 : 16,
+                  gap: isMobile ? 10 : 16,
                 }}>
                   {section.data.map((item, i) => (
                     <KanaCard key={`${sIdx}-${i}`} item={item} index={i} />

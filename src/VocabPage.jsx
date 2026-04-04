@@ -104,29 +104,30 @@ export default function VocabPage() {
         background: "rgba(248,250,252,0.95)",
         backdropFilter: "blur(12px)",
         borderBottom: "1px solid #e2e8f0",
-        padding: "14px 48px",
+        padding: isMobile ? "12px 16px" : "14px 48px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
+        flexWrap: "nowrap", overflow: "hidden",
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{ fontFamily: "'Noto Sans JP'", fontWeight: 100, fontSize: 18, color: "#64748b" }}>日本語</span>
-          <span style={{ fontSize: 13, fontWeight: 500, color: "#1e293b" }}>NihongoPath</span>
-          <span style={{ color: "#cbd5e1" }}>/</span>
-          <span style={{ fontSize: 11, color: "#8b5cf6", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600 }}>N5 Vocabulary</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, overflow: "hidden" }}>
+          <span style={{ fontFamily: "'Noto Sans JP'", fontWeight: 100, fontSize: isMobile ? 14 : 18, color: "#64748b", whiteSpace: "nowrap" }}>日本語</span>
+          <span style={{ fontSize: isMobile ? 11 : 13, fontWeight: 500, color: "#1e293b", whiteSpace: "nowrap" }}>NihongoPath</span>
+          {!isMobile && <span style={{ color: "#cbd5e1" }}>/</span>}
+          {!isMobile && <span style={{ fontSize: 11, color: "#8b5cf6", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600, whiteSpace: "nowrap" }}>N5 Vocabulary</span>}
         </div>
         <motion.button
           whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
           onClick={() => navigate('/')}
           style={{
             background: "#0f172a", color: "#fff", border: "none",
-            borderRadius: 99, padding: "8px 20px",
-            fontSize: 11, fontWeight: 400, letterSpacing: "0.12em",
-            textTransform: "uppercase", cursor: "pointer",
+            borderRadius: 99, padding: isMobile ? "6px 12px" : "8px 20px",
+            fontSize: isMobile ? 10 : 11, fontWeight: 400, letterSpacing: "0.12em",
+            textTransform: "uppercase", cursor: "pointer", whiteSpace: "nowrap",
           }}
-        >← Back to Home</motion.button>
+        >← Back{isMobile ? "" : " to Home"}</motion.button>
       </div>
 
       
-      <div style={{ maxWidth: 1300, margin: "0 auto", padding: "48px 48px 80px" }}>
+      <div style={{ maxWidth: 1300, margin: "0 auto", padding: isMobile ? "32px 24px 80px" : "48px 48px 80px" }}>
 
         
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
@@ -169,9 +170,9 @@ export default function VocabPage() {
           </div>
 
           
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 28 }}>
+          <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 10 : 12, flexWrap: "wrap", marginBottom: 28 }}>
             
-            <div style={{ position: "relative", flexGrow: 1, maxWidth: 380 }}>
+            <div style={{ position: "relative", flexGrow: 1, width: isMobile ? "100%" : "auto", maxWidth: isMobile ? "none" : 380 }}>
               <input
                 type="text" placeholder="Search kana, romaji, or meaning…"
                 value={search} onChange={e => handleSearch(e.target.value)}
@@ -193,6 +194,7 @@ export default function VocabPage() {
             <select
               value={typeFilter} onChange={e => handleType(e.target.value)}
               style={{
+                width: isMobile ? "100%" : "auto",
                 background: "#fff", border: "1px solid #e2e8f0", borderRadius: 10,
                 padding: "10px 14px", fontSize: 12, color: "#475569",
                 fontFamily: "'Space Grotesk', sans-serif", cursor: "pointer", outline: "none",
@@ -204,15 +206,16 @@ export default function VocabPage() {
         </motion.div>
 
         
-        <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e2e8f0", overflow: "hidden", boxShadow: "0 1px 6px rgba(0,0,0,0.04)" }}>
+        <div style={{ background: isMobile ? "transparent" : "#fff", borderRadius: 16, border: isMobile ? "none" : "1px solid #e2e8f0", overflow: "hidden", boxShadow: isMobile ? "none" : "0 1px 6px rgba(0,0,0,0.04)" }}>
           
-          <div style={{
-            position: "sticky", top: 72, zIndex: 5,
-            display: "grid",
-            gridTemplateColumns: isMobile ? "40px minmax(90px, 1fr) auto minmax(100px, 1fr)" : "52px 1fr 1fr 160px 1fr",
-            background: "#f8fafc",
-            borderBottom: "2px solid #e2e8f0",
-          }}>
+          {!isMobile && (
+            <div style={{
+              position: "sticky", top: 72, zIndex: 5,
+              display: "grid",
+              gridTemplateColumns: "52px 1fr 1fr 160px 1fr",
+              background: "#f8fafc",
+              borderBottom: "2px solid #e2e8f0",
+            }}>
             {[
               { key: "id",      label: "#" },
               { key: "kana",    label: "Kana / Written" },
@@ -236,44 +239,62 @@ export default function VocabPage() {
                 {label}{key ? sortIcon(key) : ""}
               </div>
             ))}
-          </div>
-
-          
+            </div>
+          )}          
           <AnimatePresence mode="wait">
             <motion.div key={page + search + sortKey + typeFilter} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
               {pageData.length > 0 ? pageData.map((w, i) => (
-                <motion.div
-                  key={w.id}
-                  initial={{ opacity: 0, x: -6 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.012, duration: 0.2 }}
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: isMobile ? "40px minmax(90px, 1fr) auto minmax(100px, 1fr)" : "52px 1fr 1fr 160px 1fr",
-                    borderBottom: "1px solid #f1f5f9",
-                    background: i % 2 === 0 ? "#fff" : "#fafbfc",
-                    transition: "background 0.15s",
-                  }}
-                  onMouseEnter={e => e.currentTarget.style.background = "#f0f9ff"}
-                  onMouseLeave={e => e.currentTarget.style.background = i % 2 === 0 ? "#fff" : "#fafbfc"}
-                >
-                  <div style={{ padding: isMobile ? "12px 8px" : "12px 16px", fontSize: 12, color: "#94a3b8", fontWeight: 500, borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>{w.id}</div>
-                  <div style={{ padding: isMobile ? "12px 8px" : "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>
-                    <span style={{ fontFamily: "'Noto Sans JP'", fontWeight: 300, fontSize: isMobile ? 14 : 18, color: "#1e293b" }}>{w.kana}</span>
-                  </div>
-                  {!isMobile && (
+                isMobile ? (
+                  <motion.div
+                    key={w.id}
+                    initial={{ opacity: 0, x: -6 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.012, duration: 0.2 }}
+                    style={{
+                      background: "#fff", border: "1px solid #e2e8f0", borderRadius: 12,
+                      padding: "14px 16px", marginBottom: 8,
+                      display: "flex", flexDirection: "column", gap: 4,
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                      <span style={{ fontFamily: "'Noto Sans JP'", fontSize: 20, color: "#1e293b", fontWeight: 400 }}>{w.kana}</span>
+                      <TypeBadge type={w.type} />
+                    </div>
+                    <span style={{ fontFamily: "'Space Grotesk'", fontSize: 12, color: "#64748b" }}>{w.romaji} / {w.reading}</span>
+                    <span style={{ fontFamily: "'Space Grotesk'", fontSize: 13, color: "#334155" }}>{w.meaning}</span>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key={w.id}
+                    initial={{ opacity: 0, x: -6 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.012, duration: 0.2 }}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "52px 1fr 1fr 160px 1fr",
+                      borderBottom: "1px solid #f1f5f9",
+                      background: i % 2 === 0 ? "#fff" : "#fafbfc",
+                      transition: "background 0.15s",
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.background = "#f0f9ff"}
+                    onMouseLeave={e => e.currentTarget.style.background = i % 2 === 0 ? "#fff" : "#fafbfc"}
+                  >
+                    <div style={{ padding: "12px 16px", fontSize: 12, color: "#94a3b8", fontWeight: 500, borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>{w.id}</div>
+                    <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>
+                      <span style={{ fontFamily: "'Noto Sans JP'", fontWeight: 300, fontSize: 18, color: "#1e293b" }}>{w.kana}</span>
+                    </div>
                     <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", flexDirection: "column", justifyContent: "center", gap: 2 }}>
                       <span style={{ fontSize: 13, color: "#475569", fontWeight: 400 }}>{w.romaji}</span>
                       <span style={{ fontFamily: "'Noto Sans JP'", fontSize: 12, color: "#94a3b8", fontWeight: 100 }}>{w.reading}</span>
                     </div>
-                  )}
-                  <div style={{ padding: isMobile ? "12px 8px" : "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center", overflow: "hidden" }}>
-                    <TypeBadge type={w.type} />
-                  </div>
-                  <div style={{ padding: isMobile ? "12px 8px" : "12px 16px", display: "flex", alignItems: "center" }}>
-                    <span style={{ fontSize: isMobile ? 12 : 13, color: "#334155", lineHeight: 1.5 }}>{w.meaning}</span>
-                  </div>
-                </motion.div>
+                    <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center", overflow: "hidden" }}>
+                      <TypeBadge type={w.type} />
+                    </div>
+                    <div style={{ padding: "12px 16px", display: "flex", alignItems: "center" }}>
+                      <span style={{ fontSize: 13, color: "#334155", lineHeight: 1.5 }}>{w.meaning}</span>
+                    </div>
+                  </motion.div>
+                )
               )) : (
                 <div style={{ padding: "48px 0", textAlign: "center", color: "#cbd5e1", fontSize: 15 }}>
                   No results for "{search}"
@@ -285,7 +306,7 @@ export default function VocabPage() {
 
         
         {totalPages > 1 && (
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginTop: 36 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: isMobile ? "space-between" : "center", gap: 6, marginTop: 36, width: "100%" }}>
             <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
               onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
               style={{
@@ -294,18 +315,26 @@ export default function VocabPage() {
                 cursor: page === 1 ? "not-allowed" : "pointer", opacity: page === 1 ? 0.4 : 1,
                 fontFamily: "'Space Grotesk'",
               }}>← Prev</motion.button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(pg => (
-              <motion.button key={pg} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
-                onClick={() => setPage(pg)}
-                style={{
-                  width: 34, height: 34, borderRadius: "50%",
-                  border: "1px solid", borderColor: pg === page ? "#8b5cf6" : "#e2e8f0",
-                  background: pg === page ? "#8b5cf6" : "#fff",
-                  color: pg === page ? "#fff" : "#64748b",
-                  fontSize: 12, cursor: "pointer",
-                  fontFamily: "'Space Grotesk'",
-                }}>{pg}</motion.button>
-            ))}
+              
+            {isMobile ? (
+              <span style={{ fontFamily: "'Space Grotesk'", fontSize: 13, color: "#475569", fontWeight: 500 }}>
+                {page} / {totalPages}
+              </span>
+            ) : (
+              Array.from({ length: totalPages }, (_, i) => i + 1).map(pg => (
+                <motion.button key={pg} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
+                  onClick={() => setPage(pg)}
+                  style={{
+                    width: 34, height: 34, borderRadius: "50%",
+                    border: "1px solid", borderColor: pg === page ? "#8b5cf6" : "#e2e8f0",
+                    background: pg === page ? "#8b5cf6" : "#fff",
+                    color: pg === page ? "#fff" : "#64748b",
+                    fontSize: 12, cursor: "pointer",
+                    fontFamily: "'Space Grotesk'",
+                  }}>{pg}</motion.button>
+              ))
+            )}
+            
             <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
               onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
               style={{
