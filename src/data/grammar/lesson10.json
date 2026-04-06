@@ -1,0 +1,112 @@
+[
+  {
+    "title": "Comparison between two items (AのほうがBより / AとBとどちらのほうが)",
+    "explanation": "To ask which of two things is better/taller/faster, use: Aと Bと どちらのほうが [Adj] ですか.\nTo reply, A is more [Adj] than B: Aのほうが Bより [Adj]です.",
+    "structure": "A のほうが B より [Adj]です。",
+    "examples": [
+      {
+        "japanese": "中国と日本とどちらのほうが大きいですか。",
+        "english": "Which is larger, China or Japan?"
+      },
+      {
+        "japanese": "中国のほうが日本より大きいです。",
+        "english": "China is larger than Japan."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'Trains are faster than buses.' (電車 = train, バス = bus)",
+        "answer": "電車のほうがバスより速いです。"
+      }
+    ]
+  },
+  {
+    "title": "Comparison among three or more (のなかでAが一番)",
+    "explanation": "To state what is the BEST/MOST among a category of three or more, use [Category] の中で [A] が 一番 [Adj] です.",
+    "structure": "[Category] の中で [A] が 一番 [Adj] です。",
+    "examples": [
+      {
+        "japanese": "季節の中でいつが一番好きですか。",
+        "english": "What season do you like the best?"
+      },
+      {
+        "japanese": "秋が一番好きです。",
+        "english": "I like autumn the best."
+      }
+    ],
+    "practice": [
+      {
+        "type": "sentence-creation",
+        "question": "Say: 'Among fruits, I like apples the most.'",
+        "answer": "果物の中でりんごが一番好きです。"
+      }
+    ]
+  },
+  {
+    "title": "Adjective/Noun + の",
+    "explanation": "When the noun is understood from context, you can replace it with 'の' to mean 'the one'. Like saying 'the red one' instead of 'the red bag'.",
+    "structure": "[Adjective] + の\n[Noun] + の",
+    "examples": [
+      {
+        "japanese": "私は黒いかばんがあります。赤いのもあります。",
+        "english": "I have a black bag. I also have a red one."
+      },
+      {
+        "japanese": "その時計はだれのですか。\n私のです。",
+        "english": "Whose watch is that? \nIt is mine. (My one)"
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'Which shoes will you buy? I will buy the black ones.'",
+        "answer": "どの靴を買いますか。黒いのを買います。"
+      }
+    ]
+  },
+  {
+    "title": "~つもりです (Plan to do)",
+    "explanation": "Describes a firm plan or intention. Add つもりです after a present tense short form (affirmative or negative).",
+    "structure": "[Short form present] + つもりです",
+    "examples": [
+      {
+        "japanese": "明日、映画を見るつもりです。",
+        "english": "I plan to see a movie tomorrow."
+      },
+      {
+        "japanese": "今日は勉強しないつもりです。",
+        "english": "I intend to not study today."
+      }
+    ],
+    "practice": [
+      {
+        "type": "sentence-creation",
+        "question": "Say: 'I plan to go to Japan next year.'",
+        "answer": "来年、日本に行くつもりです。"
+      }
+    ]
+  },
+  {
+    "title": "Adjective + なる (To become)",
+    "explanation": "Indicates a change of state.\nい-adj: Drop い + くなる\nな-adj/Noun: + になる",
+    "structure": "[Adj base] + く/に + なる",
+    "examples": [
+      {
+        "japanese": "暖かくなりました。",
+        "english": "It has become warm."
+      },
+      {
+        "japanese": "メアリーさんは先生になります。",
+        "english": "Mary will become a teacher."
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "静か（　）なります。",
+        "answer": "に"
+      }
+    ]
+  }
+]

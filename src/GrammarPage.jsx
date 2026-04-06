@@ -1,12 +1,100 @@
-import { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { useNavigate } from "react-router-dom"
 import { useWindowWidth } from "./hooks.js"
 import { grammarData } from "./grammarData.js"
 
-function GrammarItem({ item }) {
+const ExampleItem = React.memo(function ExampleItem({ ex, isMobile }) {
+  return (
+    <div>
+      <p style={{
+        fontFamily: "'Noto Sans JP', sans-serif",
+        fontWeight: 400,
+        fontSize: isMobile ? 16 : 18,
+        color: "#0A0A0A",
+        marginBottom: 4,
+      }}>{ex.japanese}</p>
+      {ex.romaji && (
+        <p style={{
+          fontFamily: "'Space Grotesk', sans-serif",
+          fontWeight: 300,
+          fontSize: 13,
+          color: "rgba(10,10,10,0.4)",
+          marginBottom: 2,
+        }}>{ex.romaji}</p>
+      )}
+      <p style={{
+        fontFamily: "'Space Grotesk', sans-serif",
+        fontWeight: 300,
+        fontSize: isMobile ? 14 : 15,
+        color: "rgba(10,10,10,0.6)",
+      }}>{ex.english}</p>
+    </div>
+  )
+})
+
+const PracticeItem = React.memo(function PracticeItem({ prac, index }) {
+  return (
+    <details style={{
+      background: "#FAFAFA",
+      border: "1px solid rgba(10,10,10,0.06)",
+      padding: "12px 16px",
+      borderRadius: 4,
+      cursor: "pointer",
+    }}>
+      <summary style={{
+        fontFamily: "'Noto Sans JP', sans-serif",
+        fontWeight: 400,
+        fontSize: 15,
+        color: "#0A0A0A",
+        outline: "none",
+        listStyle: "none",
+      }}>
+        <span style={{ fontSize: 13, marginRight: 8, color: "rgba(10,10,10,0.3)" }}>Q{index + 1}.</span>
+        {prac.question}
+      </summary>
+      <div style={{
+        marginTop: 12,
+        paddingTop: 12,
+        borderTop: "1px dashed rgba(10,10,10,0.1)",
+      }}>
+        <p style={{
+          fontFamily: "'Noto Sans JP', sans-serif",
+          fontWeight: 400,
+          fontSize: 15,
+          color: "#10b981",
+        }}>A: {prac.answer}</p>
+        {prac.hint && (
+          <p style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontWeight: 300,
+            fontSize: 12,
+            color: "rgba(10,10,10,0.4)",
+            marginTop: 4,
+          }}>Hint: {prac.hint}</p>
+        )}
+      </div>
+    </details>
+  )
+})
+
+const GrammarItem = React.memo(function GrammarItem({ item }) {
   const width = useWindowWidth()
   const isMobile = width < 768
+  const [showHeavy, setShowHeavy] = useState(false)
+
+  useEffect(() => {
+    let handle;
+    if (typeof window.requestIdleCallback !== 'undefined') {
+      handle = window.requestIdleCallback(() => setShowHeavy(true), { timeout: 1000 })
+    } else {
+      handle = setTimeout(() => setShowHeavy(true), 200)
+    }
+    return () => {
+      if (typeof window.cancelIdleCallback !== 'undefined' && window.requestIdleCallback) window.cancelIdleCallback(handle)
+      else clearTimeout(handle)
+    }
+  }, [])
 
   return (
     <div style={{
@@ -61,7 +149,7 @@ function GrammarItem({ item }) {
         </div>
       )}
 
-      {item.examples && item.examples.length > 0 && (
+      {showHeavy && item.examples && item.examples.length > 0 && (
         <div style={{ marginBottom: 32 }}>
           <p style={{
             fontFamily: "'Space Grotesk', sans-serif",
@@ -74,30 +162,7 @@ function GrammarItem({ item }) {
           }}>Examples</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             {item.examples.map((ex, i) => (
-              <div key={i}>
-                <p style={{
-                  fontFamily: "'Noto Sans JP', sans-serif",
-                  fontWeight: 400,
-                  fontSize: isMobile ? 16 : 18,
-                  color: "#0A0A0A",
-                  marginBottom: 4,
-                }}>{ex.japanese}</p>
-                {ex.romaji && (
-                  <p style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    fontWeight: 300,
-                    fontSize: 13,
-                    color: "rgba(10,10,10,0.4)",
-                    marginBottom: 2,
-                  }}>{ex.romaji}</p>
-                )}
-                <p style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontWeight: 300,
-                  fontSize: isMobile ? 14 : 15,
-                  color: "rgba(10,10,10,0.6)",
-                }}>{ex.english}</p>
-              </div>
+              <ExampleItem key={i} ex={ex} isMobile={isMobile} />
             ))}
           </div>
         </div>
@@ -119,7 +184,7 @@ function GrammarItem({ item }) {
         </div>
       )}
 
-      {item.practice && item.practice.length > 0 && (
+      {showHeavy && item.practice && item.practice.length > 0 && (
         <div>
           <p style={{
             fontFamily: "'Space Grotesk', sans-serif",
@@ -132,58 +197,30 @@ function GrammarItem({ item }) {
           }}>Practice</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {item.practice.map((prac, i) => (
-              <details key={i} style={{
-                background: "#FAFAFA",
-                border: "1px solid rgba(10,10,10,0.06)",
-                padding: "12px 16px",
-                borderRadius: 4,
-                cursor: "pointer",
-              }}>
-                <summary style={{
-                  fontFamily: "'Noto Sans JP', sans-serif",
-                  fontWeight: 400,
-                  fontSize: 15,
-                  color: "#0A0A0A",
-                  outline: "none",
-                  listStyle: "none",
-                }}>
-                  <span style={{ fontSize: 13, marginRight: 8, color: "rgba(10,10,10,0.3)" }}>Q{i + 1}.</span>
-                  {prac.question}
-                </summary>
-                <div style={{
-                  marginTop: 12,
-                  paddingTop: 12,
-                  borderTop: "1px dashed rgba(10,10,10,0.1)",
-                }}>
-                  <p style={{
-                    fontFamily: "'Noto Sans JP', sans-serif",
-                    fontWeight: 400,
-                    fontSize: 15,
-                    color: "#10b981",
-                  }}>A: {prac.answer}</p>
-                  {prac.hint && (
-                    <p style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
-                      fontWeight: 300,
-                      fontSize: 12,
-                      color: "rgba(10,10,10,0.4)",
-                      marginTop: 4,
-                    }}>Hint: {prac.hint}</p>
-                  )}
-                </div>
-              </details>
+              <PracticeItem key={i} prac={prac} index={i} />
             ))}
           </div>
         </div>
       )}
     </div>
   )
-}
+})
 
-function LessonCard({ lessonData, index }) {
+const LessonCard = React.memo(function LessonCard({ lessonData, index }) {
   const width = useWindowWidth()
   const isMobile = width < 768
-  const [isOpen, setIsOpen] = useState(index === 0)
+  const [isOpen, setIsOpen] = useState(false)
+  const [grammarItems, setGrammarItems] = useState(null)
+
+  useEffect(() => {
+    let mounted = true
+    if (isOpen && !grammarItems) {
+      lessonData.loadGrammar().then((mod) => {
+        if (mounted) setGrammarItems(mod.default || mod)
+      })
+    }
+    return () => { mounted = false }
+  }, [isOpen, grammarItems, lessonData])
 
   return (
     <motion.div
@@ -263,16 +300,20 @@ function LessonCard({ lessonData, index }) {
               borderTop: "1px solid rgba(10,10,10,0.04)",
               background: "#FFF",
             }}>
-              {lessonData.grammar.map((item, idx) => (
-                <GrammarItem key={idx} item={item} />
-              ))}
+              {!grammarItems ? (
+                <div style={{ padding: "40px", textAlign: "center", color: "rgba(10,10,10,0.3)", fontFamily: "'Space Grotesk', sans-serif" }}>Loading...</div>
+              ) : (
+                grammarItems.map((item, idx) => (
+                  <GrammarItem key={idx} item={item} />
+                ))
+              )}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
     </motion.div>
   )
-}
+})
 
 function GrammarHero() {
   const width = useWindowWidth()
@@ -287,7 +328,6 @@ function GrammarHero() {
       }}
     >
       <div style={{ maxWidth: 800 }}>
-        {/* Breadcrumb */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -307,7 +347,6 @@ function GrammarHero() {
           <span style={{ color: "rgba(10,10,10,0.15)" }}>／</span>
         </motion.div>
 
-        {/* Headline */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -324,7 +363,6 @@ function GrammarHero() {
           <span style={{ display: "block", fontWeight: 600, fontStyle: "normal" }}>Japanese Grammar.</span>
         </motion.h1>
 
-        {/* Body */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -392,7 +430,6 @@ export default function GrammarPage() {
         fontFamily: "'Space Grotesk', sans-serif",
       }}
     >
-      {/* Top Bar */}
       <div style={{
         position: "sticky", top: 0, zIndex: 10,
         background: "rgba(250,250,250,0.9)",

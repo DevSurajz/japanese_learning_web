@@ -1,0 +1,83 @@
+[
+  {
+    "title": "~たいです (Want to do)",
+    "explanation": "To say you want to DO something (verbs), replace the ~ます stem with ~たいです. Conjugates like an い-adjective.",
+    "structure": "[Verb stem] + たいです",
+    "examples": [
+      {
+        "japanese": "私は日本に行きたいです。",
+        "english": "I want to go to Japan."
+      },
+      {
+        "japanese": "何も食べたくないです。",
+        "english": "I don't want to eat anything."
+      }
+    ],
+    "notes": "When using たい, the particle を can often be replaced with が.",
+    "practice": [
+      {
+        "type": "sentence-creation",
+        "question": "Say: 'I want to watch a movie.'",
+        "answer": "私は映画を見たいです。"
+      }
+    ]
+  },
+  {
+    "title": "~たり ~たりする (Doing things such as)",
+    "explanation": "Used to give a non-exhaustive list of actions (Do things like A and B). Use the た-form of the verb.",
+    "structure": "[Verb た-form]り、[Verb た-form]り する",
+    "examples": [
+      {
+        "japanese": "週末は買い物をしたり、映画を見たりしました。",
+        "english": "Over the weekend, I did things like shopping and watching a movie."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'Today I will read books and listen to music.' (Among other things)",
+        "answer": "今日は本を読んだり、音楽を聞いたりします。"
+      }
+    ]
+  },
+  {
+    "title": "~ことがある (Have the experience of)",
+    "explanation": "Describes past experience (Have done...). Use the た-form verb + ことがある / ことがあります.",
+    "structure": "[Verb た-form] + ことがあります",
+    "examples": [
+      {
+        "japanese": "富士山に登ったことがあります。",
+        "english": "I have climbed Mt. Fuji."
+      },
+      {
+        "japanese": "ヨーロッパに行ったことがありません。",
+        "english": "I have never been to Europe."
+      }
+    ],
+    "practice": [
+      {
+        "type": "sentence-creation",
+        "question": "Ask: 'Have you ever eaten sushi?'",
+        "answer": "寿司を食べたことがありますか。"
+      }
+    ]
+  },
+  {
+    "title": "Noun A や Noun B (A and B, for example)",
+    "explanation": "Like the particle と (and), but 'や' implies the list is incomplete (A, B, and so on).",
+    "structure": "[Noun A] や [Noun B]",
+    "examples": [
+      {
+        "japanese": "京都や大阪に行きました。",
+        "english": "I went to places like Kyoto and Osaka."
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "猫（　）犬が好きです。(Cats, dogs, etc.)",
+        "answer": "や"
+      }
+    ]
+  }
+]

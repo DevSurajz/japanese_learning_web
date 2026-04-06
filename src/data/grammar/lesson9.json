@@ -1,0 +1,91 @@
+[
+  {
+    "title": "Past Tense Short Forms",
+    "explanation": "Short forms in the past tense.\nVerbs: た-form (affirmative - same rules as て-form but with た/だ) / ~なかった (negative)\nい-adj: ~かった / ~くなかった\nな-adj/Noun: ~だった / ~じゃなかった",
+    "structure": "た-form / なかった form",
+    "examples": [
+      {
+        "japanese": "食べた / 食べなかった",
+        "english": "Ate / Did not eat"
+      },
+      {
+        "japanese": "行った / 行かなかった",
+        "english": "Went / Did not go"
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "飲む (Past affirmative short: （　）)",
+        "answer": "飲んだ"
+      }
+    ]
+  },
+  {
+    "title": "Qualifying Nouns with Verbs",
+    "explanation": "In Japanese, a verb clause can exist directly in front of a noun to describe it, exactly like an adjective. Use the SHORT FORM of the verb.",
+    "structure": "[Verb Short Form clause] + [Noun]",
+    "examples": [
+      {
+        "japanese": "私がよく行くレストラン",
+        "english": "The restaurant that I often go to"
+      },
+      {
+        "japanese": "昨日買った本を読みました。",
+        "english": "I read the book that I bought yesterday."
+      }
+    ],
+    "notes": "Notice that the subject inside the modifying clause usually takes 'が' instead of 'は'.",
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'The person who is drinking coffee is Mr. Yamada.'",
+        "answer": "コーヒーを飲んでいる人は山田さんです。"
+      }
+    ]
+  },
+  {
+    "title": "まだ ~ていません (Have not ... yet)",
+    "explanation": "To say you have not done something YET, use まだ + Te-form + いません. (Literally: I am in the state of not having done it).",
+    "structure": "まだ + [Te-form] + いません。",
+    "examples": [
+      {
+        "japanese": "まだ昼ごはんを食べていません。",
+        "english": "I have not eaten lunch yet."
+      },
+      {
+        "japanese": "私はまだ決めていません。",
+        "english": "I haven't decided yet."
+      }
+    ],
+    "practice": [
+      {
+        "type": "sentence-creation",
+        "question": "Say: 'I haven't written the essay yet.'",
+        "answer": "まだ作文を書いていません。"
+      }
+    ]
+  },
+  {
+    "title": "~から (Because)",
+    "explanation": "The particle 'から' at the end of a clause means 'because'. In Japanese, the reason clause comes BEFORE 'から'.",
+    "structure": "[Reason Clause] から、[Situation].",
+    "examples": [
+      {
+        "japanese": "忙しいから、行きません。",
+        "english": "Because I am busy, I won't go."
+      },
+      {
+        "japanese": "明日テストがあるから、勉強します。",
+        "english": "Because I have a test tomorrow, I will study."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'I didn't eat because I wasn't hungry.'",
+        "answer": "お腹がすいていなかったから、食べませんでした。"
+      }
+    ]
+  }
+]

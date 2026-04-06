@@ -1,0 +1,112 @@
+[
+  {
+    "title": "Short Forms (Present Tense)",
+    "explanation": "Short forms are the dictionary plain forms of verbs and adjectives, used in casual speech or as part of other grammatical constructs.\nVerbs: Dictionary form (affirmative) / ~ない form (negative)\nい-adj: ~い (aff) / ~くない (neg)\nな-adj/Nouns: ~だ (aff) / ~じゃない (neg)",
+    "structure": "Plain Dictionary forms / ない-forms",
+    "examples": [
+      {
+        "japanese": "食べる / 食べない",
+        "english": "Eat / Don't eat"
+      },
+      {
+        "japanese": "かわいい / かわいくない",
+        "english": "Cute / Not cute"
+      },
+      {
+        "japanese": "元気だ / 元気じゃない",
+        "english": "Energetic / Not energetic"
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "行く (negative short form: （　）)",
+        "answer": "行かない"
+      }
+    ]
+  },
+  {
+    "title": "~と思います (I think that)",
+    "explanation": "Use Short Form + と思います to express an opinion or what you think.",
+    "structure": "[Short Form] + と思います",
+    "examples": [
+      {
+        "japanese": "明日雨が降ると思います。",
+        "english": "I think it will rain tomorrow."
+      },
+      {
+        "japanese": "漢字は難しいと思います。",
+        "english": "I think Kanji is difficult."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'I think the exam is easy.' (簡単 - な adj)",
+        "answer": "試験は簡単だと思います。"
+      }
+    ]
+  },
+  {
+    "title": "~と言っていました (They said that)",
+    "explanation": "Use Short Form + と言っていました to quote what someone said.",
+    "structure": "[Person] は [Short Form] + と言っていました。",
+    "examples": [
+      {
+        "japanese": "スーさんは明日来ると言っていました。",
+        "english": "Sue said she will come tomorrow."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'Takeshi said he is busy.'",
+        "answer": "たけしさんは忙しいと言っていました。"
+      }
+    ]
+  },
+  {
+    "title": "~のが好きです / おもしろいです",
+    "explanation": "To use a verb clause as a noun ('Doing something'), append 'の' after the short form verb.",
+    "structure": "[Verb Short Form] + のが 好きです / 上手です",
+    "examples": [
+      {
+        "japanese": "私は音楽を聞くのが好きです。",
+        "english": "I like listening to music."
+      },
+      {
+        "japanese": "メアリーさんは日本語を話すのが上手です。",
+        "english": "Mary is good at speaking Japanese."
+      }
+    ],
+    "practice": [
+      {
+        "type": "sentence-creation",
+        "question": "Say: 'I hate cleaning my room.' (掃除(そうじ)する)",
+        "answer": "私は部屋を掃除するのが嫌いです。"
+      }
+    ]
+  },
+  {
+    "title": "何か / 何も",
+    "explanation": "何か = Something/Anything. 何も = Nothing/Not anything. '何も' must be followed by a negative verb.",
+    "structure": "何か + [Verb Affirmative/Question] / 何も + [Verb Negative]",
+    "examples": [
+      {
+        "japanese": "休みに何かしましたか。",
+        "english": "Did you do anything during the holidays?"
+      },
+      {
+        "japanese": "いいえ、何もしませんでした。",
+        "english": "No, I didn't do anything."
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "（　）食べません。",
+        "answer": "何も"
+      }
+    ]
+  }
+]

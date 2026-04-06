@@ -1,0 +1,131 @@
+[
+  {
+    "title": "~んです (Explanation)",
+    "explanation": "Used to provide an explanation, state an excuse, or ask for an explanation. It gives sentences a 'Listen, here's the reason' nuance.",
+    "structure": "[Short form] + んです\nException: Noun/な-adj takes なんです",
+    "examples": [
+      {
+        "japanese": "どうして遅れたんですか。\nバスが来なかったんです。",
+        "english": "Why were you late?\n(The reason is) the bus didn't come."
+      },
+      {
+        "japanese": "明日テストがあるんです。",
+        "english": "It's because I have a test tomorrow."
+      }
+    ],
+    "notes": "In written language, 'のです' is often used instead of 'んです'.",
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "雨が降っている（　）。(reasoning tone)",
+        "answer": "んです"
+      }
+    ]
+  },
+  {
+    "title": "~すぎる (Too much)",
+    "explanation": "Attaches to verb stems and adjective bases to mean 'too much / excessively'. It conjugates like a Ru-verb.",
+    "structure": "[Verb stem / Adj base] + すぎる",
+    "examples": [
+      {
+        "japanese": "昨日、お酒を飲みすぎました。",
+        "english": "I drank too much alcohol yesterday."
+      },
+      {
+        "japanese": "この本は高すぎます。",
+        "english": "This book is too expensive."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'I ate too much.'",
+        "answer": "食べすぎました。"
+      }
+    ]
+  },
+  {
+    "title": "~ほうがいいです (Better to do)",
+    "explanation": "Used to give advice (You had better do...). \nAffirmative advice: た-form + ほうがいい\nNegative advice: ない-form + ほうがいい",
+    "structure": "[Verb た form] + ほうがいいですよ\n[Verb ない form] + ほうがいいですよ",
+    "examples": [
+      {
+        "japanese": "毎日運動したほうがいいですよ。",
+        "english": "You had better exercise every day."
+      },
+      {
+        "japanese": "タバコを吸わないほうがいいですよ。",
+        "english": "You had better not smoke."
+      }
+    ],
+    "practice": [
+      {
+        "type": "sentence-creation",
+        "question": "Give advice to sleep early. (早く寝る)",
+        "answer": "早く寝たほうがいいですよ。"
+      }
+    ]
+  },
+  {
+    "title": "~ので (Given that / Since)",
+    "explanation": "A more formal and objective version of 'から' (because/since). Usually followed by polite requests or apologies.",
+    "structure": "[Short form] + ので\nException: Noun/な-adj takes なので",
+    "examples": [
+      {
+        "japanese": "今日は日曜日なので、銀行は休みです。",
+        "english": "Since today is Sunday, the bank is closed."
+      },
+      {
+        "japanese": "宿題がたくさんあったので、寝ませんでした。",
+        "english": "Given that there was a lot of homework, I didn't sleep."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'Since it is cold, please close the window.'",
+        "answer": "寒いので、窓を閉めてください。"
+      }
+    ]
+  },
+  {
+    "title": "~なくちゃいけません (Must do)",
+    "explanation": "Meaning 'Must do'. Drop the 'ない' from the negative short form and add 'なくちゃいけません' (casual 'have to'). Formal is 'なければいけません'.",
+    "structure": "[Verb ~ない stem] + なくちゃいけません",
+    "examples": [
+      {
+        "japanese": "明日テストがあるから、勉強しなくちゃいけません。",
+        "english": "Because I have a test tomorrow, I must study."
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "薬を（飲む）なくちゃいけません -> 薬を（　）なくちゃいけません。",
+        "answer": "飲ま"
+      }
+    ]
+  },
+  {
+    "title": "~でしょう (Probably)",
+    "explanation": "Used to make a guess or prediction. Follows short forms. Spoken with a rising intonation, it asks for agreement ('Right?').",
+    "structure": "[Short form] + でしょう\nException: Noun/な-adj do not take だ.",
+    "examples": [
+      {
+        "japanese": "明日は雨が降るでしょう。",
+        "english": "It will probably rain tomorrow."
+      },
+      {
+        "japanese": "北海道は寒いでしょう。",
+        "english": "Hokkaido is probably cold."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'It was probably busy yesterday.'",
+        "answer": "昨日は忙しかったでしょう。"
+      }
+    ]
+  }
+]

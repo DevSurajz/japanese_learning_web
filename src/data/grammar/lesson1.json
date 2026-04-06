@@ -1,0 +1,95 @@
+[
+  {
+    "title": "X は Y です",
+    "explanation": "This structure is used to identify the topic of a sentence. 'は' (pronounced 'wa') is a topic-marking particle. It highlights what you are talking about. 'です' (desu) functions like the verb 'to be' (am, is, are).",
+    "structure": "[X] は [Y] です。",
+    "examples": [
+      {
+        "japanese": "私は学生です。",
+        "english": "I am a student."
+      },
+      {
+        "japanese": "メアリーさんは先生です。",
+        "english": "Mary is a teacher."
+      }
+    ],
+    "notes": "Always pronounce the topic particle 'は' as 'wa', not 'ha'.",
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "私（　）田中（　）。",
+        "answer": "は, です"
+      },
+      {
+        "type": "translation",
+        "question": "Translate: 'Mr. Smith is a doctor.'",
+        "answer": "スミスさんは医者です。"
+      },
+      {
+        "type": "sentence-creation",
+        "question": "Use 'は' and 'です' to introduce yourself.",
+        "answer": "私は[Your Name]です。"
+      }
+    ]
+  },
+  {
+    "title": "Question Sentences (か)",
+    "explanation": "To turn a Japanese sentence into a question, simply add the particle 'か' (ka) to the end of the sentence. You do not need to change the word order.",
+    "structure": "[Statement] + か。",
+    "examples": [
+      {
+        "japanese": "留学生ですか。",
+        "english": "Are you an international student?"
+      },
+      {
+        "japanese": "専攻は何ですか。",
+        "english": "What is your major?"
+      }
+    ],
+    "notes": "In Japanese writing, a question mark '?' is often omitted because 'か' already marks a question, but it is common in casual writing.",
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "何時です（　）。",
+        "answer": "か"
+      },
+      {
+        "type": "translation",
+        "question": "Translate: 'Are you a university student?'",
+        "answer": "大学生ですか。"
+      }
+    ]
+  },
+  {
+    "title": "Noun の Noun",
+    "explanation": "The particle 'の' (no) connects two nouns. It often means 's (possessive), but more generally, Noun 1 modifies or describes Noun 2.",
+    "structure": "[Noun 1] の [Noun 2]",
+    "examples": [
+      {
+        "japanese": "たけしさんの電話番号",
+        "english": "Takeshi's phone number"
+      },
+      {
+        "japanese": "日本語の先生",
+        "english": "A teacher of Japanese (Japanese language teacher)"
+      },
+      {
+        "japanese": "さくら大学の学生",
+        "english": "A student of Sakura University"
+      }
+    ],
+    "notes": "Notice that the modifying noun comes FIRST, unlike English where it can sometimes come after (e.g., 'teacher OF Japanese').",
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "私（　）本です。",
+        "answer": "の"
+      },
+      {
+        "type": "translation",
+        "question": "Translate: 'My university'",
+        "answer": "私の大学"
+      }
+    ]
+  }
+]

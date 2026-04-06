@@ -1,0 +1,122 @@
+[
+  {
+    "title": "Verb Types and Conjugation (~ます / ~ません)",
+    "explanation": "Japanese verbs are grouped into Ru-verbs, U-verbs, and Irregular verbs. To make them polite, we change them into the ~ます (affirmative) and ~ません (negative) forms.",
+    "structure": "Ru-verbs: Drop る + ます/ません\nU-verbs: Change 'u' sound to 'i' sound + ます/ません\nIrregular: する -> します / くる -> きます",
+    "examples": [
+      {
+        "japanese": "私は毎日コーヒーを飲みます。",
+        "english": "I drink coffee every day."
+      },
+      {
+        "japanese": "今日は朝ごはんを食べません。",
+        "english": "I will not eat breakfast today."
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "音楽を（　）。(I listen to music - きく)",
+        "answer": "聞きます"
+      },
+      {
+        "type": "translation",
+        "question": "Translate: 'I do not sleep.' (verb: ねる)",
+        "answer": "私は寝ません。"
+      }
+    ]
+  },
+  {
+    "title": "Particles (を、で、に、へ)",
+    "explanation": "Particles show the grammatical function of words.\n- を: Marks the direct object of an action.\n- で: Marks the location of an action.\n- に: Marks time (when), or destination of motion.\n- へ: Marks destination (similar to に for motion).",
+    "structure": "[Object] を [Verb]\n[Location] で [Verb]\n[Time/Destination] に [Verb]",
+    "examples": [
+      {
+        "japanese": "図書館で本を読みます。",
+        "english": "I will read books in the library."
+      },
+      {
+        "japanese": "週末に京都へ行きます。",
+        "english": "I will go to Kyoto on the weekend."
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "学校（　）行きます。",
+        "answer": "に / へ"
+      },
+      {
+        "type": "translation",
+        "question": "Translate: 'I will watch TV at home.'",
+        "answer": "家でテレビを見ます。"
+      }
+    ]
+  },
+  {
+    "title": "Time References (When to use に)",
+    "explanation": "You use 'に' with precise times (days of the week, times, dates). You do NOT use 'に' for relative times (today, tomorrow, every day, next week).",
+    "structure": "[Specific Time] に",
+    "examples": [
+      {
+        "japanese": "日曜日に映画を見ます。",
+        "english": "I will watch a movie on Sunday."
+      },
+      {
+        "japanese": "明日、勉強します。",
+        "english": "I will study tomorrow."
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "今日（　）学校に行きます。(No particle / に)",
+        "answer": "No particle"
+      }
+    ]
+  },
+  {
+    "title": "~ませんか (Invitation)",
+    "explanation": "To politely invite someone to do something, use the negative question form of the verb: '~ませんか'.",
+    "structure": "[Verb stem] + ませんか。",
+    "examples": [
+      {
+        "japanese": "一緒に昼ごはんを食べませんか。",
+        "english": "Won't you eat lunch with me?"
+      },
+      {
+        "japanese": "テニスをしませんか。",
+        "english": "Would you like to play tennis?"
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'Would you like to drink coffee?'",
+        "answer": "コーヒーを飲みませんか。"
+      }
+    ]
+  },
+  {
+    "title": "Frequency Adverbs",
+    "explanation": "Adverbs like 毎日(every day), よく(often), 時々(sometimes), あまり(not much), ぜんぜん(not at all). 'あまり' and 'ぜんぜん' must be used with a negative verb.",
+    "structure": "[Frequency] + [Verb]",
+    "examples": [
+      {
+        "japanese": "私はよくスポーツをします。",
+        "english": "I often play sports."
+      },
+      {
+        "japanese": "私はぜんぜんテレビを見ません。",
+        "english": "I don't watch TV at all."
+      }
+    ],
+    "practice": [
+      {
+        "type": "sentence-creation",
+        "question": "Use 'あまり' to say you don't read books much.",
+        "answer": "私はあまり本を読みません。"
+      }
+    ]
+  }
+]

@@ -1,0 +1,94 @@
+[
+  {
+    "title": "Adjective Conjugation",
+    "explanation": "There are two types of adjectives: い-adjectives and な-adjectives. \nい-adj:\nPresent Affirmative: ~いです\nPresent Negative: ~くないです\nPast Affirmative: ~かったです\nPast Negative: ~くなかったです\nExceptions: いい (good) -> よくないです / よかったです.\n\nな-adj:\nThese conjugate exactly like Nouns (です / じゃないです / でした / じゃなかったです).",
+    "structure": "[Noun] は [Adjective]",
+    "examples": [
+      {
+        "japanese": "このお茶は熱いです。",
+        "english": "This tea is hot."
+      },
+      {
+        "japanese": "その映画は面白くなかったです。",
+        "english": "That movie was not interesting."
+      },
+      {
+        "japanese": "ここは静かでした。",
+        "english": "It was quiet here."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'The test was difficult.' (むずかしい)",
+        "answer": "テストは難しかったです。"
+      }
+    ]
+  },
+  {
+    "title": "Adjectives + Nouns",
+    "explanation": "When modifying a noun: \nい-adjectives keep their 'い'.\nな-adjectives take 'な' before the noun.",
+    "structure": "[Adjective]い + [Noun]\n[Adjective]な + [Noun]",
+    "examples": [
+      {
+        "japanese": "面白い映画を見ました。",
+        "english": "I watched an interesting movie."
+      },
+      {
+        "japanese": "静かな公園が好きです。",
+        "english": "I like quiet parks."
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "きれい（　）海に行きました。",
+        "answer": "な"
+      }
+    ]
+  },
+  {
+    "title": "好き / きらい (Likes and Dislikes)",
+    "explanation": "好き (to like) and きらい (to dislike) are な-adjectives. The item being liked or disliked is marked with 'が'. '大好き' means to love, '大嫌い' means to hate.",
+    "structure": "[Person] は [Item] が 好きです / きらいです。",
+    "examples": [
+      {
+        "japanese": "私は猫が好きです。",
+        "english": "I like cats."
+      },
+      {
+        "japanese": "ロバートさんは野菜が大嫌いです。",
+        "english": "Robert hates vegetables."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'I love Japanese food.'",
+        "answer": "私は日本食が大好きです。"
+      }
+    ]
+  },
+  {
+    "title": "ましょう / ましょうか",
+    "explanation": "Both express 'Let's...'. 'ましょう' is a strong suggestion 'Let's do X'. 'ましょうか' asks for an opinion 'Shall we do X?'.",
+    "structure": "[Verb stem] + ましょう / ましょうか",
+    "examples": [
+      {
+        "japanese": "一緒に図書館で勉強しましょう。",
+        "english": "Let's study at the library together."
+      },
+      {
+        "japanese": "どこで食べましょうか。",
+        "english": "Where shall we eat?"
+      }
+    ],
+    "practice": [
+      {
+        "type": "sentence-creation",
+        "question": "Say: 'Let's drink coffee.'",
+        "answer": "コーヒーを飲みましょう。"
+      }
+    ]
+  }
+]

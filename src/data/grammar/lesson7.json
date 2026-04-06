@@ -1,0 +1,120 @@
+[
+  {
+    "title": "~ている (Action in progress / Resultant state)",
+    "explanation": "The Te-form + いる describes an ongoing action ('is doing') OR a state resulting from a past action (e.g., 'is married', 'is dead', 'lives in').",
+    "structure": "[Te-form] + います",
+    "examples": [
+      {
+        "japanese": "スーさんは今勉強しています。",
+        "english": "Sue is studying right now."
+      },
+      {
+        "japanese": "山下先生は結婚しています。",
+        "english": "Professor Yamashita is married."
+      },
+      {
+        "japanese": "私は東京に住んでいます。",
+        "english": "I live in Tokyo."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'I am reading a book now.'",
+        "answer": "私は今本を読んでいます。"
+      }
+    ]
+  },
+  {
+    "title": "メアリーさんは髪が長いです (A is B in C)",
+    "explanation": "When describing a physical attribute of a person or thing, the topic takes は, and the specific part takes が.",
+    "structure": "[Person/Thing] は [Body Part] が [Adjective]です。",
+    "examples": [
+      {
+        "japanese": "メアリーさんは髪が長いです。",
+        "english": "Mary has long hair. (As for Mary, her hair is long.)"
+      },
+      {
+        "japanese": "トムさんは背が高いです。",
+        "english": "Tom is tall. (As for Tom, his height is tall.)"
+      }
+    ],
+    "practice": [
+      {
+        "type": "sentence-creation",
+        "question": "Say: 'Elephants have a long trunk(鼻).' (ぞう = Elephant)",
+        "answer": "ぞうは鼻が長いです。"
+      }
+    ]
+  },
+  {
+    "title": "Te-forms for Joining Sentences (Adjectives/Nouns)",
+    "explanation": "To connect multiple adjectives or nouns, use their Te-forms.\nい-adj: Drop い + くて\nな-adj: + で\nNoun: + で",
+    "structure": "[Adj 1 (て)], [Adj 2]",
+    "examples": [
+      {
+        "japanese": "安くて、おいしいです。",
+        "english": "It is cheap and delicious."
+      },
+      {
+        "japanese": "元気で、親切です。",
+        "english": "They are energetic and kind."
+      },
+      {
+        "japanese": "日本人で、学生です。",
+        "english": "He is Japanese and a student."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'The hotel was old and cheap.'",
+        "answer": "ホテルは古くて、安かったです。"
+      }
+    ]
+  },
+  {
+    "title": "Verb stem + に行く (Purpose of motion)",
+    "explanation": "To say you are going somewhere TO DO something, use the Verb Stem + に行く/来る/帰る.",
+    "structure": "[Destination] に [Verb Stem] に 行く/来る/帰る",
+    "examples": [
+      {
+        "japanese": "デパートにかばんを買いに行きました。",
+        "english": "I went to the department store to buy a bag."
+      },
+      {
+        "japanese": "日本へ日本語を勉強しに来ました。",
+        "english": "I came to Japan to study Japanese."
+      }
+    ],
+    "practice": [
+      {
+        "type": "sentence-creation",
+        "question": "Say: 'I went to Kyoto to take pictures.'",
+        "answer": "京都に写真を撮りに行きました。"
+      }
+    ]
+  },
+  {
+    "title": "人がいます (Counting people)",
+    "explanation": "When counting people, use the counter '人' (にん). Exception: 1 person is ひとり, 2 people is ふたり. The number typically comes AFTER the particle.",
+    "structure": "[Noun] が [Number] います",
+    "examples": [
+      {
+        "japanese": "クラスに学生が五人います。",
+        "english": "There are five students in the class."
+      },
+      {
+        "japanese": "私の家族は四人です。",
+        "english": "My family has four people."
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "一人、二人、（　）、四人",
+        "answer": "三人 (さんにん)"
+      }
+    ]
+  }
+]

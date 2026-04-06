@@ -1,0 +1,108 @@
+[
+  {
+    "title": "Te-form (て form)",
+    "explanation": "The Te-form links verb phrases. \nRu-verbs: る -> て\nU-verbs: \nう、つ、る -> って\nむ、ぶ、ぬ -> んで\nく -> いて\nぐ -> いで\nす -> して\nExceptions: 行く -> 行って \nIrregular: する->して、くる->きて",
+    "structure": "Te-form conjugation",
+    "examples": [
+      {
+        "japanese": "食べる -> 食べて",
+        "english": "to eat -> eat and..."
+      },
+      {
+        "japanese": "飲む -> 飲んで",
+        "english": "to drink -> drink and..."
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "書く -> （　）",
+        "answer": "書いて"
+      }
+    ]
+  },
+  {
+    "title": "~てください (Request)",
+    "explanation": "To make a polite request, use the Te-form + ください.",
+    "structure": "[Te-form] + ください。",
+    "examples": [
+      {
+        "japanese": "漢字を書いてください。",
+        "english": "Please write the kanji."
+      },
+      {
+        "japanese": "ちょっと待ってください。",
+        "english": "Please wait a moment."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'Please read this book.'",
+        "answer": "この本を読んでください。"
+      }
+    ]
+  },
+  {
+    "title": "~てもいいです (Permission)",
+    "explanation": "To ask for or grant permission, use Te-form + もいいですか / もいいです ('Is it okay if...? / It is okay to...').",
+    "structure": "[Te-form] + もいいです(か)。",
+    "examples": [
+      {
+        "japanese": "テレビを見てもいいですか。",
+        "english": "May I watch TV?"
+      },
+      {
+        "japanese": "はい、見てもいいですよ。",
+        "english": "Yes, you may watch it."
+      }
+    ],
+    "practice": [
+      {
+        "type": "sentence-creation",
+        "question": "Ask for permission to take a picture. (写真をとる)",
+        "answer": "写真をとってもいいですか。"
+      }
+    ]
+  },
+  {
+    "title": "~てはいけません (Prohibition)",
+    "explanation": "To strongly prohibit something ('You must not...'), use Te-form + はいけません.",
+    "structure": "[Te-form] + はいけません。",
+    "examples": [
+      {
+        "japanese": "ここで写真を撮ってはいけません。",
+        "english": "You must not take pictures here."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'You must not eat in class.'",
+        "answer": "クラスで食べてはいけません。"
+      }
+    ]
+  },
+  {
+    "title": "Describing Two Activities (Sequence)",
+    "explanation": "You can connect multiple actions using the Te-form. The sentence tense is determined by the final verb.",
+    "structure": "[Action 1 (て)], [Action 2 (Tense)]",
+    "examples": [
+      {
+        "japanese": "図書館に行って、本を借りました。",
+        "english": "I went to the library and borrowed a book."
+      },
+      {
+        "japanese": "6時に起きて、朝ごはんを食べます。",
+        "english": "I wake up at six and eat breakfast."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'I listened to music and went to sleep.'",
+        "answer": "音楽を聞いて、寝ました。"
+      }
+    ]
+  }
+]

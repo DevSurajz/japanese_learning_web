@@ -1,0 +1,168 @@
+[
+  {
+    "title": "これ / それ / あれ / どれ",
+    "explanation": "These are demonstrative pronouns used to point at things. They function as independent nouns. 'これ' is close to the speaker, 'それ' is close to the listener, 'あれ' is far from both, and 'どれ' is the question word 'which'.",
+    "structure": "これ / それ / あれ + は + [Noun] + です。",
+    "examples": [
+      {
+        "japanese": "これは私の本です。",
+        "english": "This is my book."
+      },
+      {
+        "japanese": "それは何ですか。",
+        "english": "What is that (near you)?"
+      },
+      {
+        "japanese": "あれは私の自転車です。",
+        "english": "That one over there is my bicycle."
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "（　）は時計です。(Pointing to something far away)",
+        "answer": "あれ"
+      },
+      {
+        "type": "translation",
+        "question": "Translate: 'Which one is your pen?'",
+        "answer": "どれがあなたのペンですか。"
+      }
+    ]
+  },
+  {
+    "title": "この / その / あの / どの + Noun",
+    "explanation": "These modify nouns and must always be followed by a noun. They have the same directional rules as これ/それ/あれ.",
+    "structure": "この / その / あの / どの + [Noun]",
+    "examples": [
+      {
+        "japanese": "この時計はいくらですか。",
+        "english": "How much is this watch?"
+      },
+      {
+        "japanese": "そのかばんは私のです。",
+        "english": "That bag is mine."
+      },
+      {
+        "japanese": "どのカメラですか。",
+        "english": "Which camera is it?"
+      }
+    ],
+    "notes": "Never use この/その/あの without a noun directly attached.",
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "（　）本は三千円です。(This book)",
+        "answer": "この"
+      },
+      {
+        "type": "translation",
+        "question": "Translate: 'Who's is that watch over there?'",
+        "answer": "あの時計はだれのですか。"
+      }
+    ]
+  },
+  {
+    "title": "ここ / そこ / あそこ / どこ",
+    "explanation": "Place words: Here (close to speaker), There (close to listener), Over there (far from both), and Where.",
+    "structure": "ここ / そこ / あそこ / どこ",
+    "examples": [
+      {
+        "japanese": "トイレはここです。",
+        "english": "The restroom is here."
+      },
+      {
+        "japanese": "銀行はどこですか。",
+        "english": "Where is the bank?"
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'The library is over there.'",
+        "answer": "図書館はあそこです。"
+      }
+    ]
+  },
+  {
+    "title": "だれの Noun",
+    "explanation": "To ask who something belongs to, use 'だれ' (who) combined with the particle 'の' (possession).",
+    "structure": "だれの + [Noun]",
+    "examples": [
+      {
+        "japanese": "これはだれのかばんですか。",
+        "english": "Whose bag is this?"
+      },
+      {
+        "japanese": "それはスーさんの靴です。",
+        "english": "That is Sue's shoes."
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "あれは（　）自転車ですか。(Whose)",
+        "answer": "だれの"
+      }
+    ]
+  },
+  {
+    "title": "Noun も",
+    "explanation": "The particle 'も' (mo) means 'also' or 'too'. It replaces the topic particle 'は'.",
+    "structure": "[Noun] も [Y] です。",
+    "examples": [
+      {
+        "japanese": "マキさんは日本人です。タケシさんも日本人です。",
+        "english": "Maki is Japanese. Takeshi is also Japanese."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'I am a student too.'",
+        "answer": "私も学生です。"
+      }
+    ]
+  },
+  {
+    "title": "Noun じゃないです",
+    "explanation": "This is the negative form of 'です'. It means 'is not'.",
+    "structure": "[X] は [Y] じゃないです。",
+    "examples": [
+      {
+        "japanese": "山田さんは学生じゃないです。",
+        "english": "Mr. Yamada is not a student."
+      }
+    ],
+    "notes": "More formal versions include 'じゃありません' and 'ではありません'.",
+    "practice": [
+      {
+        "type": "sentence-creation",
+        "question": "Deny this statement: 私は先生です。",
+        "answer": "私は先生じゃないです。"
+      }
+    ]
+  },
+  {
+    "title": "~ね / ~よ",
+    "explanation": "These are sentence-ending particles. 'ね' (ne) asks for confirmation or agreement ('Right?'). 'よ' (yo) asserts new information ('I tell you').",
+    "structure": "[Sentence] + ね / よ。",
+    "examples": [
+      {
+        "japanese": "高いですね。",
+        "english": "It's expensive, isn't it?"
+      },
+      {
+        "japanese": "おいしいですよ。",
+        "english": "It is delicious, you know."
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "いい天気です（　）。 (seeking agreement)",
+        "answer": "ね"
+      }
+    ]
+  }
+]

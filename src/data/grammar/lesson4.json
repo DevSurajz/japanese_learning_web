@@ -1,0 +1,135 @@
+[
+  {
+    "title": "あります / います",
+    "explanation": "Both verbs mean 'there is / is located'. 'あります' is used for non-living things (plants, objects). 'います' is used for living things (humans, animals).",
+    "structure": "[Thing/Person] が あります / います。",
+    "examples": [
+      {
+        "japanese": "あそこにマクドナルドがあります。",
+        "english": "There is a McDonald's over there."
+      },
+      {
+        "japanese": "今日、クラスがあります。",
+        "english": "I have class today."
+      },
+      {
+        "japanese": "あそこに猫がいます。",
+        "english": "There is a cat over there."
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "あそこに犬が（　）。",
+        "answer": "います"
+      },
+      {
+        "type": "translation",
+        "question": "Translate: 'There is a TV.'",
+        "answer": "テレビがあります。"
+      }
+    ]
+  },
+  {
+    "title": "Describing Where Things Are",
+    "explanation": "To describe location, use location words: 上 (above), 下 (under), 中 (inside), 外 (outside), 前 (front), 後ろ (behind), 右 (right), 左 (left), 隣 (next to), 近く (near).",
+    "structure": "[Entity X] は [Entity Y] の [Location word] にあります / います。",
+    "examples": [
+      {
+        "japanese": "ねこはテーブルの下にいます。",
+        "english": "The cat is under the table."
+      },
+      {
+        "japanese": "本はかばんの中にあります。",
+        "english": "The book is inside the bag."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'The bank is next to the post office.'",
+        "answer": "銀行は郵便局の隣にあります。"
+      }
+    ]
+  },
+  {
+    "title": "Past Tense of です (Noun / な-adj)",
+    "explanation": "To form the past tense of です, it changes to でした. The negative past is じゃなかったです.",
+    "structure": "Affirmative: ~でした\nNegative: ~じゃなかったです",
+    "examples": [
+      {
+        "japanese": "私は学生でした。",
+        "english": "I was a student."
+      },
+      {
+        "japanese": "昨日、元気じゃなかったです。",
+        "english": "I was not well yesterday."
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "きのうは日曜日（　）。(past affirmative)",
+        "answer": "でした"
+      }
+    ]
+  },
+  {
+    "title": "Past Tense of Verbs",
+    "explanation": "Verbs in polite form change from ~ます to ~ました (past affirmative) and ~ません to ~ませんでした (past negative).",
+    "structure": "Affirmative: ~ました\nNegative: ~ませんでした",
+    "examples": [
+      {
+        "japanese": "昨日、日本語を勉強しました。",
+        "english": "I studied Japanese yesterday."
+      },
+      {
+        "japanese": "昨日の夜、寝ませんでした。",
+        "english": "I did not sleep last night."
+      }
+    ],
+    "practice": [
+      {
+        "type": "translation",
+        "question": "Translate: 'I watched a movie.'",
+        "answer": "映画を見ました。"
+      }
+    ]
+  },
+  {
+    "title": "も (also)",
+    "explanation": "When two identical actions/states share the same object or destination, the particle 'も' replaces を, は, or が.",
+    "structure": "[Noun] も",
+    "examples": [
+      {
+        "japanese": "メアリーさんは靴を買いました。かばんも買いました。",
+        "english": "Mary bought shoes. She bought a bag too."
+      }
+    ],
+    "practice": [
+      {
+        "type": "sentence-creation",
+        "question": "Combine these: 私は肉を食べます。魚を食べます。(Use も)",
+        "answer": "私は肉を食べます。魚も食べます。"
+      }
+    ]
+  },
+  {
+    "title": "一時間 (duration)",
+    "explanation": "To specify the duration of an action, add '時間' (hours) typically after a number. Note: particles do not follow duration nouns.",
+    "structure": "[Duration] [Verb]",
+    "examples": [
+      {
+        "japanese": "私は三時間勉強しました。",
+        "english": "I studied for three hours."
+      }
+    ],
+    "practice": [
+      {
+        "type": "fill-in-blanks",
+        "question": "私は一時間（　）勉強しました。 (No particle)",
+        "answer": "No particle (blank)"
+      }
+    ]
+  }
+]
