@@ -1,5 +1,5 @@
+import React, { useRef, useState, useEffect, useCallback } from "react"
 import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from "motion/react"
-import { useRef, useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { useWindowWidth } from "./hooks.js"
 
@@ -53,7 +53,7 @@ function Navbar({ scrollY }) {
 
         {isMobile ? (
           <button
-            onClick={() => setMenuOpen(!menuOpen)}
+            onClick={useCallback(() => setMenuOpen(!menuOpen), [menuOpen])}
             style={{
               background: "none", border: "none", cursor: "pointer",
               fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
@@ -205,7 +205,7 @@ function Hero({ scrollY }) {
 
   useEffect(() => {
     if (!inView) return
-    const targets = { kanji: 80, grammar: 23, vocab: 800 }
+    const targets = { kanji: 80, grammar: 11, vocab: 800 }
     const duration = 2000
     const start = performance.now()
     const tick = (now) => {
@@ -678,7 +678,7 @@ function Footer() {
       padding: isMobile ? "40px 24px" : "40px 48px",
       background: "#FAFAFA",
       borderTop: "1px solid rgba(10,10,10,0.06)",
-      display: "flex", alignItems: isMobile ? "flex-start" : "center", 
+      display: "flex", alignItems: isMobile ? "flex-start" : "center",
       justifyContent: isMobile ? "center" : "space-between",
       flexDirection: isMobile ? "column" : "row", gap: isMobile ? 24 : 0,
     }}>
@@ -703,17 +703,35 @@ function Footer() {
 
 export default function Home() {
   const { scrollY } = useScroll()
+  const [showRest, setShowRest] = useState(false)
+
+  useEffect(() => {
+    let handle;
+    if (typeof window.requestIdleCallback !== 'undefined') {
+      handle = window.requestIdleCallback(() => setShowRest(true), { timeout: 1000 })
+    } else {
+      handle = setTimeout(() => setShowRest(true), 0)
+    }
+    return () => {
+      if (typeof window.cancelIdleCallback !== 'undefined' && window.requestIdleCallback) window.cancelIdleCallback(handle)
+      else clearTimeout(handle)
+    }
+  }, [])
 
   return (
     <>
       <Navbar scrollY={scrollY} />
       <main>
         <Hero scrollY={scrollY} />
-        <MarqueeStrip />
-        <FeatureCards scrollY={scrollY} />
-        <QuoteSection />
-        <CTASection />
-        <Footer />
+        {showRest && (
+          <>
+            <MarqueeStrip />
+            <FeatureCards scrollY={scrollY} />
+            <QuoteSection />
+            <CTASection />
+            <Footer />
+          </>
+        )}
       </main>
     </>
   )
