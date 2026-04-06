@@ -17,7 +17,7 @@ function Navbar({ scrollY }) {
 
   const navLinks = [
     { label: "KANJI", to: "/kanji" },
-    { label: "GRAMMAR", to: "#" },
+    { label: "GRAMMAR", to: "/grammar" },
     { label: "VOCABULARY", to: "/vocab" },
     { label: "KANA", to: "/kana" },
   ]
@@ -511,7 +511,7 @@ function FeatureCards({ scrollY }) {
       ja: "文法", en: "GRAMMAR", num: "02",
       desc: "23 core grammar patterns. From particles to verb conjugations — structured, clear, complete.",
       offset: 80,
-      link: null,
+      link: "/grammar",
     },
     {
       ja: "語彙", en: "VOCABULARY", num: "03",

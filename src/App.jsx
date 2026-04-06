@@ -3,6 +3,7 @@ import Home from "./Home.jsx"
 import KanjiPage from "./KanjiPage.jsx"
 import KanaPage from "./KanaPage.jsx"
 import VocabPage from "./VocabPage.jsx"
+import GrammarPage from "./GrammarPage.jsx"
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
         <Route path="/kanji" element={<KanjiPage />} />
         <Route path="/vocab" element={<VocabPage />} />
         <Route path="/kana" element={<KanaPage />} />
+        <Route path="/grammar" element={<GrammarPage />} />
       </Routes>
     </BrowserRouter>
   )
