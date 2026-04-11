@@ -210,17 +210,7 @@ const LessonCard = React.memo(function LessonCard({ lessonData, index }) {
   const width = useWindowWidth()
   const isMobile = width < 768
   const [isOpen, setIsOpen] = useState(false)
-  const [grammarItems, setGrammarItems] = useState(null)
-
-  useEffect(() => {
-    let mounted = true
-    if (isOpen && !grammarItems) {
-      lessonData.loadGrammar().then((mod) => {
-        if (mounted) setGrammarItems(mod.default || mod)
-      })
-    }
-    return () => { mounted = false }
-  }, [isOpen, grammarItems, lessonData])
+  const grammarItems = lessonData.grammar || null
 
   return (
     <motion.div
