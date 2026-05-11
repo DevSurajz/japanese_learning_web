@@ -1,16 +1,7 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { useNavigate } from "react-router-dom"
-
-function useWindowWidth() {
-  const [width, setWidth] = useState(window.innerWidth)
-  useEffect(() => {
-    const handler = () => setWidth(window.innerWidth)
-    window.addEventListener('resize', handler)
-    return () => window.removeEventListener('resize', handler)
-  }, [])
-  return width
-}
+import { useViewport } from "./hooks.js"
 
 const hiraganaGrid = [
   { kana: "あ", romaji: "a" }, { kana: "い", romaji: "i" }, { kana: "う", romaji: "u" }, { kana: "え", romaji: "e" }, { kana: "お", romaji: "o" },
@@ -63,10 +54,7 @@ const katakanaHandakuten = [
 ]
 
 
-function KanaCard({ item, index }) {
-  const width = useWindowWidth()
-  const isMobile = width < 768
-
+function KanaCard({ item, index, isMobile }) {
   if (item.empty) return <div />
 
   return (
@@ -111,8 +99,7 @@ function KanaCard({ item, index }) {
 
 export default function KanaPage() {
   const navigate = useNavigate()
-  const width = useWindowWidth()
-  const isMobile = width < 768
+  const { isMobile } = useViewport()
   const [activeTab, setActiveTab] = useState("Hiragana")
 
   return (
@@ -244,7 +231,7 @@ export default function KanaPage() {
                   gap: isMobile ? 10 : 16,
                 }}>
                   {section.data.map((item, i) => (
-                    <KanaCard key={`${sIdx}-${i}`} item={item} index={i} />
+                    <KanaCard key={`${sIdx}-${i}`} item={item} index={i} isMobile={isMobile} />
                   ))}
                 </div>
               </div>

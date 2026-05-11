@@ -1,7 +1,8 @@
-import { useState, useMemo } from "react"
+import { useDeferredValue, useState, useMemo } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { useNavigate } from "react-router-dom"
 import { kanjiData } from "./kanjiData"
+import { useViewport } from "./hooks.js"
 const CARDS_PER_PAGE = 20
 function KanjiModal({ item, onClose, isMobile }) {
   return (
@@ -207,20 +208,18 @@ function KanjiCard({ item, index, onClick }) {
     </motion.div>
   )
 }
-import { useWindowWidth } from "./hooks.js"
 
 export default function KanjiPage() {
   const navigate = useNavigate()
-  const width = useWindowWidth()
-  const isMobile = width < 768
-  const isTablet = width >= 768 && width < 1024
+  const { isMobile, isTablet } = useViewport()
 
   const [search, setSearch] = useState("")
   const [selected, setSelected] = useState(null)
   const [page, setPage] = useState(1)
+  const deferredSearch = useDeferredValue(search)
 
   const filtered = useMemo(() => {
-    const q = search.toLowerCase()
+    const q = deferredSearch.toLowerCase()
     if (!q) return kanjiData
     return kanjiData.filter(k =>
       k.kanji.includes(q) ||
@@ -228,10 +227,13 @@ export default function KanjiPage() {
       k.onyomi.some(r => r.includes(q)) ||
       k.kunyomi.some(r => r.includes(q))
     )
-  }, [search])
+  }, [deferredSearch])
 
   const totalPages = Math.ceil(filtered.length / CARDS_PER_PAGE)
-  const paginated = filtered.slice((page - 1) * CARDS_PER_PAGE, page * CARDS_PER_PAGE)
+  const paginated = useMemo(
+    () => filtered.slice((page - 1) * CARDS_PER_PAGE, page * CARDS_PER_PAGE),
+    [filtered, page]
+  )
 
   return (
     <motion.div

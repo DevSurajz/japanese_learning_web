@@ -1,12 +1,52 @@
-import React, { useRef, useState, useEffect, useCallback } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from "motion/react"
 import { Link } from "react-router-dom"
-import { useWindowWidth } from "./hooks.js"
+import { useViewport } from "./hooks.js"
+
+const NAV_LINKS = [
+  { label: "KANJI", to: "/kanji" },
+  { label: "GRAMMAR", to: "/grammar" },
+  { label: "VOCABULARY", to: "/vocab" },
+  { label: "KANA", to: "/kana" },
+]
+
+const MARQUEE_WORDS = ["語学", "KANJI", "文法", "GRAMMAR", "語彙", "VOCABULARY", "日本語", "NIHONGO", "N5→N1", "学習"]
+
+const FEATURE_CARDS = [
+  {
+    ja: "漢字", en: "KANJI", num: "01",
+    desc: "80 essential N5 characters. Master stroke order, readings, and meaning through spaced repetition.",
+    offset: 0,
+    link: "/kanji",
+  },
+  {
+    ja: "文法", en: "GRAMMAR", num: "02",
+    desc: "23 core grammar patterns. From particles to verb conjugations — structured, clear, complete.",
+    offset: 80,
+    link: "/grammar",
+  },
+  {
+    ja: "語彙", en: "VOCABULARY", num: "03",
+    desc: "800+ words essential for JLPT N5. Grouped by topic with example sentences and audio.",
+    offset: 160,
+    link: "/vocab",
+  },
+]
+
+const QUOTE_CHARS = "千里の道も一歩から".split("")
+const QUOTE_TEXT = "A journey of a thousand miles begins with a single step."
+
+const prefetchRoute = (to) => {
+  if (to === "/kanji") return import("./KanjiPage.jsx")
+  if (to === "/grammar") return import("./GrammarPage.jsx")
+  if (to === "/vocab") return import("./VocabPage.jsx")
+  if (to === "/kana") return import("./KanaPage.jsx")
+  return undefined
+}
 
 // ─── NAVBAR ─────────────────────────────────────────────────────
 function Navbar({ scrollY }) {
-  const width = useWindowWidth()
-  const isMobile = width < 768
+  const { isMobile } = useViewport()
 
   const bg = useTransform(scrollY, [0, 80], ["rgba(250,250,250,0)", "rgba(250,250,250,1)"])
   const borderOpacity = useTransform(scrollY, [0, 80], [0, 1])
@@ -14,13 +54,6 @@ function Navbar({ scrollY }) {
   const textColor = "#0A0A0A"
 
   const [menuOpen, setMenuOpen] = useState(false)
-
-  const navLinks = [
-    { label: "KANJI", to: "/kanji" },
-    { label: "GRAMMAR", to: "/grammar" },
-    { label: "VOCABULARY", to: "/vocab" },
-    { label: "KANA", to: "/kana" },
-  ]
 
   return (
     <>
@@ -53,7 +86,7 @@ function Navbar({ scrollY }) {
 
         {isMobile ? (
           <button
-            onClick={useCallback(() => setMenuOpen(!menuOpen), [menuOpen])}
+            onClick={() => setMenuOpen(open => !open)}
             style={{
               background: "none", border: "none", cursor: "pointer",
               fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
@@ -66,11 +99,13 @@ function Navbar({ scrollY }) {
           <>
             {/* Nav Links */}
             <motion.div style={{ display: "flex", gap: 40 }}>
-              {navLinks.map(({ label, to }) =>
+              {NAV_LINKS.map(({ label, to }) =>
                 to.startsWith("/") ? (
                   <Link
                     key={label}
                     to={to}
+                    onPointerEnter={() => prefetchRoute(to)}
+                    onFocus={() => prefetchRoute(to)}
                     style={{
                       fontFamily: "'Space Grotesk', sans-serif",
                       fontWeight: 300, fontSize: 11,
@@ -103,7 +138,7 @@ function Navbar({ scrollY }) {
             </motion.div>
 
             {/* CTA */}
-            <Link to="/kana" style={{ textDecoration: "none" }}>
+            <Link to="/kana" onPointerEnter={() => prefetchRoute("/kana")} onFocus={() => prefetchRoute("/kana")} style={{ textDecoration: "none" }}>
               <motion.button
                 whileHover={{ opacity: 0.8 }}
                 whileTap={{ scale: 0.97 }}
@@ -139,12 +174,14 @@ function Navbar({ scrollY }) {
               padding: "24px", gap: 24, overflow: "hidden",
             }}
           >
-            {navLinks.map(({ label, to }) =>
+            {NAV_LINKS.map(({ label, to }) =>
               to.startsWith("/") ? (
                 <Link
                   key={label}
                   to={to}
                   onClick={() => setMenuOpen(false)}
+                  onPointerEnter={() => prefetchRoute(to)}
+                  onFocus={() => prefetchRoute(to)}
                   style={{
                     fontFamily: "'Space Grotesk', sans-serif",
                     fontWeight: 300, fontSize: 14,
@@ -172,7 +209,7 @@ function Navbar({ scrollY }) {
                 </a>
               )
             )}
-            <Link to="/kana" onClick={() => setMenuOpen(false)} style={{ textDecoration: "none", marginTop: 8 }}>
+            <Link to="/kana" onClick={() => setMenuOpen(false)} onPointerEnter={() => prefetchRoute("/kana")} onFocus={() => prefetchRoute("/kana")} style={{ textDecoration: "none", marginTop: 8 }}>
               <div style={{
                 background: "#0A0A0A", color: "#FAFAFA",
                 padding: "16px", textAlign: "center",
@@ -192,8 +229,7 @@ function Navbar({ scrollY }) {
 
 // ─── HERO ────────────────────────────────────────────────────────
 function Hero({ scrollY }) {
-  const width = useWindowWidth()
-  const isMobile = width < 768
+  const { isMobile } = useViewport()
 
   const kanjiY = useTransform(scrollY, [0, 600], [0, -120])
   const kanjiOpacity = useTransform(scrollY, [0, 400], [0.06, 0])
@@ -208,6 +244,7 @@ function Hero({ scrollY }) {
     const targets = { kanji: 80, grammar: 11, vocab: 800 }
     const duration = 2000
     const start = performance.now()
+    let frame = 0
     const tick = (now) => {
       const p = Math.min((now - start) / duration, 1)
       const ease = 1 - Math.pow(1 - p, 3)
@@ -216,9 +253,10 @@ function Hero({ scrollY }) {
         grammar: Math.round(targets.grammar * ease),
         vocab: Math.round(targets.vocab * ease),
       })
-      if (p < 1) requestAnimationFrame(tick)
+      if (p < 1) frame = requestAnimationFrame(tick)
     }
-    requestAnimationFrame(tick)
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
   }, [inView])
 
   return (
@@ -375,10 +413,7 @@ function Hero({ scrollY }) {
 
 // ─── MARQUEE STRIP ───────────────────────────────────────────────
 function MarqueeStrip() {
-  const width = useWindowWidth()
-  const isMobile = width < 768
-
-  const words = ["語学", "KANJI", "文法", "GRAMMAR", "語彙", "VOCABULARY", "日本語", "NIHONGO", "N5→N1", "学習"]
+  const { isMobile } = useViewport()
   return (
     <div style={{
       overflow: "hidden", borderTop: "1px solid rgba(10,10,10,0.08)",
@@ -390,7 +425,7 @@ function MarqueeStrip() {
         transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
         style={{ display: "flex", gap: isMobile ? 32 : 64, whiteSpace: "nowrap", width: "max-content" }}
       >
-        {[...words, ...words].map((w, i) => (
+        {[...MARQUEE_WORDS, ...MARQUEE_WORDS].map((w, i) => (
           <span key={i} style={{
             fontFamily: i % 2 === 0 ? "'Noto Sans JP'" : "'Space Grotesk'",
             fontWeight: i % 2 === 0 ? 100 : 300,
@@ -404,11 +439,7 @@ function MarqueeStrip() {
   )
 }
 
-function FeatureCard({ ja, en, num, desc, offset, link, scrollY, delay }) {
-  const width = useWindowWidth()
-  const isMobile = width < 768
-  const isTablet = width >= 768 && width < 1024
-
+function FeatureCard({ ja, en, num, desc, offset, link, scrollY, delay, isMobile, isTablet }) {
   const shouldParallax = !isMobile && !isTablet
   const cardY = useTransform(scrollY, [300, 900], [shouldParallax ? offset : 0, 0])
   const springCardY = useSpring(cardY, { stiffness: 80, damping: 20 })
@@ -472,6 +503,8 @@ function FeatureCard({ ja, en, num, desc, offset, link, scrollY, delay }) {
         {link ? (
           <Link
             to={link}
+            onPointerEnter={() => prefetchRoute(link)}
+            onFocus={() => prefetchRoute(link)}
             style={{
               fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
               fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase",
@@ -495,31 +528,8 @@ function FeatureCard({ ja, en, num, desc, offset, link, scrollY, delay }) {
 }
 
 function FeatureCards({ scrollY }) {
-  const width = useWindowWidth()
-  const isMobile = width < 768
-  const isTablet = width >= 768 && width < 1024
+  const { isMobile, isTablet } = useViewport()
   const columns = isMobile ? 1 : isTablet ? 2 : 3
-
-  const cards = [
-    {
-      ja: "漢字", en: "KANJI", num: "01",
-      desc: "80 essential N5 characters. Master stroke order, readings, and meaning through spaced repetition.",
-      offset: 0,
-      link: "/kanji",
-    },
-    {
-      ja: "文法", en: "GRAMMAR", num: "02",
-      desc: "23 core grammar patterns. From particles to verb conjugations — structured, clear, complete.",
-      offset: 80,
-      link: "/grammar",
-    },
-    {
-      ja: "語彙", en: "VOCABULARY", num: "03",
-      desc: "800+ words essential for JLPT N5. Grouped by topic with example sentences and audio.",
-      offset: 160,
-      link: "/vocab",
-    },
-  ]
 
   return (
     <section style={{ padding: isMobile ? "64px 24px" : "120px 48px", background: "#FAFAFA" }}>
@@ -543,8 +553,8 @@ function FeatureCards({ scrollY }) {
       </motion.div>
 
       <div style={{ display: "grid", gridTemplateColumns: `repeat(${columns}, 1fr)`, gap: isMobile ? 16 : 2 }}>
-        {cards.map((card, i) => (
-          <FeatureCard key={card.en} {...card} scrollY={scrollY} delay={i * 0.12} />
+        {FEATURE_CARDS.map((card, i) => (
+          <FeatureCard key={card.en} {...card} scrollY={scrollY} delay={i * 0.12} isMobile={isMobile} isTablet={isTablet} />
         ))}
       </div>
     </section>
@@ -552,11 +562,7 @@ function FeatureCards({ scrollY }) {
 }
 
 function QuoteSection() {
-  const width = useWindowWidth()
-  const isMobile = width < 768
-
-  const words = "千里の道も一歩から".split("")
-  const subWords = "A journey of a thousand miles begins with a single step.".split(" ")
+  const { isMobile } = useViewport()
 
   return (
     <section style={{
@@ -576,7 +582,7 @@ function QuoteSection() {
             flexWrap: "wrap", marginBottom: 28,
           }}
         >
-          {words.map((char, i) => (
+          {QUOTE_CHARS.map((char, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 16 }}
@@ -604,7 +610,7 @@ function QuoteSection() {
             color: "rgba(10,10,10,0.45)", lineHeight: 1.5,
           }}
         >
-          {subWords.join(" ")}
+          {QUOTE_TEXT}
         </motion.p>
       </div>
     </section>
@@ -613,8 +619,7 @@ function QuoteSection() {
 
 // ─── CTA SECTION ─────────────────────────────────────────────────
 function CTASection() {
-  const width = useWindowWidth()
-  const isMobile = width < 768
+  const { isMobile } = useViewport()
 
   return (
     <section style={{
@@ -642,7 +647,7 @@ function CTASection() {
           Begin your path<br />to Japanese mastery.
         </h2>
 
-        <Link to="/kana" style={{ textDecoration: "none" }}>
+        <Link to="/kana" onPointerEnter={() => prefetchRoute("/kana")} onFocus={() => prefetchRoute("/kana")} style={{ textDecoration: "none" }}>
           <motion.div
             whileHover={{ opacity: 0.8, scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -670,8 +675,7 @@ function CTASection() {
 }
 
 function Footer() {
-  const width = useWindowWidth()
-  const isMobile = width < 768
+  const { isMobile } = useViewport()
 
   return (
     <footer style={{

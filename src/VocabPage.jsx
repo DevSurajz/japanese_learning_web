@@ -1,8 +1,8 @@
-import { useState, useMemo } from "react"
+import { useDeferredValue, useState, useMemo } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { useNavigate } from "react-router-dom"
 import { vocabData } from "./vocabData"
-import { useWindowWidth } from "./hooks.js"
+import { useViewport } from "./hooks.js"
 
 const PER_PAGE = 25
 
@@ -38,14 +38,14 @@ function TypeBadge({ type }) {
 
 export default function VocabPage() {
   const navigate = useNavigate()
-  const width = useWindowWidth()
-  const isMobile = width < 768
+  const { isMobile } = useViewport()
   
   const [search, setSearch]   = useState("")
   const [page, setPage]       = useState(1)
   const [sortKey, setSortKey] = useState("id")   
   const [sortDir, setSortDir] = useState(1)       
   const [typeFilter, setTypeFilter] = useState("All")
+  const deferredSearch = useDeferredValue(search)
 
   const allTypes = useMemo(() => {
     const s = new Set(vocabData.map(w => w.type))
@@ -53,7 +53,7 @@ export default function VocabPage() {
   }, [])
 
   const filtered = useMemo(() => {
-    const q = search.toLowerCase().trim()
+    const q = deferredSearch.toLowerCase().trim()
     return vocabData
       .filter(w => {
         const typeOk = typeFilter === "All" || w.type === typeFilter
@@ -71,10 +71,13 @@ export default function VocabPage() {
         if (sortKey === "id") return sortDir * (va - vb)
         return sortDir * String(va).localeCompare(String(vb), "ja")
       })
-  }, [search, sortKey, sortDir, typeFilter])
+  }, [deferredSearch, sortKey, sortDir, typeFilter])
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE))
-  const pageData   = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE)
+  const pageData = useMemo(
+    () => filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE),
+    [filtered, page]
+  )
 
   const handleSearch = v => { setSearch(v); setPage(1) }
   const handleType   = v => { setTypeFilter(v); setPage(1) }

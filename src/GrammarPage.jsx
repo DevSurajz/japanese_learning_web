@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { useNavigate } from "react-router-dom"
-import { useWindowWidth } from "./hooks.js"
+import { useViewport } from "./hooks.js"
 import { grammarData } from "./grammarData.js"
 
 const ExampleItem = React.memo(function ExampleItem({ ex, isMobile }) {
@@ -78,9 +78,7 @@ const PracticeItem = React.memo(function PracticeItem({ prac, index }) {
   )
 })
 
-const GrammarItem = React.memo(function GrammarItem({ item }) {
-  const width = useWindowWidth()
-  const isMobile = width < 768
+const GrammarItem = React.memo(function GrammarItem({ item, isMobile }) {
   const [showHeavy, setShowHeavy] = useState(false)
 
   useEffect(() => {
@@ -206,9 +204,7 @@ const GrammarItem = React.memo(function GrammarItem({ item }) {
   )
 })
 
-const LessonCard = React.memo(function LessonCard({ lessonData, index }) {
-  const width = useWindowWidth()
-  const isMobile = width < 768
+const LessonCard = React.memo(function LessonCard({ lessonData, index, isMobile }) {
   const [isOpen, setIsOpen] = useState(false)
   const grammarItems = lessonData.grammar || null
 
@@ -294,7 +290,7 @@ const LessonCard = React.memo(function LessonCard({ lessonData, index }) {
                 <div style={{ padding: "40px", textAlign: "center", color: "rgba(10,10,10,0.3)", fontFamily: "'Space Grotesk', sans-serif" }}>Loading...</div>
               ) : (
                 grammarItems.map((item, idx) => (
-                  <GrammarItem key={idx} item={item} />
+                  <GrammarItem key={idx} item={item} isMobile={isMobile} />
                 ))
               )}
             </div>
@@ -306,8 +302,7 @@ const LessonCard = React.memo(function LessonCard({ lessonData, index }) {
 })
 
 function GrammarHero() {
-  const width = useWindowWidth()
-  const isMobile = width < 768
+  const { isMobile } = useViewport()
 
   return (
     <section
@@ -372,8 +367,7 @@ function GrammarHero() {
 }
 
 function Footer() {
-  const width = useWindowWidth()
-  const isMobile = width < 768
+  const { isMobile } = useViewport()
 
   return (
     <footer style={{
@@ -405,8 +399,7 @@ function Footer() {
 
 export default function GrammarPage() {
   const navigate = useNavigate()
-  const width = useWindowWidth()
-  const isMobile = width < 768
+  const { isMobile } = useViewport()
 
   return (
     <motion.div
@@ -459,7 +452,7 @@ export default function GrammarPage() {
 
       <section style={{ padding: isMobile ? "40px 24px 80px" : "80px 48px 120px", maxWidth: 1000, margin: "0 auto" }}>
         {grammarData.map((lessonData, index) => (
-          <LessonCard key={index} lessonData={lessonData} index={index} />
+          <LessonCard key={index} lessonData={lessonData} index={index} isMobile={isMobile} />
         ))}
       </section>
       
