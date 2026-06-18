@@ -1,16 +1,26 @@
-import { createContext, createElement, useContext, useEffect, useMemo, useState } from "react"
+"use client"
 
-const ViewportContext = createContext({
+import { createContext, createElement, useContext, useEffect, useMemo, useState, type ReactNode } from "react"
+
+interface ViewportContextType {
+  width: number
+  isMobile: boolean
+  isTablet: boolean
+}
+
+const ViewportContext = createContext<ViewportContextType>({
   width: 1200,
   isMobile: false,
   isTablet: false,
 })
 
-export function ViewportProvider({ children }) {
-  const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200)
+export function ViewportProvider({ children }: { children: ReactNode }) {
+  const [mounted, setMounted] = useState(false)
+  const [width, setWidth] = useState(1200) // Default fallback
 
   useEffect(() => {
-    if (typeof window === "undefined") return undefined
+    setMounted(true)
+    setWidth(window.innerWidth)
 
     let frame = 0
     const handleResize = () => {

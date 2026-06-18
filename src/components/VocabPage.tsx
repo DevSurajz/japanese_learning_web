@@ -1,12 +1,14 @@
+"use client"
+
 import { useDeferredValue, useState, useMemo } from "react"
 import { motion, AnimatePresence } from "motion/react"
-import { useNavigate } from "react-router-dom"
-import { vocabData } from "./vocabData"
-import { useViewport } from "./hooks.js"
+import { useRouter } from "next/navigation"
+import { vocabData } from "@/vocabData"
+import { useViewport } from "@/hooks"
 
 const PER_PAGE = 25
 
-const TYPE_COLORS = {
+const TYPE_COLORS: Record<string, { bg: string; text: string; border: string }> = {
   "Pronoun":        { bg: "#eff6ff", text: "#3b82f6", border: "#bfdbfe" },
   "Demonstrative":  { bg: "#f5f3ff", text: "#7c3aed", border: "#ddd6fe" },
   "Expression":     { bg: "#fef3c7", text: "#d97706", border: "#fde68a" },
@@ -22,7 +24,7 @@ const TYPE_COLORS = {
   "Conjunction":    { bg: "#fefce8", text: "#854d0e", border: "#fef08a" },
 }
 
-function TypeBadge({ type }) {
+function TypeBadge({ type }: { type: string }) {
   const c = TYPE_COLORS[type] || { bg: "#f1f5f9", text: "#64748b", border: "#e2e8f0" }
   return (
     <span style={{
@@ -37,7 +39,7 @@ function TypeBadge({ type }) {
 }
 
 export default function VocabPage() {
-  const navigate = useNavigate()
+  const router = useRouter()
   const { isMobile } = useViewport()
   
   const [search, setSearch]   = useState("")
@@ -48,14 +50,14 @@ export default function VocabPage() {
   const deferredSearch = useDeferredValue(search)
 
   const allTypes = useMemo(() => {
-    const s = new Set(vocabData.map(w => w.type))
+    const s = new Set(vocabData.map((w: any) => w.type))
     return ["All", ...Array.from(s).sort()]
   }, [])
 
   const filtered = useMemo(() => {
     const q = deferredSearch.toLowerCase().trim()
     return vocabData
-      .filter(w => {
+      .filter((w: any) => {
         const typeOk = typeFilter === "All" || w.type === typeFilter
         if (!typeOk) return false
         if (!q) return true
@@ -66,8 +68,8 @@ export default function VocabPage() {
           w.meaning.toLowerCase().includes(q)
         )
       })
-      .sort((a, b) => {
-        let va = a[sortKey], vb = b[sortKey]
+      .sort((a: any, b: any) => {
+        const va = a[sortKey], vb = b[sortKey]
         if (sortKey === "id") return sortDir * (va - vb)
         return sortDir * String(va).localeCompare(String(vb), "ja")
       })
@@ -79,14 +81,14 @@ export default function VocabPage() {
     [filtered, page]
   )
 
-  const handleSearch = v => { setSearch(v); setPage(1) }
-  const handleType   = v => { setTypeFilter(v); setPage(1) }
-  const handleSort   = key => {
+  const handleSearch = (v: string) => { setSearch(v); setPage(1) }
+  const handleType   = (v: string) => { setTypeFilter(v); setPage(1) }
+  const handleSort   = (key: string) => {
     if (sortKey === key) setSortDir(d => -d)
     else { setSortKey(key); setSortDir(1) }
     setPage(1)
   }
-  const sortIcon = key => sortKey === key ? (sortDir === 1 ? " ↑" : " ↓") : ""
+  const sortIcon = (key: string) => sortKey === key ? (sortDir === 1 ? " ↑" : " ↓") : ""
 
   return (
     <motion.div
@@ -101,7 +103,6 @@ export default function VocabPage() {
         fontFamily: "'Space Grotesk', sans-serif",
       }}
     >
-      
       <div style={{
         position: "sticky", top: 0, zIndex: 10,
         background: "rgba(248,250,252,0.95)",
@@ -119,7 +120,7 @@ export default function VocabPage() {
         </div>
         <motion.button
           whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
-          onClick={() => navigate('/')}
+          onClick={() => router.push('/')}
           style={{
             background: "#0f172a", color: "#fff", border: "none",
             borderRadius: 99, padding: isMobile ? "6px 12px" : "8px 20px",
@@ -129,10 +130,7 @@ export default function VocabPage() {
         >← Back{isMobile ? "" : " to Home"}</motion.button>
       </div>
 
-      
       <div style={{ maxWidth: 1300, margin: "0 auto", padding: isMobile ? "32px 24px 80px" : "48px 48px 80px" }}>
-
-        
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 6,
@@ -141,7 +139,7 @@ export default function VocabPage() {
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#8b5cf6", display: "inline-block" }} />
             <span style={{ fontSize: 10, fontWeight: 700, color: "#7c3aed", letterSpacing: "0.15em", textTransform: "uppercase" }}>JLPT N5</span>
           </div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "flex-end", flexDirection: isMobile ? "column" : "row", flexWrap: "wrap", gap: 20, marginBottom: 28 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "flex-end", flexDirection: isMobile ? "column" : "row", flexWrap: "wrap", gap: 20, marginBottom: 28 }}>
             <div>
               <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(36px,8vw,56px)", color: "#0f172a", lineHeight: 1.1 }}>
                 N5 Vocabulary
@@ -172,9 +170,7 @@ export default function VocabPage() {
             </div>
           </div>
 
-          
           <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 10 : 12, flexWrap: "wrap", marginBottom: 28 }}>
-            
             <div style={{ position: "relative", flexGrow: 1, width: isMobile ? "100%" : "auto", maxWidth: isMobile ? "none" : 380 }}>
               <input
                 type="text" placeholder="Search kana, romaji, or meaning…"
@@ -193,7 +189,6 @@ export default function VocabPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
-            
             <select
               value={typeFilter} onChange={e => handleType(e.target.value)}
               style={{
@@ -208,9 +203,7 @@ export default function VocabPage() {
           </div>
         </motion.div>
 
-        
         <div style={{ background: isMobile ? "transparent" : "#fff", borderRadius: 16, border: isMobile ? "none" : "1px solid #e2e8f0", overflow: "hidden", boxShadow: isMobile ? "none" : "0 1px 6px rgba(0,0,0,0.04)" }}>
-          
           {!isMobile && (
             <div style={{
               position: "sticky", top: 72, zIndex: 5,
@@ -222,7 +215,7 @@ export default function VocabPage() {
             {[
               { key: "id",      label: "#" },
               { key: "kana",    label: "Kana / Written" },
-              ...(isMobile ? [] : [{ key: "romaji",  label: "Romaji / Reading" }]),
+              { key: "romaji",  label: "Romaji / Reading" },
               { key: null,      label: "Type" },
               { key: "meaning", label: "Meaning" },
             ].map(({ key, label }, i) => (
@@ -230,12 +223,12 @@ export default function VocabPage() {
                 key={label}
                 onClick={key ? () => handleSort(key) : undefined}
                 style={{
-                  padding: isMobile ? "12px 8px" : "12px 16px",
+                  padding: "12px 16px",
                   fontSize: 10, fontWeight: 600, letterSpacing: "0.12em",
                   textTransform: "uppercase", color: "#64748b",
                   cursor: key ? "pointer" : "default",
                   userSelect: "none",
-                  borderRight: i < (isMobile ? 3 : 4) ? "1px solid #e2e8f0" : "none",
+                  borderRight: i < 4 ? "1px solid #e2e8f0" : "none",
                   display: "flex", alignItems: "center", gap: 4,
                 }}
               >
@@ -243,10 +236,10 @@ export default function VocabPage() {
               </div>
             ))}
             </div>
-          )}          
+          )}
           <AnimatePresence mode="wait">
             <motion.div key={page + search + sortKey + typeFilter} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
-              {pageData.length > 0 ? pageData.map((w, i) => (
+              {pageData.length > 0 ? pageData.map((w: any, i: number) => (
                 isMobile ? (
                   <motion.div
                     key={w.id}
@@ -279,8 +272,8 @@ export default function VocabPage() {
                       background: i % 2 === 0 ? "#fff" : "#fafbfc",
                       transition: "background 0.15s",
                     }}
-                    onMouseEnter={e => e.currentTarget.style.background = "#f0f9ff"}
-                    onMouseLeave={e => e.currentTarget.style.background = i % 2 === 0 ? "#fff" : "#fafbfc"}
+                    onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.background = "#f0f9ff"}
+                    onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.background = i % 2 === 0 ? "#fff" : "#fafbfc"}
                   >
                     <div style={{ padding: "12px 16px", fontSize: 12, color: "#94a3b8", fontWeight: 500, borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>{w.id}</div>
                     <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>
@@ -300,14 +293,13 @@ export default function VocabPage() {
                 )
               )) : (
                 <div style={{ padding: "48px 0", textAlign: "center", color: "#cbd5e1", fontSize: 15 }}>
-                  No results for "{search}"
+                  No results for &quot;{search}&quot;
                 </div>
               )}
             </motion.div>
           </AnimatePresence>
         </div>
 
-        
         {totalPages > 1 && (
           <div style={{ display: "flex", alignItems: "center", justifyContent: isMobile ? "space-between" : "center", gap: 6, marginTop: 36, width: "100%" }}>
             <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}

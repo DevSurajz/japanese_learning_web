@@ -1,7 +1,9 @@
+"use client"
+
 import { useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
-import { useNavigate } from "react-router-dom"
-import { useViewport } from "./hooks.js"
+import { useRouter } from "next/navigation"
+import { useViewport } from "@/hooks"
 
 const hiraganaGrid = [
   { kana: "あ", romaji: "a" }, { kana: "い", romaji: "i" }, { kana: "う", romaji: "u" }, { kana: "え", romaji: "e" }, { kana: "お", romaji: "o" },
@@ -53,8 +55,13 @@ const katakanaHandakuten = [
   { kana: "パ", romaji: "pa" }, { kana: "ピ", romaji: "pi" }, { kana: "プ", romaji: "pu" }, { kana: "ペ", romaji: "pe" }, { kana: "ポ", romaji: "po" },
 ]
 
+interface KanaItem {
+  kana?: string
+  romaji?: string
+  empty?: boolean
+}
 
-function KanaCard({ item, index, isMobile }) {
+function KanaCard({ item, index, isMobile }: { item: KanaItem; index: number; isMobile: boolean }) {
   if (item.empty) return <div />
 
   return (
@@ -74,10 +81,9 @@ function KanaCard({ item, index, isMobile }) {
         cursor: "default",
         transition: "box-shadow 0.3s ease",
       }}
-      onMouseEnter={e => e.currentTarget.style.boxShadow = "0 10px 30px rgba(0,0,0,0.08)"}
-      onMouseLeave={e => e.currentTarget.style.boxShadow = "0 2px 10px rgba(0,0,0,0.03)"}
+      onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.boxShadow = "0 10px 30px rgba(0,0,0,0.08)"}
+      onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 10px rgba(0,0,0,0.03)"}
     >
-
       <div style={{
         position: "relative", width: isMobile ? 52 : 72, height: isMobile ? 52 : 72,
         borderRadius: isMobile ? 10 : 12,
@@ -98,7 +104,7 @@ function KanaCard({ item, index, isMobile }) {
 }
 
 export default function KanaPage() {
-  const navigate = useNavigate()
+  const router = useRouter()
   const { isMobile } = useViewport()
   const [activeTab, setActiveTab] = useState("Hiragana")
 
@@ -115,7 +121,6 @@ export default function KanaPage() {
         fontFamily: "'Space Grotesk', sans-serif",
       }}
     >
-
       <div style={{
         position: "sticky", top: 0, zIndex: 10,
         background: "rgba(248,250,252,0.9)",
@@ -134,7 +139,7 @@ export default function KanaPage() {
         <motion.button
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.96 }}
-          onClick={() => navigate('/')}
+          onClick={() => router.push('/')}
           style={{
             background: "#0f172a", color: "#fff",
             border: "none", borderRadius: 99,
@@ -151,9 +156,7 @@ export default function KanaPage() {
         </motion.button>
       </div>
 
-
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "56px 48px 100px" }}>
-
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} style={{ marginBottom: 40, textAlign: "center" }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 6,
@@ -238,7 +241,6 @@ export default function KanaPage() {
             ))}
           </motion.div>
         </AnimatePresence>
-
       </div>
     </motion.div>
   )

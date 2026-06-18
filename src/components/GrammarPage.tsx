@@ -1,10 +1,13 @@
+"use client"
+
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "motion/react"
-import { useNavigate } from "react-router-dom"
-import { useViewport } from "./hooks.js"
-import { grammarData } from "./grammarData.js"
+import { useRouter } from "next/navigation"
+import { useViewport } from "@/hooks"
+import { grammarData } from "@/grammarData"
+import Footer from "@/components/Footer"
 
-const ExampleItem = React.memo(function ExampleItem({ ex, isMobile }) {
+const ExampleItem = React.memo(function ExampleItem({ ex, isMobile }: { ex: any; isMobile: boolean }) {
   return (
     <div>
       <p style={{
@@ -33,7 +36,7 @@ const ExampleItem = React.memo(function ExampleItem({ ex, isMobile }) {
   )
 })
 
-const PracticeItem = React.memo(function PracticeItem({ prac, index }) {
+const PracticeItem = React.memo(function PracticeItem({ prac, index }: { prac: any; index: number }) {
   return (
     <details style={{
       background: "#FAFAFA",
@@ -78,19 +81,19 @@ const PracticeItem = React.memo(function PracticeItem({ prac, index }) {
   )
 })
 
-const GrammarItem = React.memo(function GrammarItem({ item, isMobile }) {
+const GrammarItem = React.memo(function GrammarItem({ item, isMobile }: { item: any; isMobile: boolean }) {
   const [showHeavy, setShowHeavy] = useState(false)
 
   useEffect(() => {
-    let handle;
+    let handle: ReturnType<typeof setTimeout> | number;
     if (typeof window.requestIdleCallback !== 'undefined') {
       handle = window.requestIdleCallback(() => setShowHeavy(true), { timeout: 1000 })
     } else {
       handle = setTimeout(() => setShowHeavy(true), 200)
     }
     return () => {
-      if (typeof window.cancelIdleCallback !== 'undefined' && window.requestIdleCallback) window.cancelIdleCallback(handle)
-      else clearTimeout(handle)
+      if (typeof window.cancelIdleCallback !== 'undefined') window.cancelIdleCallback(handle as number)
+      else clearTimeout(handle as ReturnType<typeof setTimeout>)
     }
   }, [])
 
@@ -159,7 +162,7 @@ const GrammarItem = React.memo(function GrammarItem({ item, isMobile }) {
             marginBottom: 16,
           }}>Examples</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            {item.examples.map((ex, i) => (
+            {item.examples.map((ex: any, i: number) => (
               <ExampleItem key={i} ex={ex} isMobile={isMobile} />
             ))}
           </div>
@@ -194,7 +197,7 @@ const GrammarItem = React.memo(function GrammarItem({ item, isMobile }) {
             marginBottom: 16,
           }}>Practice</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {item.practice.map((prac, i) => (
+            {item.practice.map((prac: any, i: number) => (
               <PracticeItem key={i} prac={prac} index={i} />
             ))}
           </div>
@@ -204,7 +207,7 @@ const GrammarItem = React.memo(function GrammarItem({ item, isMobile }) {
   )
 })
 
-const LessonCard = React.memo(function LessonCard({ lessonData, index, isMobile }) {
+const LessonCard = React.memo(function LessonCard({ lessonData, index, isMobile }: { lessonData: any; index: number; isMobile: boolean }) {
   const [isOpen, setIsOpen] = useState(false)
   const grammarItems = lessonData.grammar || null
 
@@ -289,7 +292,7 @@ const LessonCard = React.memo(function LessonCard({ lessonData, index, isMobile 
               {!grammarItems ? (
                 <div style={{ padding: "40px", textAlign: "center", color: "rgba(10,10,10,0.3)", fontFamily: "'Space Grotesk', sans-serif" }}>Loading...</div>
               ) : (
-                grammarItems.map((item, idx) => (
+                grammarItems.map((item: any, idx: number) => (
                   <GrammarItem key={idx} item={item} isMobile={isMobile} />
                 ))
               )}
@@ -366,39 +369,8 @@ function GrammarHero() {
   )
 }
 
-function Footer() {
-  const { isMobile } = useViewport()
-
-  return (
-    <footer style={{
-      padding: isMobile ? "40px 24px" : "40px 48px",
-      background: "#FAFAFA",
-      borderTop: "1px solid rgba(10,10,10,0.06)",
-      display: "flex", alignItems: isMobile ? "flex-start" : "center", 
-      justifyContent: isMobile ? "center" : "space-between",
-      flexDirection: isMobile ? "column" : "row", gap: isMobile ? 24 : 0,
-    }}>
-      <div style={{
-        display: "flex", gap: 12, alignItems: "center",
-        fontFamily: "'Space Grotesk', sans-serif",
-        fontWeight: 300, fontSize: 11, color: "rgba(10,10,10,0.5)",
-      }}>
-        <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 100 }}>日本語</span>
-        <span>NihongoPath</span>
-      </div>
-      <p style={{
-        fontFamily: "'Space Grotesk', sans-serif",
-        fontWeight: 300, fontSize: 11, color: "rgba(10,10,10,0.5)", letterSpacing: "0.05em",
-        textAlign: isMobile ? "left" : "right"
-      }}>
-        © 2026&nbsp;&nbsp;·&nbsp;&nbsp;JLPT N5–N1&nbsp;&nbsp;·&nbsp;&nbsp;Made with 愛
-      </p>
-    </footer>
-  )
-}
-
 export default function GrammarPage() {
-  const navigate = useNavigate()
+  const router = useRouter()
   const { isMobile } = useViewport()
 
   return (
@@ -431,7 +403,7 @@ export default function GrammarPage() {
         <motion.button
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.96 }}
-          onClick={() => navigate('/')}
+          onClick={() => router.push('/')}
           style={{
             background: "#0A0A0A", color: "#FAFAFA",
             border: "none", borderRadius: 99,
@@ -451,7 +423,7 @@ export default function GrammarPage() {
       <GrammarHero />
 
       <section style={{ padding: isMobile ? "40px 24px 80px" : "80px 48px 120px", maxWidth: 1000, margin: "0 auto" }}>
-        {grammarData.map((lessonData, index) => (
+        {grammarData.map((lessonData: any, index: number) => (
           <LessonCard key={index} lessonData={lessonData} index={index} isMobile={isMobile} />
         ))}
       </section>

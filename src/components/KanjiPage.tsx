@@ -1,10 +1,14 @@
+"use client"
+
 import { useDeferredValue, useState, useMemo } from "react"
 import { motion, AnimatePresence } from "motion/react"
-import { useNavigate } from "react-router-dom"
-import { kanjiData } from "./kanjiData"
-import { useViewport } from "./hooks.js"
+import { useRouter } from "next/navigation"
+import { kanjiData } from "@/kanjiData"
+import { useViewport } from "@/hooks"
+
 const CARDS_PER_PAGE = 20
-function KanjiModal({ item, onClose, isMobile }) {
+
+function KanjiModal({ item, onClose, isMobile }: { item: any; onClose: () => void; isMobile: boolean }) {
   return (
     <AnimatePresence>
       {item && (
@@ -38,7 +42,6 @@ function KanjiModal({ item, onClose, isMobile }) {
               position: "relative",
             }}
           >
-
             <button
               onClick={onClose}
               style={{
@@ -49,7 +52,6 @@ function KanjiModal({ item, onClose, isMobile }) {
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}
             >✕</button>
-
 
             <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
               <div style={{
@@ -71,7 +73,6 @@ function KanjiModal({ item, onClose, isMobile }) {
                 <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, color: "#94a3b8", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 10 }}>
                   {item.strokes} strokes
                 </p>
-
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                   {Array.from({ length: item.strokes }).map((_, i) => (
                     <motion.div key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: i * 0.04, duration: 0.2 }}
@@ -80,7 +81,6 @@ function KanjiModal({ item, onClose, isMobile }) {
                 </div>
               </div>
             </div>
-
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               {[
@@ -93,7 +93,7 @@ function KanjiModal({ item, onClose, isMobile }) {
                   </p>
                   {data.length > 0 ? (
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                      {data.map((r, i) => (
+                      {data.map((r: string, i: number) => (
                         <span key={i} style={{ background: pillBg, color: pillText, borderRadius: 99, padding: "3px 10px", fontSize: 13, fontFamily: "'Noto Sans JP', sans-serif" }}>{r}</span>
                       ))}
                     </div>
@@ -102,13 +102,12 @@ function KanjiModal({ item, onClose, isMobile }) {
               ))}
             </div>
 
-
             <div>
               <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 10, fontWeight: 600, color: "#cbd5e1", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>
                 Example Words
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {item.examples.map((ex, i) => (
+                {item.examples.map((ex: string, i: number) => (
                   <motion.div key={i} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
                     style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
                     <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#93c5fd", marginTop: 6, flexShrink: 0 }} />
@@ -117,7 +116,6 @@ function KanjiModal({ item, onClose, isMobile }) {
                 ))}
               </div>
             </div>
-
 
             <motion.button
               whileHover={{ scale: 1.02, background: "#334155" }}
@@ -140,7 +138,8 @@ function KanjiModal({ item, onClose, isMobile }) {
     </AnimatePresence>
   )
 }
-function KanjiCard({ item, index, onClick }) {
+
+function KanjiCard({ item, index, onClick }: { item: any; index: number; onClick: (item: any) => void }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 28 }}
@@ -161,10 +160,9 @@ function KanjiCard({ item, index, onClick }) {
         height: "100%",
         transition: "box-shadow 0.4s ease",
       }}
-        onMouseEnter={e => e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,0,0,0.1)"}
-        onMouseLeave={e => e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.04)"}
+        onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.boxShadow = "0 12px 40px rgba(0,0,0,0.1)"}
+        onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.04)"}
       >
-
         <div style={{
           position: "relative", width: 90, height: 90,
           border: "2px solid #bfdbfe", borderRadius: 14,
@@ -179,16 +177,13 @@ function KanjiCard({ item, index, onClick }) {
           </span>
         </div>
 
-
         <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 13, color: "#334155", textAlign: "center", lineHeight: 1.3 }}>
           {item.meaning}
         </p>
 
-
         <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 10, color: "#cbd5e1", letterSpacing: "0.1em", textTransform: "uppercase" }}>
           {item.strokes} strokes
         </p>
-
 
         <div style={{ display: "flex", flexWrap: "wrap", gap: 5, justifyContent: "center" }}>
           {item.onyomi.length > 0 && (
@@ -210,22 +205,22 @@ function KanjiCard({ item, index, onClick }) {
 }
 
 export default function KanjiPage() {
-  const navigate = useNavigate()
+  const router = useRouter()
   const { isMobile, isTablet } = useViewport()
 
   const [search, setSearch] = useState("")
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState<any>(null)
   const [page, setPage] = useState(1)
   const deferredSearch = useDeferredValue(search)
 
   const filtered = useMemo(() => {
     const q = deferredSearch.toLowerCase()
     if (!q) return kanjiData
-    return kanjiData.filter(k =>
+    return kanjiData.filter((k: any) =>
       k.kanji.includes(q) ||
       k.meaning.toLowerCase().includes(q) ||
-      k.onyomi.some(r => r.includes(q)) ||
-      k.kunyomi.some(r => r.includes(q))
+      k.onyomi.some((r: string) => r.includes(q)) ||
+      k.kunyomi.some((r: string) => r.includes(q))
     )
   }, [deferredSearch])
 
@@ -248,7 +243,6 @@ export default function KanjiPage() {
         fontFamily: "'Space Grotesk', sans-serif",
       }}
     >
-
       <div style={{
         position: "sticky", top: 0, zIndex: 10,
         background: "rgba(248,250,252,0.9)",
@@ -267,7 +261,7 @@ export default function KanjiPage() {
         <motion.button
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.96 }}
-          onClick={() => navigate('/')}
+          onClick={() => router.push('/')}
           style={{
             background: "#0f172a", color: "#fff",
             border: "none", borderRadius: 99,
@@ -284,10 +278,7 @@ export default function KanjiPage() {
         </motion.button>
       </div>
 
-
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: isMobile ? "32px 24px 80px" : "56px 48px 80px" }}>
-
-
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 6,
@@ -330,7 +321,6 @@ export default function KanjiPage() {
             </div>
           </div>
 
-
           <div style={{ position: "relative", width: "100%", maxWidth: isMobile ? "none" : 420, marginBottom: 48 }}>
             <input
               type="text"
@@ -357,7 +347,6 @@ export default function KanjiPage() {
           </div>
         </motion.div>
 
-
         <AnimatePresence mode="wait">
           <motion.div
             key={page + search}
@@ -371,16 +360,15 @@ export default function KanjiPage() {
               gap: 16,
             }}
           >
-            {paginated.length > 0 ? paginated.map((item, i) => (
+            {paginated.length > 0 ? paginated.map((item: any, i: number) => (
               <KanjiCard key={item.kanji} item={item} index={i} onClick={setSelected} />
             )) : (
               <div style={{ gridColumn: "1/-1", textAlign: "center", padding: "64px 0", color: "#cbd5e1", fontSize: 16 }}>
-                No kanji found for "{search}"
+                No kanji found for &quot;{search}&quot;
               </div>
             )}
           </motion.div>
         </AnimatePresence>
-
 
         {totalPages > 1 && (
           <div style={{ display: "flex", alignItems: "center", justifyContent: isMobile ? "space-between" : "center", gap: 8, marginTop: 56, width: "100%" }}>
@@ -427,7 +415,6 @@ export default function KanjiPage() {
           </div>
         )}
       </div>
-
 
       <KanjiModal item={selected} onClose={() => setSelected(null)} isMobile={isMobile} />
     </motion.div>
