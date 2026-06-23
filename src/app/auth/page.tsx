@@ -24,7 +24,6 @@ export default function AuthPage() {
       {!isMobile && (
         <div style={{
           flex: 1,
-          background: 'linear-gradient(145deg, #F0F0F0 0%, #FAFAFA 100%)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -34,11 +33,28 @@ export default function AuthPage() {
           overflow: 'hidden',
           borderRight: '1px solid rgba(10,10,10,0.05)'
         }}>
+          {/* Background Image */}
+          <div style={{
+            position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundImage: `url('/new.png')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            zIndex: 0
+          }} />
+          
+          {/* Subtle white mist overlay for readability */}
+          <div style={{
+            position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+            background: 'linear-gradient(145deg, rgba(250,250,250,0.85) 0%, rgba(250,250,250,0.5) 100%)',
+            zIndex: 0
+          }} />
+
           {/* Subtle noise texture */}
           <div style={{
             position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-            opacity: 0.03, pointerEvents: 'none',
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
+            opacity: 0.04, pointerEvents: 'none',
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+            zIndex: 0
           }} />
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} style={{ position: 'relative', zIndex: 1, maxWidth: 480, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
