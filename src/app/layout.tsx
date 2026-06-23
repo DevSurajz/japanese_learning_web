@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Cormorant_Garamond, Space_Grotesk, Noto_Sans_JP } from 'next/font/google'
 import './globals.css'
 import { ViewportProvider } from '@/hooks'
-import { AuthProvider } from '@/components/AuthProvider'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -43,11 +42,9 @@ export default function RootLayout({
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       </head>
       <body>
-        <AuthProvider>
-          <ViewportProvider>
-            {children}
-          </ViewportProvider>
-        </AuthProvider>
+        <ViewportProvider>
+          {children}
+        </ViewportProvider>
       </body>
     </html>
   )

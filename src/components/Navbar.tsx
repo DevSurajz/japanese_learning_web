@@ -5,9 +5,6 @@ import { motion, useTransform, AnimatePresence, type MotionValue } from "motion/
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useViewport } from "@/hooks"
-import { useAuth } from "@/components/AuthProvider"
-
-import UserMenu from "./UserMenu"
 
 const NAV_LINKS = [
   { label: "KANJI", to: "/kanji" },
@@ -23,10 +20,8 @@ interface NavbarProps {
 
 export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
   const { isMobile } = useViewport()
-  const { user, loading, signOut } = useAuth()
   const router = useRouter()
 
-  // For home page with scroll-based background
   const defaultScrollY = useTransform(() => 0)
   const activeScrollY = scrollY ?? defaultScrollY
 
@@ -37,18 +32,13 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
 
   const [menuOpen, setMenuOpen] = useState(false)
 
-  const handleSignOut = async () => {
-    await signOut()
-    setMenuOpen(false)
-    router.push("/")
-    router.refresh()
-  }
-
   // For sub-pages, use a fixed bg
   const navStyle = variant === "page"
     ? {
         position: "sticky" as const, top: 0, left: 0, right: 0, zIndex: 100,
-        display: "flex", alignItems: "center" as const, justifyContent: "space-between" as const,
+        display: isMobile ? "flex" : "grid", alignItems: "center" as const, 
+        justifyContent: isMobile ? "space-between" as const : undefined,
+        gridTemplateColumns: isMobile ? undefined : "1fr auto 1fr",
         padding: isMobile ? "20px 24px" : "24px 48px",
         background: "rgba(250,250,250,0.95)",
         backdropFilter: "blur(12px)",
@@ -56,7 +46,9 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
       }
     : {
         position: "fixed" as const, top: 0, left: 0, right: 0, zIndex: 100,
-        display: "flex", alignItems: "center" as const, justifyContent: "space-between" as const,
+        display: isMobile ? "flex" : "grid", alignItems: "center" as const, 
+        justifyContent: isMobile ? "space-between" as const : undefined,
+        gridTemplateColumns: isMobile ? undefined : "1fr auto 1fr",
         padding: isMobile ? "20px 24px" : "24px 48px",
       }
 
@@ -65,7 +57,9 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
       <motion.nav
         style={variant === "home" ? {
           position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-          display: "flex", alignItems: "center", justifyContent: "space-between",
+          display: isMobile ? "flex" : "grid", alignItems: "center", 
+          justifyContent: isMobile ? "space-between" : undefined,
+          gridTemplateColumns: isMobile ? undefined : "1fr auto 1fr",
           padding: isMobile ? "20px 24px" : "24px 48px",
           background: bg,
           borderBottom,
@@ -91,7 +85,6 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
 
         {isMobile ? (
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            {!loading && user && <UserMenu />}
             <button
               onClick={() => setMenuOpen(open => !open)}
               style={{
@@ -106,7 +99,7 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
         ) : (
           <>
             {/* Nav Links */}
-            <motion.div style={{ display: "flex", gap: 40, alignItems: "center" }}>
+            <motion.div style={{ display: "flex", gap: 40, alignItems: "center", justifyContent: "center" }}>
               {NAV_LINKS.map(({ label, to }) => (
                 <Link
                   key={label}
@@ -126,31 +119,25 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
               ))}
             </motion.div>
 
-            {/* Auth CTA */}
-            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-              {loading ? (
-                <div style={{ width: 40, height: 40 }} />
-              ) : user ? (
-                <UserMenu />
-              ) : (
-                <Link href="/login" style={{ textDecoration: "none" }}>
-                  <motion.button
-                    whileHover={{ opacity: 0.8 }}
-                    whileTap={{ scale: 0.97 }}
-                    style={{
-                      background: "#0A0A0A", color: "#FAFAFA",
-                      border: "none", borderRadius: 0,
-                      padding: "10px 20px",
-                      fontFamily: "'Space Grotesk', sans-serif",
-                      fontWeight: 300, fontSize: 11,
-                      letterSpacing: "0.18em", textTransform: "uppercase",
-                      cursor: "pointer",
-                    }}
-                  >
-                    SIGN IN →
-                  </motion.button>
-                </Link>
-              )}
+            {/* Right CTA */}
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <Link href="/kana" style={{ textDecoration: "none" }}>
+                <motion.button
+                  whileHover={{ opacity: 0.8 }}
+                  whileTap={{ scale: 0.97 }}
+                  style={{
+                    background: "#0A0A0A", color: "#FAFAFA",
+                    border: "none", borderRadius: 0,
+                    padding: "10px 20px",
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontWeight: 300, fontSize: 11,
+                    letterSpacing: "0.18em", textTransform: "uppercase",
+                    cursor: "pointer",
+                  }}
+                >
+                  START KANA →
+                </motion.button>
+              </Link>
             </div>
           </>
         )}
@@ -187,21 +174,6 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
                 {label}
               </Link>
             ))}
-
-            {/* Mobile Auth */}
-            {!loading && !user && (
-              <Link href="/login" onClick={() => setMenuOpen(false)} style={{ textDecoration: "none", marginTop: 8 }}>
-                <div style={{
-                  background: "#0A0A0A", color: "#FAFAFA",
-                  padding: "16px", textAlign: "center",
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontWeight: 300, fontSize: 12,
-                  letterSpacing: "0.18em", textTransform: "uppercase",
-                }}>
-                  SIGN IN →
-                </div>
-              </Link>
-            )}
           </motion.div>
         )}
       </AnimatePresence>
