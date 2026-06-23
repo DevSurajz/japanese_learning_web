@@ -45,10 +45,10 @@ export function KanaExitModal({ isOpen, onContinue, onLeave }: KanaExitModalProp
         }}
       >
         <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 600, color: "#0f172a", marginBottom: 12 }}>
-          Your journey isn't finished yet.
+          Your journey isn&apos;t finished yet.
         </h2>
         <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, color: "#64748b", lineHeight: 1.6, marginBottom: 32 }}>
-          Whoa! You're giving up midway.<br/>
+          Whoa! You&apos;re giving up midway.<br/>
           Review the remaining characters to strengthen your foundation.
         </p>
 
