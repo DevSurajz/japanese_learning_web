@@ -1,37 +1,11 @@
 "use client"
 
 import { useRef, useEffect } from "react"
-import { motion, useScroll, useTransform, useSpring, useInView, useMotionValue, animate } from "motion/react"
+import { motion, useScroll, useTransform, useSpring, useInView } from "motion/react"
 import Link from "next/link"
 import { useViewport } from "@/hooks"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
-
-const MARQUEE_WORDS = ["語学", "KANJI", "文法", "GRAMMAR", "語彙", "VOCABULARY", "日本語", "NIHONGO", "N5→N1", "学習"]
-
-const FEATURE_CARDS = [
-  {
-    ja: "漢字", en: "KANJI", num: "01",
-    desc: "80 essential N5 characters. Master stroke order, readings, and meaning through spaced repetition.",
-    offset: 0,
-    link: "/kanji",
-  },
-  {
-    ja: "文法", en: "GRAMMAR", num: "02",
-    desc: "23 core grammar patterns. From particles to verb conjugations — structured, clear, complete.",
-    offset: 80,
-    link: "/grammar",
-  },
-  {
-    ja: "語彙", en: "VOCABULARY", num: "03",
-    desc: "800+ words essential for JLPT N5. Grouped by topic with example sentences and audio.",
-    offset: 160,
-    link: "/vocabulary",
-  },
-]
-
-const QUOTE_CHARS = "千里の道も一歩から".split("")
-const QUOTE_TEXT = "A journey of a thousand miles begins with a single step."
 
 // ─── HERO ────────────────────────────────────────────────────────
 function Hero({ scrollY }: { scrollY: ReturnType<typeof useScroll>["scrollY"] }) {
@@ -41,434 +15,454 @@ function Hero({ scrollY }: { scrollY: ReturnType<typeof useScroll>["scrollY"] })
   const kanjiOpacity = useTransform(scrollY, [0, 400], [0.06, 0])
   const springY = useSpring(kanjiY, { stiffness: 80, damping: 20 })
 
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true })
-  const kanjiCount = useMotionValue(0)
-  const grammarCount = useMotionValue(0)
-  const vocabCount = useMotionValue(0)
-
-  const kanjiDisplay = useTransform(kanjiCount, Math.round)
-  const grammarDisplay = useTransform(grammarCount, Math.round)
-  const vocabDisplay = useTransform(vocabCount, Math.round)
-
-  const hasAnimated = useRef(false)
-
-  useEffect(() => {
-    if (inView && !hasAnimated.current) {
-      hasAnimated.current = true
-      animate(kanjiCount, 80, { duration: 2, ease: "easeOut" })
-      animate(grammarCount, 11, { duration: 2, ease: "easeOut" })
-      animate(vocabCount, 800, { duration: 2, ease: "easeOut" })
-    }
-  }, [inView, kanjiCount, grammarCount, vocabCount])
-
   return (
     <section
       style={{
         minHeight: "100vh", display: "flex", alignItems: "center",
-        padding: isMobile ? "100px 24px 60px" : "120px 48px 80px", position: "relative", overflow: "hidden",
+        padding: isMobile ? "120px 24px 80px" : "140px 48px 100px", position: "relative", overflow: "hidden",
         background: "#FAFAFA",
       }}
     >
-      {/* Parallax background kanji — pinned to right-middle */}
+      {/* Background elegant characters */}
       <motion.div
         style={{
-          position: "absolute",
-          right: "8%",
-          top: "50%",
-          translateY: "-50%",
-          y: isMobile ? 0 : springY,
-          opacity: kanjiOpacity,
-          fontFamily: "'Noto Sans JP', sans-serif",
-          fontWeight: 100,
-          fontSize: "clamp(280px, 30vw, 480px)",
-          color: "#0A0A0A",
-          lineHeight: 1,
-          userSelect: "none",
-          pointerEvents: "none",
+          position: "absolute", right: "5%", top: "45%", translateY: "-50%",
+          y: isMobile ? 0 : springY, opacity: kanjiOpacity,
+          fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 100,
+          fontSize: "clamp(240px, 35vw, 600px)", color: "#0A0A0A",
+          lineHeight: 1, userSelect: "none", pointerEvents: "none",
         }}
-      >語</motion.div>
+      >道</motion.div>
 
-      <div style={{ maxWidth: 680, position: "relative", zIndex: 1 }}>
-        {/* Breadcrumb */}
+      <div style={{ maxWidth: 800, position: "relative", zIndex: 1 }}>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            display: "flex", gap: 16, alignItems: "center",
-            marginBottom: 40,
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 300, fontSize: 11,
-            letterSpacing: "0.18em", textTransform: "uppercase",
-            color: "rgba(10,10,10,0.4)",
+            display: "flex", gap: 16, alignItems: "center", marginBottom: 32,
+            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 11,
+            letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(10,10,10,0.5)",
           }}
         >
-          <span>JLPT N5 → N1</span>
-          <span style={{ color: "rgba(10,10,10,0.15)" }}>／</span>
-          <span>始める</span>
-          <span style={{ color: "rgba(10,10,10,0.15)" }}>／</span>
+          <span>A Structured Path</span>
         </motion.div>
 
-        {/* Headline */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontWeight: 300, lineHeight: 1.0,
-            fontSize: "clamp(64px, 12vw, 140px)",
-            color: "#0A0A0A",
-            marginBottom: 32,
+            fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, lineHeight: 1.05,
+            fontSize: "clamp(60px, 10vw, 120px)", color: "#0A0A0A", marginBottom: 32,
           }}
         >
           <span style={{ display: "block", fontStyle: "italic" }}>Master</span>
-          <span style={{ display: "block", fontWeight: 600, fontStyle: "normal" }}>Japanese.</span>
-          <span style={{ display: "block", fontStyle: "italic" }}>Perfectly.</span>
+          <span style={{ display: "block", fontWeight: 600 }}>Japanese.</span>
         </motion.h1>
 
-        {/* Body */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 300, fontSize: 15,
-            lineHeight: 1.8, color: "rgba(10,10,10,0.55)",
-            maxWidth: 440, marginBottom: 56,
+            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: isMobile ? 15 : 18,
+            lineHeight: 1.6, color: "rgba(10,10,10,0.6)", maxWidth: 500, marginBottom: 48,
           }}
         >
-          From absolute beginner to advanced. Structured JLPT N5 curriculum with
-          Kanji, Grammar, and Vocabulary — built to take you further.
+          From your first Hiragana to JLPT N1. Learn Kana, Vocabulary, Grammar, Kanji, and Reading through a structured learning path designed for long-term mastery.
         </motion.p>
 
-        {/* Stats */}
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          style={{ display: "flex", gap: 0, flexDirection: isMobile ? "column" : "row" }}
-        >
-          {[
-            { value: kanjiDisplay, suffix: "", label: "N5 KANJI" },
-            { value: grammarDisplay, suffix: "", label: "GRAMMAR POINTS" },
-            { value: vocabDisplay, suffix: "+", label: "VOCABULARY WORDS" },
-          ].map(({ value, suffix, label }, i) => (
-            <div
-              key={label}
-              style={{
-                borderTop: "2px solid #0A0A0A",
-                paddingTop: 16, paddingBottom: 24,
-                paddingLeft: isMobile ? 0 : (i === 0 ? 0 : 32),
-                paddingRight: isMobile ? 0 : (i === 2 ? 0 : 32),
-                borderRight: isMobile ? "none" : (i < 2 ? "1px solid rgba(10,10,10,0.12)" : "none"),
-              }}
-            >
-              <p style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontWeight: 600, fontSize: "clamp(40px, 10vw, 60px)",
-                color: "#0A0A0A", lineHeight: 1,
-              }}>
-                <motion.span>{value}</motion.span>{suffix}
-              </p>
-              <p style={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontWeight: 300, fontSize: 9,
-                letterSpacing: "0.2em", textTransform: "uppercase",
-                color: "rgba(10,10,10,0.35)", marginTop: 8,
-              }}>{label}</p>
-            </div>
-          ))}
-        </motion.div>
-      </div>
-
-      {/* Scroll indicator */}
-      {!isMobile && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          style={{
-            position: "absolute", bottom: 40, left: "50%",
-            transform: "translateX(-50%)",
-            display: "flex", flexDirection: "column", alignItems: "center", gap: 10,
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 300, fontSize: 9,
-            letterSpacing: "0.25em", textTransform: "uppercase",
-            color: "rgba(10,10,10,0.3)",
-          }}
-        >
-          <span>SCROLL TO EXPLORE</span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-            style={{ width: 1, height: 40, background: "rgba(10,10,10,0.2)" }}
-          />
-        </motion.div>
-      )}
-    </section>
-  )
-}
-
-// ─── MARQUEE STRIP ───────────────────────────────────────────────
-function MarqueeStrip() {
-  const { isMobile } = useViewport()
-  return (
-    <div style={{
-      overflow: "hidden", borderTop: "1px solid rgba(10,10,10,0.08)",
-      borderBottom: "1px solid rgba(10,10,10,0.08)",
-      padding: "18px 0", background: "#FAFAFA",
-    }}>
-      <motion.div
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
-        style={{ display: "flex", gap: isMobile ? 32 : 64, whiteSpace: "nowrap", width: "max-content" }}
-      >
-        {[...MARQUEE_WORDS, ...MARQUEE_WORDS].map((w, i) => (
-          <span key={i} style={{
-            fontFamily: i % 2 === 0 ? "'Noto Sans JP'" : "'Space Grotesk'",
-            fontWeight: i % 2 === 0 ? 100 : 300,
-            fontSize: isMobile ? 11 : 13, letterSpacing: "0.2em",
-            color: "rgba(10,10,10,0.25)",
-            textTransform: "uppercase",
-          }}>{w}</span>
-        ))}
-      </motion.div>
-    </div>
-  )
-}
-
-function FeatureCard({ ja, en, num, desc, offset, link, scrollY, delay, isMobile, isTablet }: {
-  ja: string; en: string; num: string; desc: string; offset: number; link: string;
-  scrollY: ReturnType<typeof useScroll>["scrollY"]; delay: number; isMobile: boolean; isTablet: boolean;
-}) {
-  const shouldParallax = !isMobile && !isTablet
-  const cardY = useTransform(scrollY, [300, 900], [shouldParallax ? offset : 0, 0])
-  const springCardY = useSpring(cardY, { stiffness: 80, damping: 20 })
-
-  return (
-    <motion.div
-      style={{ y: springCardY }}
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8, delay }}
-    >
-      <motion.div
-        whileHover={{ scale: 1.02 }}
-        transition={{ duration: 0.4 }}
-        style={{
-          border: "1px solid rgba(10,10,10,0.08)",
-          padding: isMobile ? "32px 24px 40px" : "48px 40px 56px",
-          position: "relative", overflow: "hidden",
-          cursor: link ? "pointer" : "default",
-          height: "100%",
-        }}
-      >
-        {/* BG kanji */}
-        <motion.div
-          style={{
-            position: "absolute", bottom: -20, right: 24,
-            fontFamily: "'Noto Sans JP', sans-serif",
-            fontWeight: 100, color: "rgba(10,10,10,0.03)",
-            lineHeight: 1, userSelect: "none", pointerEvents: "none",
-          }}
-          initial={{ fontSize: 120 }}
-          whileHover={{ fontSize: 160 }}
-          transition={{ duration: 0.5 }}
-        >{ja}</motion.div>
-
-        <p style={{
-          fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
-          fontSize: 10, letterSpacing: "0.25em",
-          color: "rgba(10,10,10,0.25)", marginBottom: isMobile ? 32 : 48,
-        }}>{num}</p>
-
-        <p style={{
-          fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 100,
-          fontSize: 40, color: "rgba(10,10,10,0.6)",
-          marginBottom: 8, lineHeight: 1,
-        }}>{ja}</p>
-
-        <p style={{
-          fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
-          fontSize: 11, letterSpacing: "0.2em",
-          color: "#0A0A0A", marginBottom: 28,
-        }}>{en}</p>
-
-        <p style={{
-          fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
-          fontSize: 13, lineHeight: 1.8,
-          color: "rgba(10,10,10,0.45)", marginBottom: 40,
-        }}>{desc}</p>
-
-        {link ? (
-          <Link
-            href={link}
-            style={{
-              fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
-              fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase",
-              color: "#0A0A0A", textDecoration: "none",
-              borderBottom: "1px solid rgba(10,10,10,0.3)",
-              paddingBottom: 2,
-            }}
-          >EXPLORE →</Link>
-        ) : (
-          <span style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
-            fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase",
-            color: "rgba(10,10,10,0.3)",
-            borderBottom: "1px solid rgba(10,10,10,0.1)",
-            paddingBottom: 2,
-          }}>COMING SOON</span>
-        )}
-      </motion.div>
-    </motion.div>
-  )
-}
-
-function FeatureCards({ scrollY }: { scrollY: ReturnType<typeof useScroll>["scrollY"] }) {
-  const { isMobile, isTablet } = useViewport()
-  const columns = isMobile ? 1 : isTablet ? 2 : 3
-
-  return (
-    <section style={{ padding: isMobile ? "64px 24px" : "120px 48px", background: "#FAFAFA" }}>
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        style={{ marginBottom: isMobile ? 48 : 72 }}
-      >
-        <p style={{
-          fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
-          fontSize: 10, letterSpacing: "0.25em", textTransform: "uppercase",
-          color: "rgba(10,10,10,0.3)", marginBottom: 16,
-        }}>The curriculum.</p>
-        <h2 style={{
-          fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic",
-          fontWeight: 300, fontSize: "clamp(36px,8vw,64px)",
-          color: "#0A0A0A", lineHeight: 1.05,
-        }}>Three pillars of fluency.</h2>
-      </motion.div>
-
-      <div style={{ display: "grid", gridTemplateColumns: `repeat(${columns}, 1fr)`, gap: isMobile ? 16 : 2 }}>
-        {FEATURE_CARDS.map((card, i) => (
-          <FeatureCard key={card.en} {...card} scrollY={scrollY} delay={i * 0.12} isMobile={isMobile} isTablet={isTablet} />
-        ))}
-      </div>
-    </section>
-  )
-}
-
-function QuoteSection() {
-  const { isMobile } = useViewport()
-
-  return (
-    <section style={{
-      padding: isMobile ? "80px 24px" : "140px 48px",
-      background: "#FAFAFA",
-      display: "flex", flexDirection: "column", alignItems: "center",
-      borderTop: "1px solid rgba(10,10,10,0.08)",
-    }}>
-      <div style={{ maxWidth: 800, textAlign: "center" }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          style={{
-            display: "flex", gap: 6, justifyContent: "center",
-            flexWrap: "wrap", marginBottom: 28,
-          }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          style={{ display: "flex", gap: 20, alignItems: "center", flexWrap: "wrap" }}
         >
-          {QUOTE_CHARS.map((char, i) => (
-            <motion.span
-              key={i}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.04, duration: 0.5 }}
+          <Link href="/kana" style={{ textDecoration: "none" }}>
+            <motion.button
+              whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
               style={{
-                fontFamily: "'Noto Sans JP', sans-serif",
-                fontWeight: 100, fontSize: "clamp(36px,8vw,64px)",
-                color: "#0A0A0A", lineHeight: 1.1,
+                background: "#0A0A0A", color: "#FAFAFA",
+                border: "none", padding: "18px 36px",
+                fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 13,
+                letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer",
               }}
-            >{char}</motion.span>
-          ))}
+            >Start Learning</motion.button>
+          </Link>
+          <Link href="#curriculum" style={{ textDecoration: "none" }}>
+            <motion.button
+              whileHover={{ color: "#0A0A0A" }}
+              style={{
+                background: "transparent", color: "rgba(10,10,10,0.5)",
+                border: "none", padding: "18px 0",
+                fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 13,
+                letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer",
+                transition: "color 0.3s ease",
+              }}
+            >Explore Curriculum ↓</motion.button>
+          </Link>
         </motion.div>
-
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontStyle: "italic", fontWeight: 300,
-            fontSize: "clamp(18px,4vw,26px)",
-            color: "rgba(10,10,10,0.45)", lineHeight: 1.5,
-          }}
-        >
-          {QUOTE_TEXT}
-        </motion.p>
       </div>
     </section>
   )
 }
 
-// ─── CTA SECTION ─────────────────────────────────────────────────
-function CTASection() {
+// ─── LEARNING PATH ────────────────────────────────────────────────────────
+const PATH_STEPS = [
+  { title: "Kana", desc: "Build the foundation. Master Hiragana and Katakana pronunciation and reading." },
+  { title: "Vocabulary", desc: "Grow your lexicon. Learn essential words grouped by topic and context." },
+  { title: "Grammar", desc: "Understand the structure. From basic particles to complex sentence patterns." },
+  { title: "Kanji", desc: "Unlock meaning. Learn characters, stroke order, and multiple readings." },
+  { title: "Reading", desc: "Apply your knowledge. Read native-level texts and comprehend nuance." },
+  { title: "JLPT", desc: "Prove your mastery. Test your skills against the official Japanese Language Proficiency Test." },
+]
+
+function LearningPath() {
+  const { isMobile } = useViewport()
+  return (
+    <section style={{ padding: isMobile ? "80px 24px" : "140px 48px", background: "#FAFAFA" }}>
+      <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          style={{ marginBottom: 80, textAlign: "center" }}
+        >
+          <h2 style={{
+            fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic",
+            fontWeight: 300, fontSize: "clamp(40px, 6vw, 64px)",
+            color: "#0A0A0A", marginBottom: 16,
+          }}>The Logical Progression</h2>
+          <p style={{
+            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14,
+            color: "rgba(10,10,10,0.5)", maxWidth: 500, margin: "0 auto"
+          }}>
+            Instantly understand how the pieces fit together. A step-by-step journey designed to eliminate confusion.
+          </p>
+        </motion.div>
+
+        <div style={{
+          display: "grid", 
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", 
+          gap: isMobile ? 32 : 48
+        }}>
+          {PATH_STEPS.map((step, i) => (
+            <motion.div
+              key={step.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.6 }}
+              style={{
+                position: "relative",
+                paddingTop: 24, borderTop: "1px solid rgba(10,10,10,0.1)",
+              }}
+            >
+              <span style={{
+                fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 10,
+                color: "rgba(10,10,10,0.3)", letterSpacing: "0.2em", display: "block", marginBottom: 16
+              }}>0{i + 1}</span>
+              <h3 style={{
+                fontFamily: "'Cormorant Garamond', serif", fontWeight: 600, fontSize: 24,
+                color: "#0A0A0A", marginBottom: 12
+              }}>{step.title}</h3>
+              <p style={{
+                fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 13,
+                lineHeight: 1.6, color: "rgba(10,10,10,0.6)"
+              }}>{step.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── WHY NIHONGOPATH ────────────────────────────────────────────────────────
+const PILLARS = [
+  { title: "Structured Learning", desc: "No more guessing what to study next. A clear, definitive path from absolute beginner to advanced fluency." },
+  { title: "Active Practice", desc: "Move beyond passive reading. Built-in assessments, typing exercises, and interactive review systems." },
+  { title: "JLPT Focused", desc: "Curriculum meticulously designed around real JLPT requirements, ensuring your study time counts." },
+  { title: "Long-Term Retention", desc: "Identify weak spots automatically. Revisit and strengthen challenging concepts until they become second nature." },
+]
+
+function WhyNihongoPath() {
+  const { isMobile } = useViewport()
+  return (
+    <section style={{ padding: isMobile ? "80px 24px" : "140px 48px", background: "#FFFFFF" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 64 : 120 }}>
+        
+        <div style={{ flex: 1 }}>
+          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
+            <h2 style={{
+              fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: "clamp(48px, 6vw, 72px)",
+              color: "#0A0A0A", lineHeight: 1.1, marginBottom: 32
+            }}>
+              Why<br /><span style={{ fontStyle: "italic" }}>NihongoPath?</span>
+            </h2>
+            <p style={{
+              fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 15,
+              lineHeight: 1.6, color: "rgba(10,10,10,0.5)", maxWidth: 360
+            }}>
+              Learning Japanese is a monumental task. We provide the architecture, you provide the dedication.
+            </p>
+          </motion.div>
+        </div>
+
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 48 }}>
+          {PILLARS.map((pillar, i) => (
+            <motion.div
+              key={pillar.title}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.15, duration: 0.6 }}
+              style={{ borderLeft: "2px solid #0A0A0A", paddingLeft: 32 }}
+            >
+              <h3 style={{
+                fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 13,
+                letterSpacing: "0.1em", textTransform: "uppercase", color: "#0A0A0A", marginBottom: 16
+              }}>{pillar.title}</h3>
+              <p style={{
+                fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 22,
+                lineHeight: 1.5, color: "rgba(10,10,10,0.6)"
+              }}>{pillar.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+        
+      </div>
+    </section>
+  )
+}
+
+// ─── LEARNING EXPERIENCE PREVIEW ────────────────────────────────────────────────────────
+function ExperiencePreview() {
+  const { isMobile, isTablet } = useViewport()
+  return (
+    <section style={{ padding: isMobile ? "80px 24px" : "140px 48px", background: "#FAFAFA", overflow: "hidden" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          style={{ marginBottom: 80, textAlign: "center" }}
+        >
+          <h2 style={{
+            fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic",
+            fontWeight: 300, fontSize: "clamp(36px, 5vw, 56px)",
+            color: "#0A0A0A", marginBottom: 16,
+          }}>The Premium Learning Experience</h2>
+          <p style={{
+            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14,
+            color: "rgba(10,10,10,0.5)", maxWidth: 600, margin: "0 auto"
+          }}>
+            Minimalist interfaces designed for maximum focus. Study without distractions.
+          </p>
+        </motion.div>
+
+        <div style={{
+          display: "flex", flexDirection: isMobile || isTablet ? "column" : "row",
+          alignItems: "center", justifyContent: "center", gap: 40,
+        }}>
+          {/* Flashcard Mock */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+            style={{
+              background: "#FFF", borderRadius: 24, padding: "40px 20px", width: 280,
+              boxShadow: "0 20px 40px rgba(0,0,0,0.03)", border: "1px solid rgba(10,10,10,0.05)",
+              display: "flex", flexDirection: "column", alignItems: "center",
+            }}
+          >
+            <div style={{ width: 80, height: 80, background: "#FAFAFA", borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 24 }}>
+              <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontSize: 48, color: "#0A0A0A", lineHeight: 1 }}>あ</span>
+            </div>
+            <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 12, fontWeight: 500, letterSpacing: "0.1em", color: "rgba(10,10,10,0.4)" }}>A</p>
+          </motion.div>
+
+          {/* Assessment Mock */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }}
+            style={{
+              background: "#FFF", borderRadius: 24, padding: "40px", width: 340,
+              boxShadow: "0 20px 40px rgba(0,0,0,0.05)", border: "2px solid #10b981",
+              display: "flex", flexDirection: "column", alignItems: "center", zIndex: 2,
+            }}
+          >
+            <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontSize: 64, fontWeight: 300, color: "#0A0A0A", lineHeight: 1, marginBottom: 32 }}>き</span>
+            <div style={{ background: "#FAFAFA", border: "1px solid rgba(10,10,10,0.1)", borderRadius: 12, padding: "16px", width: "100%", textAlign: "center", color: "#10b981", fontFamily: "'Space Grotesk', sans-serif", fontSize: 16 }}>
+              ki
+            </div>
+          </motion.div>
+
+          {/* Grammar Mock */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.4 }}
+            style={{
+              background: "#FFF", borderRadius: 24, padding: "40px 32px", width: 280,
+              boxShadow: "0 20px 40px rgba(0,0,0,0.03)", border: "1px solid rgba(10,10,10,0.05)",
+              display: "flex", flexDirection: "column",
+            }}
+          >
+            <div style={{ display: "inline-flex", background: "#FAFAFA", padding: "6px 12px", borderRadius: 99, marginBottom: 24, alignSelf: "flex-start" }}>
+              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 10, letterSpacing: "0.1em", color: "rgba(10,10,10,0.5)" }}>N5 GRAMMAR</span>
+            </div>
+            <h3 style={{ fontFamily: "'Noto Sans JP', sans-serif", fontSize: 24, fontWeight: 300, color: "#0A0A0A", marginBottom: 12 }}>〜は〜です</h3>
+            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, color: "rgba(10,10,10,0.6)", lineHeight: 1.4 }}>
+              Used to indicate the topic of a sentence.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── PROGRESS & MASTERY ────────────────────────────────────────────────────────
+function ProgressMastery() {
+  const { isMobile } = useViewport()
+  return (
+    <section style={{ padding: isMobile ? "80px 24px" : "140px 48px", background: "#FFFFFF", borderTop: "1px solid rgba(10,10,10,0.05)" }}>
+      <div style={{ maxWidth: 1000, margin: "0 auto", display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: "center", gap: isMobile ? 64 : 80 }}>
+        
+        <div style={{ flex: 1, width: "100%" }}>
+          {/* Abstract Progress Visual */}
+          <div style={{ background: "#FAFAFA", borderRadius: 24, padding: "48px 32px", border: "1px solid rgba(10,10,10,0.05)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
+              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, letterSpacing: "0.1em", color: "#0A0A0A" }}>Mastery Score</span>
+              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, color: "#10b981" }}>84%</span>
+            </div>
+            <div style={{ width: "100%", height: 2, background: "rgba(10,10,10,0.05)", marginBottom: 40, position: "relative" }}>
+              <motion.div initial={{ width: 0 }} whileInView={{ width: "84%" }} viewport={{ once: true }} transition={{ duration: 1.5, delay: 0.2, ease: "easeOut" }} style={{ position: "absolute", top: 0, left: 0, height: "100%", background: "#10b981" }} />
+            </div>
+
+            <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
+              {[
+                { label: "Weak Areas Identified", val: "12 Characters", color: "#ef4444" },
+                { label: "Ready for Practice", val: "Optimized Review", color: "#0A0A0A" }
+              ].map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 + (i * 0.2) }} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: 16, borderBottom: "1px solid rgba(10,10,10,0.05)" }}>
+                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 12, color: "rgba(10,10,10,0.5)" }}>{item.label}</span>
+                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 12, color: item.color }}>{item.val}</span>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div style={{ flex: 1 }}>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} style={{
+            fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(40px, 5vw, 56px)",
+            color: "#0A0A0A", lineHeight: 1.1, marginBottom: 24
+          }}>
+            Measurable<br/>Learning.
+          </motion.h2>
+          <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.1 }} style={{
+            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14,
+            lineHeight: 1.6, color: "rgba(10,10,10,0.5)", marginBottom: 32
+          }}>
+            Stop guessing your proficiency. NihongoPath automatically tracks your answers, identifying weak areas and prompting targeted practice sessions. 
+            Improve exactly what you need, when you need it.
+          </motion.p>
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
+// ─── CURRICULUM PREVIEW ────────────────────────────────────────────────────────
+const CURRICULUM = [
+  { level: "N5", title: "The Foundation", active: true },
+  { level: "N4", title: "Basic Proficiency", active: false },
+  { level: "N3", title: "Conversational Mastery", active: false },
+  { level: "N2", title: "Business Fluency", active: false },
+  { level: "N1", title: "Native Comprehension", active: false },
+]
+
+function CurriculumPreview() {
+  const { isMobile } = useViewport()
+  return (
+    <section id="curriculum" style={{ padding: isMobile ? "80px 24px" : "140px 48px", background: "#FAFAFA" }}>
+      <div style={{ maxWidth: 800, margin: "0 auto" }}>
+        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} style={{ marginBottom: 64 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: "clamp(40px, 6vw, 64px)", color: "#0A0A0A", marginBottom: 16 }}>The Roadmap</h2>
+          <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, color: "rgba(10,10,10,0.5)" }}>A comprehensive journey to fluency.</p>
+        </motion.div>
+
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          {CURRICULUM.map((item, i) => (
+            <motion.div
+              key={item.level}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.6 }}
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                padding: "32px 0", borderBottom: "1px solid rgba(10,10,10,0.08)",
+                opacity: item.active ? 1 : 0.4,
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
+                <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: isMobile ? 24 : 32, color: "#0A0A0A" }}>{item.level}</span>
+                <span style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: item.active ? 600 : 300, fontSize: isMobile ? 20 : 28, color: "#0A0A0A", fontStyle: "italic" }}>{item.title}</span>
+              </div>
+              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(10,10,10,0.5)" }}>
+                {item.active ? "Available Now" : "Coming Soon"}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── FINAL CTA ────────────────────────────────────────────────────────
+function FinalCTA() {
   const { isMobile } = useViewport()
 
   return (
     <section style={{
-      padding: isMobile ? "80px 24px" : "120px 48px",
-      background: "#FAFAFA",
+      padding: isMobile ? "120px 24px" : "180px 48px",
+      background: "#FFFFFF",
       display: "flex", flexDirection: "column", alignItems: "center",
       textAlign: "center",
+      borderTop: "1px solid rgba(10,10,10,0.05)"
     }}>
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
-        <p style={{
-          fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
-          fontSize: 13, letterSpacing: "0.25em", textTransform: "uppercase",
-          color: "rgba(10,10,10,0.3)", marginBottom: 24,
-        }}>Start today.</p>
+      <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
         <h2 style={{
           fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic",
-          fontWeight: 300, fontSize: "clamp(40px,8vw,80px)",
-          color: "#0A0A0A", lineHeight: 1.05, marginBottom: 56,
+          fontWeight: 300, fontSize: "clamp(48px, 8vw, 90px)",
+          color: "#0A0A0A", lineHeight: 1.05, marginBottom: 24,
         }}>
-          Begin your path<br />to Japanese mastery.
+          Your Japanese journey<br />starts today.
         </h2>
+        <p style={{
+          fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
+          fontSize: 15, color: "rgba(10,10,10,0.5)", marginBottom: 56, maxWidth: 480, margin: "0 auto 56px", lineHeight: 1.6
+        }}>
+          Build a strong foundation, track your progress, and advance through every JLPT level with confidence.
+        </p>
 
         <Link href="/kana" style={{ textDecoration: "none" }}>
           <motion.div
-            whileHover={{ opacity: 0.8, scale: 1.02 }}
+            whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             style={{
               display: "inline-flex", flexDirection: "column", alignItems: "center",
-              background: "#0A0A0A",
-              padding: "24px 40px",
-              borderRadius: 2,
-              cursor: "pointer",
+              background: "#0A0A0A", padding: "20px 48px", cursor: "pointer",
             }}
           >
             <p style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontWeight: 300, fontSize: 13,
-              letterSpacing: "0.2em", textTransform: "uppercase",
-              color: "#FAFAFA",
+              fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 13,
+              letterSpacing: "0.1em", textTransform: "uppercase", color: "#FAFAFA",
             }}>
-              START YOUR JOURNEY →
+              Start Learning
             </p>
           </motion.div>
         </Link>
@@ -485,10 +479,12 @@ export default function Home() {
       <Navbar scrollY={scrollY} variant="home" />
       <main>
         <Hero scrollY={scrollY} />
-        <MarqueeStrip />
-        <FeatureCards scrollY={scrollY} />
-        <QuoteSection />
-        <CTASection />
+        <LearningPath />
+        <WhyNihongoPath />
+        <ExperiencePreview />
+        <ProgressMastery />
+        <CurriculumPreview />
+        <FinalCTA />
         <Footer />
       </main>
     </>
