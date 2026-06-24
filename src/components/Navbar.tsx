@@ -104,24 +104,23 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
       <div style={{ position: "relative" }}>
         <button
           onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+          aria-haspopup="true"
+          aria-expanded={profileMenuOpen}
+          aria-label="Toggle profile menu"
           style={{
             background: "none", border: "none", cursor: "pointer",
-            display: "flex", alignItems: "center", gap: 8, padding: "8px 0"
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: 8, margin: -8, // Increased clickable area
+            borderRadius: "50%", // Better focus outline shape
           }}
         >
           {user.user_metadata?.avatar_url ? (
-            <img src={user.user_metadata.avatar_url} alt="Avatar" style={{ width: 24, height: 24, borderRadius: "50%" }} />
+            <img src={user.user_metadata.avatar_url} alt="Profile Avatar" style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover" }} />
           ) : (
-            <div style={{ width: 24, height: 24, borderRadius: "50%", background: "#0A0A0A", color: "#FFF", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontFamily: "'Space Grotesk', sans-serif" }}>
+            <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#0A0A0A", color: "#FFF", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontFamily: "'Space Grotesk', sans-serif" }}>
               {user.email?.[0].toUpperCase()}
             </div>
           )}
-          {!isMobile && (
-            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 12, color: textColor, fontWeight: 500 }}>
-              {user.user_metadata?.full_name || user.email?.split('@')[0]}
-            </span>
-          )}
-          <span style={{ fontSize: 10, color: textColor }}>▼</span>
         </button>
 
         <AnimatePresence>
@@ -129,7 +128,7 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
             <motion.div
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} transition={{ duration: 0.2 }}
               style={{
-                position: "absolute", top: "100%", right: 0, marginTop: 8,
+                position: "absolute", top: "100%", right: 0, marginTop: 16,
                 background: "#FFF", border: "1px solid rgba(10,10,10,0.08)", borderRadius: 4,
                 boxShadow: "0 10px 30px rgba(0,0,0,0.05)", padding: 8, minWidth: 160, zIndex: 101
               }}
@@ -177,14 +176,14 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
         </Link>
 
         {isMobile ? (
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
             {renderProfileMenu()}
             <button
               onClick={() => setMenuOpen(open => !open)}
               style={{
                 background: "none", border: "none", cursor: "pointer",
                 fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
-                fontSize: 24, color: textColor,
+                fontSize: 24, color: textColor, padding: 8, margin: -8
               }}
             >
               {menuOpen ? "✕" : "☰"}
