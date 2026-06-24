@@ -29,6 +29,9 @@ export const metadata: Metadata = {
   title: 'NihongoPath',
   description: 'Master Japanese from N5 to N1. Structured JLPT curriculum with Kanji, Grammar, and Vocabulary.',
   keywords: ['Japanese', 'JLPT', 'N5', 'Kanji', 'Grammar', 'Vocabulary', 'NihongoPath'],
+  verification: {
+    google: "p3IvjsCn2URCDY9_7KIZpsxilf2JwE5AcZyr3Opx95E",
+  },
 }
 
 export default function RootLayout({
