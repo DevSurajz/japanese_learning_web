@@ -155,8 +155,8 @@ export default function Footer() {
 
           {/* Right */}
           <div style={{ display: "flex", gap: 24, alignItems: "center", width: isMobile ? "100%" : 200, justifyContent: isMobile ? "center" : "flex-end" }}>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "none" }}>GitHub</a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "none" }}>X / Twitter</a>
+            <a href="https://github.com/DevSurajz" target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "none" }}>GitHub</a>
+            <a href="https://x.com/Devyavz" target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "none" }}>X / Twitter</a>
           </div>
         </div>
       </div>
