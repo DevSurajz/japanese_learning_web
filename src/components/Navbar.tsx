@@ -1,12 +1,13 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { motion, useTransform, AnimatePresence, type MotionValue } from "motion/react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useViewport } from "@/hooks"
 import { createClient } from "@/utils/supabase/client"
 import type { User } from "@supabase/supabase-js"
+import ConfirmDialog from "@/components/ConfirmDialog"
 
 const NAV_LINKS = [
   { label: "KANA", to: "/kana" },
@@ -36,6 +37,7 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
+  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false)
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -55,6 +57,21 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
     await supabase.auth.signOut()
     router.refresh()
   }
+
+  const requestLogout = useCallback(() => {
+    setProfileMenuOpen(false)
+    setMenuOpen(false)
+    setLogoutConfirmOpen(true)
+  }, [])
+
+  const confirmLogout = useCallback(() => {
+    setLogoutConfirmOpen(false)
+    handleLogout()
+  }, [])
+
+  const cancelLogout = useCallback(() => {
+    setLogoutConfirmOpen(false)
+  }, [])
 
   // For sub-pages, use a fixed bg
   const navStyle = variant === "page"
@@ -136,7 +153,7 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
               <Link href="/dashboard" style={{ display: "block", padding: "10px 16px", textDecoration: "none", color: "#0A0A0A", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }} onClick={() => setProfileMenuOpen(false)}>Dashboard</Link>
               <Link href="/dashboard" style={{ display: "block", padding: "10px 16px", textDecoration: "none", color: "rgba(10,10,10,0.5)", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }} onClick={() => setProfileMenuOpen(false)}>Profile</Link>
               <div style={{ height: 1, background: "rgba(10,10,10,0.05)", margin: "4px 0" }} />
-              <button onClick={() => { handleLogout(); setProfileMenuOpen(false); }} style={{ width: "100%", textAlign: "left", background: "none", border: "none", padding: "10px 16px", cursor: "pointer", color: "#0A0A0A", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }}>Log Out</button>
+              <button onClick={requestLogout} style={{ width: "100%", textAlign: "left", background: "none", border: "none", padding: "10px 16px", cursor: "pointer", color: "#0A0A0A", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }}>Log Out</button>
             </motion.div>
           )}
         </AnimatePresence>
@@ -282,7 +299,7 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
                 <Link href="/dashboard" onClick={() => setMenuOpen(false)} style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", color: textColor, display: "block" }}>
                   PROFILE
                 </Link>
-                <button onClick={() => { handleLogout(); setMenuOpen(false); }} style={{ background: "none", border: "none", padding: 0, textAlign: "left", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", color: textColor, display: "block", cursor: "pointer" }}>
+                <button onClick={requestLogout} style={{ background: "none", border: "none", padding: 0, textAlign: "left", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", color: textColor, display: "block", cursor: "pointer" }}>
                   LOG OUT
                 </button>
               </>
@@ -294,6 +311,17 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <ConfirmDialog
+        open={logoutConfirmOpen}
+        title="Sign out?"
+        description="Are you sure you want to sign out of NihongoPath?"
+        confirmLabel="Sign Out"
+        cancelLabel="Cancel"
+        onConfirm={confirmLogout}
+        onCancel={cancelLogout}
+        destructive
+      />
     </>
   )
 }
