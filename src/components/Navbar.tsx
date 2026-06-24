@@ -76,6 +76,75 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
         padding: isMobile ? "20px 24px" : "24px 48px",
       }
 
+  const renderProfileMenu = () => {
+    if (!user) {
+      if (isMobile) return null // Sign in is in the drawer on mobile
+      return (
+        <Link href="/auth" style={{ textDecoration: "none" }}>
+          <motion.button
+            whileHover={{ opacity: 0.8 }}
+            whileTap={{ scale: 0.97 }}
+            style={{
+              background: "#0A0A0A", color: "#FAFAFA",
+              border: "none", borderRadius: 0,
+              padding: "10px 20px",
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontWeight: 300, fontSize: 11,
+              letterSpacing: "0.18em", textTransform: "uppercase",
+              cursor: "pointer",
+            }}
+          >
+            SIGN IN →
+          </motion.button>
+        </Link>
+      )
+    }
+
+    return (
+      <div style={{ position: "relative" }}>
+        <button
+          onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+          style={{
+            background: "none", border: "none", cursor: "pointer",
+            display: "flex", alignItems: "center", gap: 8, padding: "8px 0"
+          }}
+        >
+          {user.user_metadata?.avatar_url ? (
+            <img src={user.user_metadata.avatar_url} alt="Avatar" style={{ width: 24, height: 24, borderRadius: "50%" }} />
+          ) : (
+            <div style={{ width: 24, height: 24, borderRadius: "50%", background: "#0A0A0A", color: "#FFF", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontFamily: "'Space Grotesk', sans-serif" }}>
+              {user.email?.[0].toUpperCase()}
+            </div>
+          )}
+          {!isMobile && (
+            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 12, color: textColor, fontWeight: 500 }}>
+              {user.user_metadata?.full_name || user.email?.split('@')[0]}
+            </span>
+          )}
+          <span style={{ fontSize: 10, color: textColor }}>▼</span>
+        </button>
+
+        <AnimatePresence>
+          {profileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} transition={{ duration: 0.2 }}
+              style={{
+                position: "absolute", top: "100%", right: 0, marginTop: 8,
+                background: "#FFF", border: "1px solid rgba(10,10,10,0.08)", borderRadius: 4,
+                boxShadow: "0 10px 30px rgba(0,0,0,0.05)", padding: 8, minWidth: 160, zIndex: 101
+              }}
+            >
+              <Link href="/dashboard" style={{ display: "block", padding: "10px 16px", textDecoration: "none", color: "#0A0A0A", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }} onClick={() => setProfileMenuOpen(false)}>Dashboard</Link>
+              <Link href="/dashboard" style={{ display: "block", padding: "10px 16px", textDecoration: "none", color: "rgba(10,10,10,0.5)", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }} onClick={() => setProfileMenuOpen(false)}>Profile</Link>
+              <div style={{ height: 1, background: "rgba(10,10,10,0.05)", margin: "4px 0" }} />
+              <button onClick={() => { handleLogout(); setProfileMenuOpen(false); }} style={{ width: "100%", textAlign: "left", background: "none", border: "none", padding: "10px 16px", cursor: "pointer", color: "#0A0A0A", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }}>Log Out</button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    )
+  }
+
   return (
     <>
       <motion.nav
@@ -109,6 +178,7 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
 
         {isMobile ? (
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            {renderProfileMenu()}
             <button
               onClick={() => setMenuOpen(open => !open)}
               style={{
@@ -145,65 +215,7 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
 
             {/* Right CTA / Auth */}
             <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-              {user ? (
-                <div style={{ position: "relative" }}>
-                  <button
-                    onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-                    style={{
-                      background: "none", border: "none", cursor: "pointer",
-                      display: "flex", alignItems: "center", gap: 8, padding: "8px 0"
-                    }}
-                  >
-                    {user.user_metadata?.avatar_url ? (
-                      <img src={user.user_metadata.avatar_url} alt="Avatar" style={{ width: 24, height: 24, borderRadius: "50%" }} />
-                    ) : (
-                      <div style={{ width: 24, height: 24, borderRadius: "50%", background: "#0A0A0A", color: "#FFF", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontFamily: "'Space Grotesk', sans-serif" }}>
-                        {user.email?.[0].toUpperCase()}
-                      </div>
-                    )}
-                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 12, color: textColor, fontWeight: 500 }}>
-                      {user.user_metadata?.full_name || user.email?.split('@')[0]}
-                    </span>
-                    <span style={{ fontSize: 10, color: textColor }}>▼</span>
-                  </button>
-
-                  <AnimatePresence>
-                    {profileMenuOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} transition={{ duration: 0.2 }}
-                        style={{
-                          position: "absolute", top: "100%", right: 0, marginTop: 8,
-                          background: "#FFF", border: "1px solid rgba(10,10,10,0.08)", borderRadius: 4,
-                          boxShadow: "0 10px 30px rgba(0,0,0,0.05)", padding: 8, minWidth: 160, zIndex: 101
-                        }}
-                      >
-                        <Link href="/dashboard" style={{ display: "block", padding: "10px 16px", textDecoration: "none", color: "#0A0A0A", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }} onClick={() => setProfileMenuOpen(false)}>Dashboard</Link>
-                        <Link href="/dashboard" style={{ display: "block", padding: "10px 16px", textDecoration: "none", color: "rgba(10,10,10,0.5)", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }} onClick={() => setProfileMenuOpen(false)}>Profile</Link>
-                        <div style={{ height: 1, background: "rgba(10,10,10,0.05)", margin: "4px 0" }} />
-                        <button onClick={() => { handleLogout(); setProfileMenuOpen(false); }} style={{ width: "100%", textAlign: "left", background: "none", border: "none", padding: "10px 16px", cursor: "pointer", color: "#0A0A0A", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }}>Log Out</button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ) : (
-                <Link href="/auth" style={{ textDecoration: "none" }}>
-                  <motion.button
-                    whileHover={{ opacity: 0.8 }}
-                    whileTap={{ scale: 0.97 }}
-                    style={{
-                      background: "#0A0A0A", color: "#FAFAFA",
-                      border: "none", borderRadius: 0,
-                      padding: "10px 20px",
-                      fontFamily: "'Space Grotesk', sans-serif",
-                      fontWeight: 300, fontSize: 11,
-                      letterSpacing: "0.18em", textTransform: "uppercase",
-                      cursor: "pointer",
-                    }}
-                  >
-                    SIGN IN →
-                  </motion.button>
-                </Link>
-              )}
+              {renderProfileMenu()}
             </div>
           </>
         )}
@@ -224,6 +236,26 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
               padding: "24px", gap: 24, overflow: "hidden",
             }}
           >
+            {user && (
+              <div style={{ display: "flex", alignItems: "center", gap: 16, paddingBottom: 24, borderBottom: "1px solid rgba(10,10,10,0.08)" }}>
+                {user.user_metadata?.avatar_url ? (
+                  <img src={user.user_metadata.avatar_url} alt="Avatar" style={{ width: 48, height: 48, borderRadius: "50%" }} />
+                ) : (
+                  <div style={{ width: 48, height: 48, borderRadius: "50%", background: "#0A0A0A", color: "#FFF", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, fontFamily: "'Space Grotesk', sans-serif" }}>
+                    {user.email?.[0].toUpperCase()}
+                  </div>
+                )}
+                <div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, color: textColor, fontWeight: 500 }}>
+                    {user.user_metadata?.full_name || user.email?.split('@')[0]}
+                  </div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 12, color: "rgba(10,10,10,0.5)" }}>
+                    {user.email}
+                  </div>
+                </div>
+              </div>
+            )}
+
             {NAV_LINKS.map(({ label, to }) => (
               <Link
                 key={label}
@@ -247,6 +279,9 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
               <>
                 <Link href="/dashboard" onClick={() => setMenuOpen(false)} style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", color: textColor, display: "block" }}>
                   DASHBOARD
+                </Link>
+                <Link href="/dashboard" onClick={() => setMenuOpen(false)} style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", color: textColor, display: "block" }}>
+                  PROFILE
                 </Link>
                 <button onClick={() => { handleLogout(); setMenuOpen(false); }} style={{ background: "none", border: "none", padding: 0, textAlign: "left", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", color: textColor, display: "block", cursor: "pointer" }}>
                   LOG OUT

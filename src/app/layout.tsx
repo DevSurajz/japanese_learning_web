@@ -1,8 +1,8 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, Space_Grotesk, Noto_Sans_JP } from 'next/font/google'
 import './globals.css'
 import { ViewportProvider } from '@/hooks'
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/react"
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -26,6 +26,13 @@ const notoSansJP = Noto_Sans_JP({
   display: 'swap',
 })
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#ffffff',
+}
+
 export const metadata: Metadata = {
   title: 'NihongoPath',
   description: 'Master Japanese from N5 to N1. Structured JLPT curriculum with Kanji, Grammar, and Vocabulary.',
@@ -37,9 +44,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
     <html lang="en" className={`${cormorant.variable} ${spaceGrotesk.variable} ${notoSansJP.variable}`}>
       <head>

@@ -23,7 +23,7 @@ export default async function DashboardPage() {
   return (
     <div style={{ minHeight: '100vh', background: '#FAFAFA' }}>
       <Navbar variant="page" />
-      
+
       <main style={{ maxWidth: 800, margin: '0 auto', padding: '120px 24px' }}>
         <h1 style={{
           fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic",
@@ -62,7 +62,7 @@ export default async function DashboardPage() {
 
         {/* Recent Activity */}
         <section style={{ marginBottom: 64 }}>
-           <h2 style={{
+          <h2 style={{
             fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 13,
             letterSpacing: "0.1em", textTransform: "uppercase", color: "#0A0A0A", marginBottom: 24
           }}>Recent Activity</h2>
