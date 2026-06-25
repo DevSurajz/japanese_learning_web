@@ -3,7 +3,7 @@
 import { useViewport } from "@/hooks"
 import { motion } from "motion/react"
 
-const SupportCard = ({ title, description, link, icon }: { title: string, description: string, link: string, icon: React.ReactNode }) => {
+const SupportCard = ({ title, description, link, icon, isMobile }: { title: string, description: string, link: string, icon: React.ReactNode, isMobile: boolean }) => {
   return (
     <motion.a
       href={link}
@@ -18,7 +18,7 @@ const SupportCard = ({ title, description, link, icon }: { title: string, descri
         background: "#FFF",
         border: "1px solid #EAEAEA",
         borderRadius: 16,
-        padding: "16px 20px",
+        padding: isMobile ? "12px 16px" : "16px 20px",
         textDecoration: "none",
         color: "inherit",
         boxShadow: "0 4px 12px rgba(0,0,0,0.02)",
@@ -26,18 +26,18 @@ const SupportCard = ({ title, description, link, icon }: { title: string, descri
         flex: 1,
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 12 : 16 }}>
         <div style={{
-          width: 40, height: 40, borderRadius: 10, background: "#FAFAFA", border: "1px solid #EAEAEA",
+          width: isMobile ? 36 : 40, height: isMobile ? 36 : 40, borderRadius: 10, background: "#FAFAFA", border: "1px solid #EAEAEA",
           display: "flex", alignItems: "center", justifyContent: "center", color: "#0A0A0A"
         }}>
           {icon}
         </div>
         <div>
-          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 15, color: "#0A0A0A", letterSpacing: "0.01em" }}>
+          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: isMobile ? 14 : 15, color: "#0A0A0A", letterSpacing: "0.01em" }}>
             {title}
           </div>
-          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 13, color: "rgba(10,10,10,0.55)", marginTop: 4, lineHeight: 1.4 }}>
+          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: isMobile ? 12 : 13, color: "rgba(10,10,10,0.55)", marginTop: isMobile ? 2 : 4, lineHeight: 1.4 }}>
             {description}
           </div>
         </div>
@@ -100,9 +100,10 @@ export default function Footer() {
 
         {/* Right Side: Support Cards */}
         <div style={{
-          flex: 1, display: "flex", flexDirection: "column", gap: 16, width: "100%", maxWidth: isMobile ? "100%" : 440,
+          flex: 1, display: "flex", flexDirection: isMobile ? "column" : "column", gap: isMobile ? 12 : 16, width: "100%", maxWidth: isMobile ? "100%" : 440,
         }}>
           <SupportCard
+            isMobile={isMobile}
             title="GitHub Sponsors"
             description="Support NihongoPath monthly or with a one-time contribution."
             link="https://github.com/sponsors/DevSurajz"
@@ -113,6 +114,7 @@ export default function Footer() {
             }
           />
           <SupportCard
+            isMobile={isMobile}
             title="Buy Me a Coffee"
             description="Buy a cup to show support"
             link="https://ko-fi.com/devsuraj"

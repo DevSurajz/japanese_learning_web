@@ -138,7 +138,7 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
     }
 
     return (
-      <div style={{ position: "relative" }}>
+      <div style={{ position: "relative", flexShrink: 0 }}>
         <button
           onClick={() => setProfileMenuOpen(!profileMenuOpen)}
           aria-haspopup="true"
@@ -149,12 +149,13 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
             display: "flex", alignItems: "center", justifyContent: "center",
             padding: 8, margin: -8, // Increased clickable area
             borderRadius: "50%", // Better focus outline shape
+            flexShrink: 0,
           }}
         >
           {user.user_metadata?.avatar_url ? (
-            <img src={user.user_metadata.avatar_url} alt="Profile Avatar" style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover" }} />
+            <img src={user.user_metadata.avatar_url} alt="Profile Avatar" style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover", flexShrink: 0 }} />
           ) : (
-            <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#0A0A0A", color: "#FFF", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontFamily: "'Space Grotesk', sans-serif" }}>
+            <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#0A0A0A", color: "#FFF", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontFamily: "'Space Grotesk', sans-serif", flexShrink: 0 }}>
               {user.email?.[0].toUpperCase()}
             </div>
           )}
