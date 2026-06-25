@@ -100,7 +100,7 @@ function KanjiModal({ item, onClose, isMobile }: { item: any; onClose: () => voi
                       {data.map((r: string, i: number) => (
                         <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 4, background: pillBg, color: pillText, borderRadius: 99, padding: "3px 10px", fontSize: 13, fontFamily: "'Noto Sans JP', sans-serif" }}>
                           {r}
-                          <SpeakButton text={r} />
+                          {r ? <SpeakButton text={r} /> : null}
                         </span>
                       ))}
                     </div>

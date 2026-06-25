@@ -18,7 +18,7 @@ const ExampleItem = React.memo(function ExampleItem({ ex, isMobile }: { ex: any;
           fontSize: isMobile ? 16 : 18,
           color: "#0A0A0A",
         }}>{ex.japanese}</p>
-        <SpeakButton text={ex.japanese} rate={0.75} />
+        {ex.japanese ? <SpeakButton text={ex.japanese} rate={0.75} /> : null}
       </div>
       {ex.romaji && (
         <p style={{

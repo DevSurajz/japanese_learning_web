@@ -214,7 +214,7 @@ function ReviewPageInner() {
             }}>
               {frontText}
             </span>
-            <SpeakButton text={frontText} />
+            {frontText ? <SpeakButton text={frontText} /> : null}
           </div>
 
           {/* Card back */}

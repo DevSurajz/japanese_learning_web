@@ -284,7 +284,7 @@ export default function VocabPage() {
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                         <span style={{ fontFamily: "'Noto Sans JP'", fontSize: 20, color: "#1e293b", fontWeight: 400 }}>{w.kana}</span>
-                        <SpeakButton text={w.kana} />
+                        {w.kana ? <SpeakButton text={w.kana} /> : null}
                       </div>
                       <TypeBadge type={w.type} />
                     </div>
@@ -310,7 +310,7 @@ export default function VocabPage() {
                     <div style={{ padding: "12px 16px", fontSize: 12, color: "#94a3b8", fontWeight: 500, borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>{w.id}</div>
                     <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center", gap: 8 }}>
                       <span style={{ fontFamily: "'Noto Sans JP'", fontWeight: 300, fontSize: 18, color: "#1e293b" }}>{w.kana}</span>
-                      <SpeakButton text={w.kana} />
+                      {w.kana ? <SpeakButton text={w.kana} /> : null}
                     </div>
                     <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", flexDirection: "column", justifyContent: "center", gap: 2 }}>
                       <span style={{ fontSize: 13, color: "#475569", fontWeight: 400 }}>{w.romaji}</span>
