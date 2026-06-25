@@ -23,7 +23,8 @@ export default function StrokeOrderViewer({ kanji }: Props) {
       if (!res.ok) throw new Error('not found')
       const svgText = await res.text()
 
-      containerRef.current.innerHTML = svgText
+      const cleanedSvgText = svgText.substring(svgText.indexOf('<svg'))
+      containerRef.current.innerHTML = cleanedSvgText
       const svg = containerRef.current.querySelector('svg')
       if (!svg) throw new Error('no svg')
 
