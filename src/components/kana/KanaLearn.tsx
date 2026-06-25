@@ -33,7 +33,7 @@ function KanaCard({ item, index, isMobile }: { item: KanaItem; index: number; is
       onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 10px rgba(0,0,0,0.03)"}
     >
       <div style={{ position: "absolute", top: 8, right: 8 }}>
-        {item.kana ? <SpeakButton text={item.kana} /> : null}
+        {item.kana ? <SpeakButton text={item.kana ?? ''} /> : null}
       </div>
 
       <div style={{
