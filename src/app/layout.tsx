@@ -52,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cormorant.variable} ${spaceGrotesk.variable} ${notoSansJP.variable}`}>
       <head>
-        <link rel="icon" type="image/png" href="/favicon.png" />
+        <link rel="icon" type="image/jpeg" href="/favicon.jpg" />
       </head>
       <body>
         <ProgressBar />
