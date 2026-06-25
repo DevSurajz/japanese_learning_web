@@ -6,11 +6,14 @@ import { useRouter } from "next/navigation"
 import { kanjiData } from "@/kanjiData"
 import { useViewport } from "@/hooks"
 import SpeakButton from "@/components/SpeakButton"
-import KanjiStrokeOrder from "@/components/KanjiStrokeOrder"
+import StrokeOrderViewer from "@/components/kanji/StrokeOrderViewer"
 
 const CARDS_PER_PAGE = 20
 
 function KanjiModal({ item, onClose, isMobile }: { item: any; onClose: () => void; isMobile: boolean }) {
+  const [activeTab, setActiveTab] = useState<'info' | 'stroke'>('info')
+  useEffect(() => setActiveTab('info'), [item])
+
   return (
     <AnimatePresence>
       {item && (
@@ -84,45 +87,78 @@ function KanjiModal({ item, onClose, isMobile }: { item: any; onClose: () => voi
               </div>
             </div>
 
-            <KanjiStrokeOrder kanji={item.kanji} />
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-              {[
-                { label: "On'yomi", data: item.onyomi, bg: "#eef2ff", pillBg: "#c7d2fe", pillText: "#3730a3", labelColor: "#818cf8" },
-                { label: "Kun'yomi", data: item.kunyomi, bg: "#f0fdf4", pillBg: "#bbf7d0", pillText: "#166534", labelColor: "#4ade80" },
-              ].map(({ label, data, bg, pillBg, pillText, labelColor }) => (
-                <div key={label} style={{ background: bg, borderRadius: 16, padding: "16px 18px" }}>
-                  <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 10, fontWeight: 600, color: labelColor, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 10 }}>
-                    {label}
-                  </p>
-                  {data.length > 0 ? (
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                      {data.map((r: string, i: number) => (
-                        <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 4, background: pillBg, color: pillText, borderRadius: 99, padding: "3px 10px", fontSize: 13, fontFamily: "'Noto Sans JP', sans-serif" }}>
-                          {r}
-                          {r ? <SpeakButton text={r} /> : null}
-                        </span>
-                      ))}
-                    </div>
-                  ) : <span style={{ color: "#cbd5e1", fontSize: 13 }}>—</span>}
-                </div>
+            <div style={{
+              display: 'flex',
+              gap: 4,
+              borderBottom: '1px solid #f0f0f0',
+              marginBottom: 16,
+            }}>
+              {(['info', 'stroke'] as const).map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  style={{
+                    padding: '6px 16px',
+                    fontSize: 12,
+                    fontWeight: activeTab === tab ? 600 : 400,
+                    color: activeTab === tab ? '#3730a3' : '#94a3b8',
+                    background: 'none',
+                    border: 'none',
+                    borderBottom: activeTab === tab ? '2px solid #3730a3' : '2px solid transparent',
+                    cursor: 'pointer',
+                    textTransform: 'capitalize',
+                  }}
+                >
+                  {tab === 'info' ? 'Info' : 'Stroke Order'}
+                </button>
               ))}
             </div>
 
-            <div>
-              <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 10, fontWeight: 600, color: "#cbd5e1", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>
-                Example Words
-              </p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {item.examples.map((ex: string, i: number) => (
-                  <motion.div key={i} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
-                    style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
-                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#93c5fd", marginTop: 6, flexShrink: 0 }} />
-                    <p style={{ fontFamily: "'Noto Sans JP', sans-serif", fontSize: 14, color: "#475569", lineHeight: 1.6 }}>{ex}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+            {activeTab === 'info' && (
+              <>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                  {[
+                    { label: "On'yomi", data: item.onyomi, bg: "#eef2ff", pillBg: "#c7d2fe", pillText: "#3730a3", labelColor: "#818cf8" },
+                    { label: "Kun'yomi", data: item.kunyomi, bg: "#f0fdf4", pillBg: "#bbf7d0", pillText: "#166534", labelColor: "#4ade80" },
+                  ].map(({ label, data, bg, pillBg, pillText, labelColor }) => (
+                    <div key={label} style={{ background: bg, borderRadius: 16, padding: "16px 18px" }}>
+                      <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 10, fontWeight: 600, color: labelColor, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 10 }}>
+                        {label}
+                      </p>
+                      {data.length > 0 ? (
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                          {data.map((r: string, i: number) => (
+                            <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 4, background: pillBg, color: pillText, borderRadius: 99, padding: "3px 10px", fontSize: 13, fontFamily: "'Noto Sans JP', sans-serif" }}>
+                              {r}
+                              {r ? <SpeakButton text={r} /> : null}
+                            </span>
+                          ))}
+                        </div>
+                      ) : <span style={{ color: "#cbd5e1", fontSize: 13 }}>—</span>}
+                    </div>
+                  ))}
+                </div>
+
+                <div>
+                  <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 10, fontWeight: 600, color: "#cbd5e1", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>
+                    Example Words
+                  </p>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    {item.examples.map((ex: string, i: number) => (
+                      <motion.div key={i} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
+                        style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+                        <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#93c5fd", marginTop: 6, flexShrink: 0 }} />
+                        <p style={{ fontFamily: "'Noto Sans JP', sans-serif", fontSize: 14, color: "#475569", lineHeight: 1.6 }}>{ex}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {activeTab === 'stroke' && (
+              <StrokeOrderViewer kanji={item.kanji} />
+            )}
 
             <motion.button
               whileHover={{ scale: 1.02, background: "#334155" }}
