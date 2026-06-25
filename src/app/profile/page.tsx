@@ -49,7 +49,7 @@ export default function ProfilePage() {
       <Navbar variant="page" />
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '40px 20px' }}>
         {/* Profile header card */}
-        <div style={{ background: 'white', border: '0.5px solid #e5e7eb', borderRadius: 16, padding: 24, display: 'flex', gap: 20, alignItems: 'center', marginBottom: 20 }}>
+        <div style={{ background: 'white', border: '0.5px solid #e5e7eb', borderRadius: 16, padding: '24px 16px', display: 'flex', gap: 16, alignItems: 'center', marginBottom: 20, flexWrap: 'wrap' }}>
           <img
             src={profile.avatar_url ?? `https://api.dicebear.com/7.x/initials/svg?seed=${profile.display_name ?? profile.email}`}
             alt="avatar"

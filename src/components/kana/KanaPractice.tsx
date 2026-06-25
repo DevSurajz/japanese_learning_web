@@ -56,12 +56,7 @@ export function KanaPractice({ isMobile, kanaList, weakCharacters, onComplete }:
 
     setStatus(isCorrect ? "correct" : "incorrect")
     
-    if (isCorrect) {
-      import('@/lib/xp').then(m => {
-        m.addXP(m.XP_VALUES.CORRECT_LEARN, userId)
-        m.updateStreak(userId)
-      })
-    }
+
     
     setTimeout(() => {
       const newResults = [...results, { kana: currentKana.kana!, isCorrect }]
@@ -72,6 +67,10 @@ export function KanaPractice({ isMobile, kanaList, weakCharacters, onComplete }:
         setInputValue("")
         setStatus("typing")
       } else {
+        import('@/lib/xp').then(m => {
+          m.addXP(m.XP_VALUES.CORRECT_LEARN, userId)
+          m.updateStreak(userId)
+        })
         onComplete(newResults)
       }
     }, isCorrect ? 800 : 1500)

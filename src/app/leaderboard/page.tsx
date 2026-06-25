@@ -62,56 +62,58 @@ export default function LeaderboardPage() {
         )}
 
         {/* Leaderboard table */}
-        <div style={{ background: 'white', border: '0.5px solid #e5e7eb', borderRadius: 16, overflow: 'hidden' }}>
-          {/* Header */}
-          <div style={{ display: 'grid', gridTemplateColumns: '60px 1fr 100px 100px 100px', padding: '12px 20px', borderBottom: '0.5px solid #f3f4f6', background: '#f9fafb' }}>
-            {['Rank', 'Learner', 'Level', 'XP', 'Streak'].map((h) => (
-              <span key={h} style={{ fontSize: 11, color: '#9ca3af', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</span>
-            ))}
-          </div>
-
-          {users.map((user, i) => {
-            const rank = i + 1
-            const isMe = user.id === currentUserId
-            const levelInfo = getLevelInfo(user.total_xp ?? 0)
-            const displayName = user.display_name ?? user.email?.split('@')[0] ?? 'Learner'
-
-            return (
-              <div key={user.id} style={{
-                display: 'grid',
-                gridTemplateColumns: '60px 1fr 100px 100px 100px',
-                padding: '14px 20px',
-                borderBottom: '0.5px solid #f9fafb',
-                background: isMe ? '#faf5ff' : 'white',
-                alignItems: 'center',
-              }}>
-                <span style={{ fontSize: rank <= 3 ? 18 : 14, fontWeight: 600, color: rankColors[rank - 1] ?? '#6b7280' }}>
-                  {rank <= 3 ? rankLabels[rank - 1] : `#${rank}`}
-                </span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <img
-                    src={user.avatar_url ?? `https://api.dicebear.com/7.x/initials/svg?seed=${displayName}`}
-                    style={{ width: 32, height: 32, borderRadius: '50%', objectFit: 'cover' }}
-                    alt=""
-                  />
-                  <div>
-                    <p style={{ fontSize: 14, fontWeight: isMe ? 600 : 400, margin: 0, color: isMe ? '#4338ca' : '#1a1a2e', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 160 }}>
-                      {displayName} {isMe && <span style={{ fontSize: 11, color: '#8b5cf6' }}>(you)</span>}
-                    </p>
-                  </div>
-                </div>
-                <span style={{ fontSize: 13, color: '#6b7280' }}>Lv.{levelInfo.current.level}</span>
-                <span style={{ fontSize: 13, fontWeight: 500, color: '#1a1a2e' }}>{(user.total_xp ?? 0).toLocaleString()}</span>
-                <span style={{ fontSize: 13, color: '#6b7280' }}>{user.current_streak ?? 0}d 🔥</span>
-              </div>
-            )
-          })}
-
-          {users.length === 0 && (
-            <div style={{ padding: 40, textAlign: 'center', color: '#9ca3af' }}>
-              No learners yet. Be the first!
+        <div style={{ background: 'white', border: '0.5px solid #e5e7eb', borderRadius: 16, overflowX: 'auto' }}>
+          <div style={{ minWidth: 600 }}>
+            {/* Header */}
+            <div style={{ display: 'grid', gridTemplateColumns: '60px 1fr 100px 100px 100px', padding: '12px 20px', borderBottom: '0.5px solid #f3f4f6', background: '#f9fafb' }}>
+              {['Rank', 'Learner', 'Level', 'XP', 'Streak'].map((h) => (
+                <span key={h} style={{ fontSize: 11, color: '#9ca3af', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</span>
+              ))}
             </div>
-          )}
+
+            {users.map((user, i) => {
+              const rank = i + 1
+              const isMe = user.id === currentUserId
+              const levelInfo = getLevelInfo(user.total_xp ?? 0)
+              const displayName = user.display_name ?? user.email?.split('@')[0] ?? 'Learner'
+
+              return (
+                <div key={user.id} style={{
+                  display: 'grid',
+                  gridTemplateColumns: '60px 1fr 100px 100px 100px',
+                  padding: '14px 20px',
+                  borderBottom: '0.5px solid #f9fafb',
+                  background: isMe ? '#faf5ff' : 'white',
+                  alignItems: 'center',
+                }}>
+                  <span style={{ fontSize: rank <= 3 ? 18 : 14, fontWeight: 600, color: rankColors[rank - 1] ?? '#6b7280' }}>
+                    {rank <= 3 ? rankLabels[rank - 1] : `#${rank}`}
+                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <img
+                      src={user.avatar_url ?? `https://api.dicebear.com/7.x/initials/svg?seed=${displayName}`}
+                      style={{ width: 32, height: 32, borderRadius: '50%', objectFit: 'cover' }}
+                      alt=""
+                    />
+                    <div>
+                      <p style={{ fontSize: 14, fontWeight: isMe ? 600 : 400, margin: 0, color: isMe ? '#4338ca' : '#1a1a2e', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 160 }}>
+                        {displayName} {isMe && <span style={{ fontSize: 11, color: '#8b5cf6' }}>(you)</span>}
+                      </p>
+                    </div>
+                  </div>
+                  <span style={{ fontSize: 13, color: '#6b7280' }}>Lv.{levelInfo.current.level}</span>
+                  <span style={{ fontSize: 13, fontWeight: 500, color: '#1a1a2e' }}>{(user.total_xp ?? 0).toLocaleString()}</span>
+                  <span style={{ fontSize: 13, color: '#6b7280' }}>{user.current_streak ?? 0}d 🔥</span>
+                </div>
+              )
+            })}
+
+            {users.length === 0 && (
+              <div style={{ padding: 40, textAlign: 'center', color: '#9ca3af' }}>
+                No learners yet. Be the first!
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
