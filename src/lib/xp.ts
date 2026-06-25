@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/client'
 import { checkAchievements } from './achievements'
+import { getGamificationProvider } from '@/providers/GamificationProvider'
 
 export const XP_VALUES = {
   CORRECT_LEARN: 5,
@@ -51,6 +52,8 @@ export async function addXP(amount: number, userId?: string) {
     data.todayXP = data.todayDate === today ? data.todayXP + amount : amount
     data.todayDate = today
     localStorage.setItem('nihongopath_guest_xp', JSON.stringify(data))
+    
+    getGamificationProvider()?.showXP(amount)
     return data.totalXP
   }
 
@@ -81,6 +84,8 @@ export async function addXP(amount: number, userId?: string) {
 
   // Check achievements after XP update
   await checkAchievements(userId, newTotalXP)
+  
+  getGamificationProvider()?.showXP(amount)
 
   return newTotalXP
 }
