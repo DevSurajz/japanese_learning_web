@@ -18,6 +18,7 @@ export function KanaAssess({ isMobile, kanaList, onComplete }: KanaAssessProps) 
   const [inputValue, setInputValue] = useState("")
   const [results, setResults] = useState<{ kana: string, isCorrect: boolean }[]>([])
   const [status, setStatus] = useState<"typing" | "correct" | "incorrect">("typing")
+  const [isFinished, setIsFinished] = useState(false)
   
   const inputRef = useRef<HTMLInputElement>(null)
   const [userId, setUserId] = useState<string | undefined>()
@@ -77,12 +78,97 @@ export function KanaAssess({ isMobile, kanaList, onComplete }: KanaAssessProps) 
             }
           }
         })
-        onComplete(newResults)
+        setResults(newResults)
+        setIsFinished(true)
       }
     }, isCorrect ? 800 : 1500) // Longer delay on incorrect so they can see the answer
   }
 
+  const handleRetry = () => {
+    const validKana = kanaList.filter(k => !k.empty && k.kana && k.romaji)
+    const shuffled = [...validKana].sort(() => 0.5 - Math.random())
+    setQuestions(shuffled.slice(0, 20))
+    setResults([])
+    setCurrentIndex(0)
+    setInputValue("")
+    setStatus("typing")
+    setIsFinished(false)
+  }
+
+  const handleContinue = () => {
+    onComplete(results)
+  }
+
   if (questions.length === 0) return null
+
+  if (isFinished) {
+    const score = results.filter(r => r.isCorrect).length
+    const total = questions.length
+    const percent = Math.round((score / total) * 100)
+    
+    let message = "Keep Practicing! 💪"
+    if (percent === 100) message = "Perfect Score! 🏆"
+    else if (percent >= 80) message = "Excellent Job! ⭐"
+    else if (percent >= 50) message = "Great Effort! 👍"
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 10 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        style={{
+          maxWidth: 400, margin: "60px auto",
+          background: "#fff", borderRadius: 24,
+          padding: "48px 32px", textAlign: "center",
+          boxShadow: "0 10px 40px rgba(0,0,0,0.05)",
+          border: "1px solid #e2e8f0"
+        }}
+      >
+        <div style={{ fontSize: 48, marginBottom: 16 }}>{message.split(" ")[message.split(" ").length - 1]}</div>
+        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 32, color: "#0f172a", marginBottom: 8 }}>
+          {message.slice(0, -2)}
+        </h2>
+        <p style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#64748b", marginBottom: 32 }}>
+          You got {score} out of {total} correct.
+        </p>
+
+        <div style={{ display: "flex", gap: 16, marginBottom: 40, justifyContent: "center" }}>
+          <div style={{ background: "#ecfdf5", color: "#10b981", padding: "16px 24px", borderRadius: 16 }}>
+            <div style={{ fontSize: 24, fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>{score}</div>
+            <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 600 }}>Right</div>
+          </div>
+          <div style={{ background: "#fef2f2", color: "#ef4444", padding: "16px 24px", borderRadius: 16 }}>
+            <div style={{ fontSize: 24, fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>{total - score}</div>
+            <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 600 }}>Wrong</div>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <button
+            onClick={handleRetry}
+            style={{
+              background: "#f1f5f9", color: "#475569",
+              border: "none", padding: "16px", borderRadius: 16,
+              fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 14,
+              cursor: "pointer", transition: "background 0.2s"
+            }}
+          >
+            Try Again
+          </button>
+          <button
+            onClick={handleContinue}
+            style={{
+              background: "#0f172a", color: "#fff",
+              border: "none", padding: "16px", borderRadius: 16,
+              fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 14,
+              cursor: "pointer", transition: "background 0.2s"
+            }}
+          >
+            Continue
+          </button>
+        </div>
+      </motion.div>
+    )
+  }
 
   const currentKana = questions[currentIndex]
   const progress = (currentIndex / questions.length) * 100
