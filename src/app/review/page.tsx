@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "motion/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Navbar from "@/components/Navbar"
 import SpeakButton from "@/components/SpeakButton"
+import { createClient } from "@/utils/supabase/client"
 
 interface ReviewCard {
   id: string
@@ -48,6 +49,11 @@ function ReviewPageInner() {
   const [answering, setAnswering] = useState(false)
   const [done, setDone] = useState(false)
   const [todayStats, setTodayStats] = useState({ reviewedToday: 0, streak: 0, dueToday: 0 })
+  const [userId, setUserId] = useState<string | undefined>()
+
+  useEffect(() => {
+    createClient().auth.getUser().then(({ data: { user } }) => setUserId(user?.id))
+  }, [])
 
   useEffect(() => {
     async function fetchCards() {
@@ -98,18 +104,27 @@ function ReviewPageInner() {
           quality,
         }),
       })
+      if (quality >= 4) {
+        import('@/lib/xp').then(m => {
+          m.addXP(m.XP_VALUES.CORRECT_REVIEW, userId)
+          m.updateStreak(userId)
+        })
+      }
     } catch (err) {
       console.error(err)
     }
 
     if (currentIndex + 1 >= total) {
+      import('@/lib/xp').then(m => {
+        m.addXP(m.XP_VALUES.FINISH_REVIEW_QUEUE, userId)
+      })
       setDone(true)
     } else {
       setCurrentIndex(i => i + 1)
       setRevealed(false)
     }
     setAnswering(false)
-  }, [currentCard, currentIndex, total, answering])
+  }, [currentCard, currentIndex, total, answering, userId])
 
   if (loading) {
     return (

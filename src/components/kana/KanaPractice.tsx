@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { KanaItem } from "./data"
 import { playKanaAudio } from "./audio"
+import { createClient } from "@/utils/supabase/client"
 
 interface KanaPracticeProps {
   isMobile: boolean
@@ -20,6 +21,11 @@ export function KanaPractice({ isMobile, kanaList, weakCharacters, onComplete }:
   const [status, setStatus] = useState<"typing" | "correct" | "incorrect">("typing")
   
   const inputRef = useRef<HTMLInputElement>(null)
+  const [userId, setUserId] = useState<string | undefined>()
+
+  useEffect(() => {
+    createClient().auth.getUser().then(({ data: { user } }) => setUserId(user?.id))
+  }, [])
 
   useEffect(() => {
     // Filter only weak characters
@@ -49,6 +55,13 @@ export function KanaPractice({ isMobile, kanaList, weakCharacters, onComplete }:
     const isCorrect = inputValue.trim().toLowerCase() === currentKana.romaji?.toLowerCase()
 
     setStatus(isCorrect ? "correct" : "incorrect")
+    
+    if (isCorrect) {
+      import('@/lib/xp').then(m => {
+        m.addXP(m.XP_VALUES.CORRECT_LEARN, userId)
+        m.updateStreak(userId)
+      })
+    }
     
     setTimeout(() => {
       const newResults = [...results, { kana: currentKana.kana!, isCorrect }]

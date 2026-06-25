@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { KanaItem } from "./data"
 import { playKanaAudio } from "./audio"
+import { createClient } from "@/utils/supabase/client"
 
 interface KanaAssessProps {
   isMobile: boolean
@@ -19,6 +20,11 @@ export function KanaAssess({ isMobile, kanaList, onComplete }: KanaAssessProps) 
   const [status, setStatus] = useState<"typing" | "correct" | "incorrect">("typing")
   
   const inputRef = useRef<HTMLInputElement>(null)
+  const [userId, setUserId] = useState<string | undefined>()
+
+  useEffect(() => {
+    createClient().auth.getUser().then(({ data: { user } }) => setUserId(user?.id))
+  }, [])
 
   // Initialize questions
   useEffect(() => {
@@ -57,6 +63,20 @@ export function KanaAssess({ isMobile, kanaList, onComplete }: KanaAssessProps) 
         setStatus("typing")
       } else {
         // Finished
+        import('@/lib/xp').then(async m => {
+          await m.addXP(m.XP_VALUES.COMPLETE_SECTION, userId)
+          await m.updateStreak(userId)
+          
+          const score = newResults.filter(r => r.isCorrect).length
+          const isPerfect = score === questions.length
+          if (isPerfect) {
+            await m.addXP(m.XP_VALUES.PERFECT_ASSESSMENT, userId)
+            if (userId) {
+              const { checkAchievements } = await import('@/lib/achievements')
+              await checkAchievements(userId, 0, 0, { perfectAssessment: true })
+            }
+          }
+        })
         onComplete(newResults)
       }
     }, isCorrect ? 800 : 1500) // Longer delay on incorrect so they can see the answer

@@ -4,6 +4,7 @@ import './globals.css'
 import { ViewportProvider } from '@/hooks'
 import { Analytics } from "@vercel/analytics/react"
 import ProgressBar from '@/components/ProgressBar'
+import GamificationProvider from '@/providers/GamificationProvider'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -55,9 +56,11 @@ export default function RootLayout({
       </head>
       <body>
         <ProgressBar />
-        <ViewportProvider>
-          {children}
-        </ViewportProvider>
+        <GamificationProvider>
+          <ViewportProvider>
+            {children}
+          </ViewportProvider>
+        </GamificationProvider>
         <Analytics />
       </body>
     </html>

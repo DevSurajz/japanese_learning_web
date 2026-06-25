@@ -1,0 +1,133 @@
+import { createClient } from '@/utils/supabase/client'
+import { checkAchievements } from './achievements'
+
+export const XP_VALUES = {
+  CORRECT_LEARN: 5,
+  CORRECT_REVIEW: 10,
+  COMPLETE_SECTION: 25,
+  FINISH_REVIEW_QUEUE: 50,
+  PERFECT_ASSESSMENT: 100,
+  STREAK_7_DAYS: 75,
+  STREAK_30_DAYS: 200,
+  UNLOCK_KANJI: 15,
+} as const
+
+export const LEVELS = [
+  { level: 1, title: 'Beginner',           minXP: 0    },
+  { level: 2, title: 'Hiragana Student',   minXP: 100  },
+  { level: 3, title: 'Katakana Student',   minXP: 250  },
+  { level: 4, title: 'Kana Master',        minXP: 500  },
+  { level: 5, title: 'Kanji Apprentice',   minXP: 900  },
+  { level: 6, title: 'JLPT N5 Scholar',   minXP: 1400 },
+  { level: 7, title: 'Nihongo Warrior',    minXP: 2000 },
+]
+
+export function getLevelInfo(totalXP: number) {
+  let current = LEVELS[0]
+  let next = LEVELS[1]
+
+  for (let i = LEVELS.length - 1; i >= 0; i--) {
+    if (totalXP >= LEVELS[i].minXP) {
+      current = LEVELS[i]
+      next = LEVELS[i + 1] ?? null
+      break
+    }
+  }
+
+  const progressXP = totalXP - current.minXP
+  const neededXP = next ? next.minXP - current.minXP : 0
+  const progressPercent = next ? Math.round((progressXP / neededXP) * 100) : 100
+
+  return { current, next, progressXP, neededXP, progressPercent }
+}
+
+export async function addXP(amount: number, userId?: string) {
+  // Guest: use localStorage
+  if (!userId) {
+    const raw = localStorage.getItem('nihongopath_guest_xp')
+    const data = raw ? JSON.parse(raw) : { totalXP: 0, todayXP: 0, todayDate: '' }
+    const today = new Date().toISOString().split('T')[0]
+    data.totalXP += amount
+    data.todayXP = data.todayDate === today ? data.todayXP + amount : amount
+    data.todayDate = today
+    localStorage.setItem('nihongopath_guest_xp', JSON.stringify(data))
+    return data.totalXP
+  }
+
+  // Logged in: update DB
+  const supabase = createClient()
+  const today = new Date().toISOString().split('T')[0]
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('total_xp, today_xp, today_xp_date')
+    .eq('id', userId)
+    .single()
+
+  if (!profile) return
+
+  const isSameDay = profile.today_xp_date === today
+  const newTotalXP = (profile.total_xp ?? 0) + amount
+  const newTodayXP = isSameDay ? (profile.today_xp ?? 0) + amount : amount
+
+  await supabase
+    .from('profiles')
+    .update({
+      total_xp: newTotalXP,
+      today_xp: newTodayXP,
+      today_xp_date: today,
+    })
+    .eq('id', userId)
+
+  // Check achievements after XP update
+  await checkAchievements(userId, newTotalXP)
+
+  return newTotalXP
+}
+
+export async function updateStreak(userId?: string) {
+  const today = new Date().toISOString().split('T')[0]
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0]
+
+  if (!userId) {
+    const raw = localStorage.getItem('nihongopath_guest_streak')
+    const data = raw ? JSON.parse(raw) : { currentStreak: 0, longestStreak: 0, lastStudiedDate: '' }
+    if (data.lastStudiedDate === today) return
+    if (data.lastStudiedDate === yesterday) data.currentStreak++
+    else data.currentStreak = 1
+    data.longestStreak = Math.max(data.longestStreak, data.currentStreak)
+    data.lastStudiedDate = today
+    localStorage.setItem('nihongopath_guest_streak', JSON.stringify(data))
+    return
+  }
+
+  const supabase = createClient()
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('current_streak, longest_streak, last_studied_date')
+    .eq('id', userId)
+    .single()
+
+  if (!profile) return
+  if (profile.last_studied_date === today) return
+
+  let newStreak = 1
+  if (profile.last_studied_date === yesterday) {
+    newStreak = (profile.current_streak ?? 0) + 1
+  }
+
+  const newLongest = Math.max(profile.longest_streak ?? 0, newStreak)
+
+  await supabase
+    .from('profiles')
+    .update({
+      current_streak: newStreak,
+      longest_streak: newLongest,
+      last_studied_date: today,
+    })
+    .eq('id', userId)
+
+  // Streak milestone XP bonuses
+  if (newStreak === 7) await addXP(XP_VALUES.STREAK_7_DAYS, userId)
+  if (newStreak === 30) await addXP(XP_VALUES.STREAK_30_DAYS, userId)
+}

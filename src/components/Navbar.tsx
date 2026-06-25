@@ -172,7 +172,8 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
               }}
             >
               <Link href="/dashboard" style={{ display: "block", padding: "10px 16px", textDecoration: "none", color: "#0A0A0A", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }} onClick={() => setProfileMenuOpen(false)}>Dashboard</Link>
-              <Link href="/dashboard" style={{ display: "block", padding: "10px 16px", textDecoration: "none", color: "rgba(10,10,10,0.5)", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }} onClick={() => setProfileMenuOpen(false)}>Profile</Link>
+              <Link href="/profile" style={{ display: "block", padding: "10px 16px", textDecoration: "none", color: "rgba(10,10,10,0.5)", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }} onClick={() => setProfileMenuOpen(false)}>Profile</Link>
+              <Link href="/leaderboard" style={{ display: "block", padding: "10px 16px", textDecoration: "none", color: "rgba(10,10,10,0.5)", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }} onClick={() => setProfileMenuOpen(false)}>Leaderboard</Link>
               <div style={{ height: 1, background: "rgba(10,10,10,0.05)", margin: "4px 0" }} />
               <button onClick={requestLogout} style={{ width: "100%", textAlign: "left", background: "none", border: "none", padding: "10px 16px", cursor: "pointer", color: "#0A0A0A", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }}>Log Out</button>
             </motion.div>
@@ -361,8 +362,11 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
                 <Link href="/dashboard" onClick={() => setMenuOpen(false)} style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", color: textColor, display: "block" }}>
                   DASHBOARD
                 </Link>
-                <Link href="/dashboard" onClick={() => setMenuOpen(false)} style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", color: textColor, display: "block" }}>
+                <Link href="/profile" onClick={() => setMenuOpen(false)} style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", color: textColor, display: "block" }}>
                   PROFILE
+                </Link>
+                <Link href="/leaderboard" onClick={() => setMenuOpen(false)} style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", color: textColor, display: "block" }}>
+                  LEADERBOARD
                 </Link>
                 <button onClick={requestLogout} style={{ background: "none", border: "none", padding: 0, textAlign: "left", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", color: textColor, display: "block", cursor: "pointer" }}>
                   LOG OUT
