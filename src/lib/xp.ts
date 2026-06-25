@@ -4,13 +4,13 @@ import { getGamificationProvider } from '@/providers/GamificationProvider'
 
 export const XP_VALUES = {
   CORRECT_LEARN: 5,
-  CORRECT_REVIEW: 10,
-  COMPLETE_SECTION: 25,
-  FINISH_REVIEW_QUEUE: 50,
-  PERFECT_ASSESSMENT: 100,
-  STREAK_7_DAYS: 75,
-  STREAK_30_DAYS: 200,
-  UNLOCK_KANJI: 15,
+  CORRECT_REVIEW: 5,
+  COMPLETE_SECTION: 5,
+  FINISH_REVIEW_QUEUE: 10,
+  PERFECT_ASSESSMENT: 5,
+  STREAK_7_DAYS: 50,
+  STREAK_30_DAYS: 150,
+  UNLOCK_KANJI: 10,
 } as const
 
 export const LEVELS = [
