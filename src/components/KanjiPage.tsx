@@ -12,7 +12,23 @@ const CARDS_PER_PAGE = 20
 
 function KanjiModal({ item, onClose, isMobile }: { item: any; onClose: () => void; isMobile: boolean }) {
   const [activeTab, setActiveTab] = useState<'info' | 'stroke'>('info')
-  useEffect(() => setActiveTab('info'), [item])
+  const [isCompleted, setIsCompleted] = useState(false)
+  
+  useEffect(() => {
+    setActiveTab('info')
+    setIsCompleted(false)
+  }, [item])
+
+  const handleComplete = async () => {
+    if (isCompleted) return;
+    setIsCompleted(true);
+    const { createClient } = await import('@/utils/supabase/client');
+    const { addXP, updateStreak } = await import('@/lib/xp');
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    await addXP(2, user?.id);
+    await updateStreak(user?.id);
+  }
 
   return (
     <AnimatePresence>
@@ -161,19 +177,20 @@ function KanjiModal({ item, onClose, isMobile }: { item: any; onClose: () => voi
             )}
 
             <motion.button
-              whileHover={{ scale: 1.02, background: "#334155" }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: isCompleted ? 1 : 1.02, background: isCompleted ? "#10b981" : "#334155" }}
+              whileTap={{ scale: isCompleted ? 1 : 0.98 }}
+              onClick={handleComplete}
               style={{
-                background: "#0f172a", color: "#fff",
+                background: isCompleted ? "#10b981" : "#0f172a", color: "#fff",
                 border: "none", borderRadius: 14,
                 padding: "15px 24px",
                 fontFamily: "'Space Grotesk', sans-serif",
                 fontWeight: 400, fontSize: 12,
                 letterSpacing: "0.2em", textTransform: "uppercase",
-                cursor: "pointer", transition: "background 0.3s",
+                cursor: isCompleted ? "default" : "pointer", transition: "all 0.3s",
               }}
             >
-              Practice Writing
+              {isCompleted ? "Completed ✔" : "Mark as Completed"}
             </motion.button>
           </motion.div>
         </motion.div>
