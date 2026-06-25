@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { saveProgress, getProgress } from "@/lib/guestProgress"
 
 export interface KanaStats {
   correct: number
@@ -11,20 +12,24 @@ export interface ProgressData {
   [kana: string]: KanaStats
 }
 
-const STORAGE_KEY = "nihongopath_kana_progress"
-
 export function useProgress() {
   const [progress, setProgress] = useState<ProgressData>({})
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored) {
-        setProgress(JSON.parse(stored))
+      const data = getProgress("kana") as any
+      const formattedData: ProgressData = {}
+      for (const [key, val] of Object.entries(data)) {
+        const item = val as { correct: number; attempts: number }
+        formattedData[key] = {
+          correct: item.correct,
+          incorrect: item.attempts - item.correct
+        }
       }
+      setProgress(formattedData)
     } catch (e) {
-      console.error("Failed to load progress from localStorage")
+      console.error("Failed to load kana progress from guestProgress")
     }
     setIsLoaded(true)
   }, [])
@@ -41,13 +46,9 @@ export function useProgress() {
         } else {
           newProgress[kana].incorrect += 1
         }
+        
+        saveProgress("kana", kana, isCorrect)
       })
-      
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(newProgress))
-      } catch (e) {
-        console.error("Failed to save progress to localStorage")
-      }
       
       return newProgress
     })

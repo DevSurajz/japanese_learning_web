@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
+import AuthSync from '@/components/AuthSync'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -22,6 +23,7 @@ export default async function DashboardPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#FAFAFA' }}>
+      <AuthSync />
       <Navbar variant="page" />
 
       <main style={{ maxWidth: 800, margin: '0 auto', padding: '120px 24px' }}>

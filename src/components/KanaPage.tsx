@@ -85,7 +85,21 @@ export default function KanaPage() {
     setMode("learn")
   }
   
-  if (!isLoaded) return null // Wait for localStorage
+  if (!isLoaded) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#f8fafc", padding: "56px 48px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ width: 120, height: 24, background: "#e2e8f0", borderRadius: 12, marginBottom: 40, animation: "pulse 1.5s infinite ease-in-out" }} />
+        <div style={{ width: 300, height: 64, background: "#e2e8f0", borderRadius: 16, marginBottom: 20, animation: "pulse 1.5s infinite ease-in-out" }} />
+        <div style={{ width: 200, height: 20, background: "#e2e8f0", borderRadius: 10, animation: "pulse 1.5s infinite ease-in-out" }} />
+        <style>{`
+          @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+          }
+        `}</style>
+      </div>
+    )
+  }
 
   return (
     <motion.div

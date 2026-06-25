@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Space_Grotesk, Noto_Sans_JP } from 'next/font/googl
 import './globals.css'
 import { ViewportProvider } from '@/hooks'
 import { Analytics } from "@vercel/analytics/react"
+import ProgressBar from '@/components/ProgressBar'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -53,6 +54,7 @@ export default function RootLayout({
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       </head>
       <body>
+        <ProgressBar />
         <ViewportProvider>
           {children}
         </ViewportProvider>

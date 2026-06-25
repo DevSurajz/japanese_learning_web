@@ -8,3 +8,12 @@ body { background: #FAFAFA; color: #0A0A0A; overflow-x: hidden; }
 
 /* Ensure full viewport height */
 html, body { min-height: 100vh; }
+
+/* NProgress Customization */
+#nprogress .bar {
+  background: #0A0A0A !important;
+  height: 3px !important;
+}
+#nprogress .peg {
+  box-shadow: 0 0 10px #0A0A0A, 0 0 5px #0A0A0A !important;
+}
