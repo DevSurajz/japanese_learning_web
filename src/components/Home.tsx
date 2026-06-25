@@ -16,6 +16,12 @@ const ProgressMastery = dynamic(() => import('@/components/home/ProgressMastery'
 const CurriculumPreview = dynamic(() => import('@/components/home/CurriculumPreview').then(mod => mod.default), { ssr: true })
 const FinalCTA = dynamic(() => import('@/components/home/FinalCTA').then(mod => mod.default), { ssr: true })
 
+const learners = [
+  { initials: 'TK', color: '#6366f1' },
+  { initials: 'MR', color: '#8b5cf6' },
+  { initials: 'SA', color: '#a78bfa' },
+]
+
 // ─── HERO ────────────────────────────────────────────────────────
 function Hero({ scrollY }: { scrollY: ReturnType<typeof useScroll>["scrollY"] }) {
   const { isMobile } = useViewport()
@@ -49,12 +55,58 @@ function Hero({ scrollY }: { scrollY: ReturnType<typeof useScroll>["scrollY"] })
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            display: "flex", gap: 16, alignItems: "center", marginBottom: 32,
+            display: "flex", gap: 16, alignItems: "center", marginBottom: 24,
             fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 11,
             letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(10,10,10,0.5)",
           }}
         >
           <span>A Structured Path</span>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 10,
+            background: 'white',
+            border: '1px solid #e5e7eb',
+            borderRadius: 999,
+            padding: '6px 14px 6px 8px',
+            marginBottom: 32,
+          }}
+        >
+          {/* overlapping avatar stack */}
+          <div style={{ display: 'flex' }}>
+            {learners.map((l, i) => (
+              <div key={i} style={{
+                width: 28,
+                height: 28,
+                borderRadius: '50%',
+                background: l.color,
+                border: '2px solid white',
+                marginLeft: i === 0 ? 0 : -8,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 10,
+                fontWeight: 600,
+                color: 'white',
+                zIndex: learners.length - i,
+                position: 'relative',
+                fontFamily: "'Space Grotesk', sans-serif",
+              }}>
+                {l.initials}
+              </div>
+            ))}
+          </div>
+
+          {/* text */}
+          <span style={{ fontSize: 13, color: '#374151', fontWeight: 500, fontFamily: "'Space Grotesk', sans-serif" }}>
+            Used by <strong>196+</strong> learners
+          </span>
         </motion.div>
 
         <motion.h1
