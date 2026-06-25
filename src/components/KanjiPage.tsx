@@ -1,10 +1,12 @@
 "use client"
 
-import { useDeferredValue, useState, useMemo } from "react"
+import { useDeferredValue, useState, useMemo, useEffect } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { useRouter } from "next/navigation"
 import { kanjiData } from "@/kanjiData"
 import { useViewport } from "@/hooks"
+import SpeakButton from "@/components/SpeakButton"
+import KanjiStrokeOrder from "@/components/KanjiStrokeOrder"
 
 const CARDS_PER_PAGE = 20
 
@@ -82,6 +84,8 @@ function KanjiModal({ item, onClose, isMobile }: { item: any; onClose: () => voi
               </div>
             </div>
 
+            <KanjiStrokeOrder kanji={item.kanji} />
+
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               {[
                 { label: "On'yomi", data: item.onyomi, bg: "#eef2ff", pillBg: "#c7d2fe", pillText: "#3730a3", labelColor: "#818cf8" },
@@ -94,7 +98,10 @@ function KanjiModal({ item, onClose, isMobile }: { item: any; onClose: () => voi
                   {data.length > 0 ? (
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                       {data.map((r: string, i: number) => (
-                        <span key={i} style={{ background: pillBg, color: pillText, borderRadius: 99, padding: "3px 10px", fontSize: 13, fontFamily: "'Noto Sans JP', sans-serif" }}>{r}</span>
+                        <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 4, background: pillBg, color: pillText, borderRadius: 99, padding: "3px 10px", fontSize: 13, fontFamily: "'Noto Sans JP', sans-serif" }}>
+                          {r}
+                          <SpeakButton text={r} />
+                        </span>
                       ))}
                     </div>
                   ) : <span style={{ color: "#cbd5e1", fontSize: 13 }}>—</span>}
@@ -211,7 +218,15 @@ export default function KanjiPage() {
   const [search, setSearch] = useState("")
   const [selected, setSelected] = useState<any>(null)
   const [page, setPage] = useState(1)
+  const [weakCount, setWeakCount] = useState(0)
   const deferredSearch = useDeferredValue(search)
+
+  useEffect(() => {
+    fetch('/api/review/due?filter=weak&type=KANJI')
+      .then(r => r.ok ? r.json() : { cards: [] })
+      .then(d => setWeakCount(d.cards?.length ?? 0))
+      .catch(() => {})
+  }, [])
 
   const filtered = useMemo(() => {
     const q = deferredSearch.toLowerCase()
@@ -346,6 +361,26 @@ export default function KanjiPage() {
             </svg>
           </div>
         </motion.div>
+
+        {/* Review weak kanji shortcut */}
+        {weakCount > 0 && (
+          <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 32 }}>
+            <a
+              href="/review?filter=weak&type=KANJI"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                background: '#fff7ed', border: '1px solid #fed7aa',
+                color: '#c2410c', padding: '8px 20px', borderRadius: 99,
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: 11, fontWeight: 600, letterSpacing: '0.12em',
+                textTransform: 'uppercase', textDecoration: 'none',
+              }}
+            >
+              <span>⚠</span>
+              Review {weakCount} weak {weakCount === 1 ? 'kanji' : 'kanji'}
+            </a>
+          </div>
+        )}
 
         <AnimatePresence mode="wait">
           <motion.div

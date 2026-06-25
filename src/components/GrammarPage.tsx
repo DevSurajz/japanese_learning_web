@@ -6,17 +6,20 @@ import { useRouter } from "next/navigation"
 import { useViewport } from "@/hooks"
 import { grammarData } from "@/grammarData"
 import Footer from "@/components/Footer"
+import SpeakButton from "@/components/SpeakButton"
 
 const ExampleItem = React.memo(function ExampleItem({ ex, isMobile }: { ex: any; isMobile: boolean }) {
   return (
     <div>
-      <p style={{
-        fontFamily: "'Noto Sans JP', sans-serif",
-        fontWeight: 400,
-        fontSize: isMobile ? 16 : 18,
-        color: "#0A0A0A",
-        marginBottom: 4,
-      }}>{ex.japanese}</p>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+        <p style={{
+          fontFamily: "'Noto Sans JP', sans-serif",
+          fontWeight: 400,
+          fontSize: isMobile ? 16 : 18,
+          color: "#0A0A0A",
+        }}>{ex.japanese}</p>
+        <SpeakButton text={ex.japanese} rate={0.75} />
+      </div>
       {ex.romaji && (
         <p style={{
           fontFamily: "'Space Grotesk', sans-serif",

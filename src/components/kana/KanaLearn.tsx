@@ -4,6 +4,8 @@ import { motion } from "motion/react"
 import { KanaItem } from "./data"
 import { playKanaAudio } from "./audio"
 
+import SpeakButton from "@/components/SpeakButton"
+
 function KanaCard({ item, index, isMobile }: { item: KanaItem; index: number; isMobile: boolean }) {
   if (item.empty) return <div />
 
@@ -23,19 +25,15 @@ function KanaCard({ item, index, isMobile }: { item: KanaItem; index: number; is
         padding: isMobile ? "10px 6px" : "20px 14px",
         display: "flex", flexDirection: "column", alignItems: "center", gap: isMobile ? 6 : 10,
         height: "100%",
-        cursor: "pointer", // Changed to pointer for audio
+        cursor: "pointer",
         transition: "box-shadow 0.3s ease",
         position: "relative",
       }}
       onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.boxShadow = "0 10px 30px rgba(0,0,0,0.08)"}
       onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 10px rgba(0,0,0,0.03)"}
     >
-      {/* Subtle Speaker Icon */}
-      <div style={{ position: "absolute", top: 8, right: 8, opacity: 0.3 }}>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-        </svg>
+      <div style={{ position: "absolute", top: 8, right: 8 }}>
+        <SpeakButton text={item.kana} />
       </div>
 
       <div style={{

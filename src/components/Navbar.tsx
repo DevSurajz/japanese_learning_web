@@ -38,6 +38,10 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false)
+  const [streak, setStreak] = useState<number>(0)
+  const [xpToday, setXpToday] = useState<number>(0)
+  const [dailyGoal, setDailyGoal] = useState<number>(20)
+  const [toast, setToast] = useState<string | null>(null)
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -52,6 +56,22 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
       subscription.unsubscribe()
     }
   }, [supabase])
+
+  useEffect(() => {
+    if (!user) return
+    supabase
+      .from('profiles')
+      .select('current_streak, xp_today_earned, daily_goal_xp, xp_today_date')
+      .eq('id', user.id)
+      .single()
+      .then(({ data }) => {
+        if (!data) return
+        setStreak(data.current_streak ?? 0)
+        const today = new Date().toISOString().split('T')[0]
+        setXpToday(data.xp_today_date === today ? (data.xp_today_earned ?? 0) : 0)
+        setDailyGoal(data.daily_goal_xp ?? 20)
+      })
+  }, [user, supabase])
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -230,12 +250,56 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
             </motion.div>
 
             {/* Right CTA / Auth */}
-            <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+            <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 20 }}>
+              {user && streak > 0 && (
+                <span style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontWeight: 300, fontSize: 13,
+                  color: textColor, letterSpacing: "0.04em",
+                  display: "flex", alignItems: "center", gap: 4,
+                }}>
+                  🔥 {streak} {streak === 1 ? 'day' : 'days'}
+                </span>
+              )}
               {renderProfileMenu()}
             </div>
           </>
         )}
       </motion.nav>
+
+      {/* Ambient daily goal progress bar */}
+      {user && (
+        <div style={{ position: variant === 'page' ? 'sticky' : 'fixed', top: variant === 'page' ? 'auto' : 72, left: 0, right: 0, zIndex: 99, height: 3, background: 'rgba(10,10,10,0.05)' }}>
+          <div style={{
+            height: '100%',
+            width: `${Math.min(100, (xpToday / dailyGoal) * 100)}%`,
+            background: xpToday >= dailyGoal ? '#10b981' : '#0A0A0A',
+            transition: 'width 0.6s ease, background 0.4s ease',
+          }} />
+        </div>
+      )}
+
+      {/* Streak milestone toast */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, x: '-50%' }}
+            animate={{ opacity: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, y: 20, x: '-50%' }}
+            style={{
+              position: 'fixed', bottom: 24, left: '50%',
+              background: '#0A0A0A', color: '#FAFAFA',
+              padding: '12px 24px', zIndex: 300,
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: 13, fontWeight: 300,
+              letterSpacing: '0.05em',
+              border: '1px solid rgba(255,255,255,0.1)',
+            }}
+          >
+            {toast}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Mobile Drawer */}
       <AnimatePresence>

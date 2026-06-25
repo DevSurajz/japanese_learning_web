@@ -215,6 +215,30 @@ export default function KanaPage() {
           ))}
         </div>
 
+        {/* Review weak areas shortcut */}
+        {mode === "learn" && getWeakCharacters().length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            style={{ display: 'flex', justifyContent: 'center', marginBottom: 40 }}
+          >
+            <a
+              href="/review?filter=weak&type=kana"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                background: '#fff7ed', border: '1px solid #fed7aa',
+                color: '#c2410c', padding: '8px 20px', borderRadius: 99,
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: 11, fontWeight: 600, letterSpacing: '0.12em',
+                textTransform: 'uppercase', textDecoration: 'none',
+              }}
+            >
+              <span>⚠</span>
+              Review {getWeakCharacters().length} weak {getWeakCharacters().length === 1 ? 'character' : 'characters'}
+            </a>
+          </motion.div>
+        )}
+
         <AnimatePresence mode="wait">
           <motion.div
             key={`${activeTab}-${mode}`}

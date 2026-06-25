@@ -1,10 +1,11 @@
 "use client"
 
-import { useDeferredValue, useState, useMemo } from "react"
+import { useDeferredValue, useState, useMemo, useEffect } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { useRouter } from "next/navigation"
 import { vocabData } from "@/vocabData"
 import { useViewport } from "@/hooks"
+import SpeakButton from "@/components/SpeakButton"
 
 const PER_PAGE = 25
 
@@ -47,7 +48,15 @@ export default function VocabPage() {
   const [sortKey, setSortKey] = useState("id")   
   const [sortDir, setSortDir] = useState(1)       
   const [typeFilter, setTypeFilter] = useState("All")
+  const [weakCount, setWeakCount] = useState(0)
   const deferredSearch = useDeferredValue(search)
+
+  useEffect(() => {
+    fetch('/api/review/due?filter=weak&type=VOCAB')
+      .then(r => r.ok ? r.json() : { cards: [] })
+      .then(d => setWeakCount(d.cards?.length ?? 0))
+      .catch(() => {})
+  }, [])
 
   const allTypes = useMemo(() => {
     const s = new Set(vocabData.map((w: any) => w.type))
@@ -203,6 +212,26 @@ export default function VocabPage() {
           </div>
         </motion.div>
 
+        {/* Review weak vocab shortcut */}
+        {weakCount > 0 && (
+          <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 28 }}>
+            <a
+              href="/review?filter=weak&type=VOCAB"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                background: '#fff7ed', border: '1px solid #fed7aa',
+                color: '#c2410c', padding: '8px 20px', borderRadius: 99,
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: 11, fontWeight: 600, letterSpacing: '0.12em',
+                textTransform: 'uppercase', textDecoration: 'none',
+              }}
+            >
+              <span>⚠</span>
+              Review {weakCount} weak {weakCount === 1 ? 'word' : 'words'}
+            </a>
+          </div>
+        )}
+
         <div style={{ background: isMobile ? "transparent" : "#fff", borderRadius: 16, border: isMobile ? "none" : "1px solid #e2e8f0", overflow: "hidden", boxShadow: isMobile ? "none" : "0 1px 6px rgba(0,0,0,0.04)" }}>
           {!isMobile && (
             <div style={{
@@ -253,7 +282,10 @@ export default function VocabPage() {
                     }}
                   >
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                      <span style={{ fontFamily: "'Noto Sans JP'", fontSize: 20, color: "#1e293b", fontWeight: 400 }}>{w.kana}</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <span style={{ fontFamily: "'Noto Sans JP'", fontSize: 20, color: "#1e293b", fontWeight: 400 }}>{w.kana}</span>
+                        <SpeakButton text={w.kana} />
+                      </div>
                       <TypeBadge type={w.type} />
                     </div>
                     <span style={{ fontFamily: "'Space Grotesk'", fontSize: 12, color: "#64748b" }}>{w.romaji} / {w.reading}</span>
@@ -276,8 +308,9 @@ export default function VocabPage() {
                     onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.background = i % 2 === 0 ? "#fff" : "#fafbfc"}
                   >
                     <div style={{ padding: "12px 16px", fontSize: 12, color: "#94a3b8", fontWeight: 500, borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>{w.id}</div>
-                    <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>
+                    <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center", gap: 8 }}>
                       <span style={{ fontFamily: "'Noto Sans JP'", fontWeight: 300, fontSize: 18, color: "#1e293b" }}>{w.kana}</span>
+                      <SpeakButton text={w.kana} />
                     </div>
                     <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", flexDirection: "column", justifyContent: "center", gap: 2 }}>
                       <span style={{ fontSize: 13, color: "#475569", fontWeight: 400 }}>{w.romaji}</span>
