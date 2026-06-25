@@ -19,7 +19,7 @@ export default function StrokeOrderViewer({ kanji }: Props) {
     const code = kanji.codePointAt(0)!.toString(16).padStart(5, '0')
 
     try {
-      const res = await fetch(`/api/kanjivg/${code}`)
+      const res = await fetch(`/kanjivg/${code}.svg`)
       if (!res.ok) throw new Error('not found')
       const svgText = await res.text()
 
