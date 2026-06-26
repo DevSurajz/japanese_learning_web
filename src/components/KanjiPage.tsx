@@ -10,7 +10,7 @@ import StrokeOrderViewer from "@/components/kanji/StrokeOrderViewer"
 
 const CARDS_PER_PAGE = 20
 
-function KanjiModal({ item, onClose, isMobile }: { item: any; onClose: () => void; isMobile: boolean }) {
+function KanjiModal({ item, onClose, isMobile }: { item: Record<string, any>; onClose: () => void; isMobile: boolean }) {
   const [activeTab, setActiveTab] = useState<'info' | 'stroke'>('info')
   const [isCompleted, setIsCompleted] = useState(false)
   
@@ -199,7 +199,7 @@ function KanjiModal({ item, onClose, isMobile }: { item: any; onClose: () => voi
   )
 }
 
-function KanjiCard({ item, index, onClick }: { item: any; index: number; onClick: (item: any) => void }) {
+function KanjiCard({ item, index, onClick }: { item: Record<string, any>; index: number; onClick: (item: Record<string, any>) => void }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 28 }}

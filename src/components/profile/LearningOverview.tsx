@@ -43,7 +43,7 @@ const StatCard = ({ label, value, unit, icon }: StatCardProps) => (
 )
 
 interface LearningOverviewProps {
-  profile: any
+  profile: Record<string, any>
   stats?: {
     lessonsCompleted: number
     kanaMastered: number

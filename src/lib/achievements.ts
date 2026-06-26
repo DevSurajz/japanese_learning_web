@@ -75,7 +75,7 @@ export async function checkAchievements(
     .select('badge_id')
     .eq('user_id', userId)
 
-  const earnedIds = new Set(earned?.map((e: any) => e.badge_id) ?? [])
+  const earnedIds = new Set(earned?.map((e: { badge_id: string }) => e.badge_id) ?? [])
   const newBadges: typeof BADGES[keyof typeof BADGES][] = []
 
   for (const badge of Object.values(BADGES)) {

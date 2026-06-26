@@ -3,7 +3,7 @@ import { getLevelInfo } from '@/lib/xp'
 import { Lightbulb, Flame } from 'lucide-react'
 
 interface LearningInsightsProps {
-  profile: any
+  profile: Record<string, any>
   levelInfo: ReturnType<typeof getLevelInfo>
 }
 

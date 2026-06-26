@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 
 interface Props {
-  studyActivity?: any[]
+  studyActivity?: Record<string, any>[]
 }
 
 export default function WeeklyProgressChart({ studyActivity = [] }: Props) {

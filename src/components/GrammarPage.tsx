@@ -8,7 +8,7 @@ import { grammarData } from "@/grammarData"
 import Footer from "@/components/Footer"
 import SpeakButton from "@/components/SpeakButton"
 
-const ExampleItem = React.memo(function ExampleItem({ ex, isMobile }: { ex: any; isMobile: boolean }) {
+const ExampleItem = React.memo(function ExampleItem({ ex, isMobile }: { ex: Record<string, any>; isMobile: boolean }) {
   return (
     <div>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
@@ -39,7 +39,7 @@ const ExampleItem = React.memo(function ExampleItem({ ex, isMobile }: { ex: any;
   )
 })
 
-const PracticeItem = React.memo(function PracticeItem({ prac, index }: { prac: any; index: number }) {
+const PracticeItem = React.memo(function PracticeItem({ prac, index }: { prac: Record<string, any>; index: number }) {
   return (
     <details style={{
       background: "#FAFAFA",
@@ -84,7 +84,7 @@ const PracticeItem = React.memo(function PracticeItem({ prac, index }: { prac: a
   )
 })
 
-const GrammarItem = React.memo(function GrammarItem({ item, isMobile }: { item: any; isMobile: boolean }) {
+const GrammarItem = React.memo(function GrammarItem({ item, isMobile }: { item: Record<string, any>; isMobile: boolean }) {
   const [showHeavy, setShowHeavy] = useState(false)
 
   useEffect(() => {
@@ -165,7 +165,7 @@ const GrammarItem = React.memo(function GrammarItem({ item, isMobile }: { item: 
             marginBottom: 16,
           }}>Examples</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            {item.examples.map((ex: any, i: number) => (
+            {item.examples.map((ex: Record<string, any>, i: number) => (
               <ExampleItem key={i} ex={ex} isMobile={isMobile} />
             ))}
           </div>
@@ -200,7 +200,7 @@ const GrammarItem = React.memo(function GrammarItem({ item, isMobile }: { item: 
             marginBottom: 16,
           }}>Practice</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {item.practice.map((prac: any, i: number) => (
+            {item.practice.map((prac: Record<string, any>, i: number) => (
               <PracticeItem key={i} prac={prac} index={i} />
             ))}
           </div>
@@ -210,7 +210,7 @@ const GrammarItem = React.memo(function GrammarItem({ item, isMobile }: { item: 
   )
 })
 
-const LessonCard = React.memo(function LessonCard({ lessonData, index, isMobile }: { lessonData: any; index: number; isMobile: boolean }) {
+const LessonCard = React.memo(function LessonCard({ lessonData, index, isMobile }: { lessonData: Record<string, any>; index: number; isMobile: boolean }) {
   const [isOpen, setIsOpen] = useState(false)
   const grammarItems = lessonData.grammar || null
 
@@ -295,7 +295,7 @@ const LessonCard = React.memo(function LessonCard({ lessonData, index, isMobile 
               {!grammarItems ? (
                 <div style={{ padding: "40px", textAlign: "center", color: "rgba(10,10,10,0.3)", fontFamily: "'Space Grotesk', sans-serif" }}>Loading...</div>
               ) : (
-                grammarItems.map((item: any, idx: number) => (
+                grammarItems.map((item: Record<string, any>, idx: number) => (
                   <GrammarItem key={idx} item={item} isMobile={isMobile} />
                 ))
               )}
@@ -426,7 +426,7 @@ export default function GrammarPage() {
       <GrammarHero />
 
       <section style={{ padding: isMobile ? "40px 24px 80px" : "80px 48px 120px", maxWidth: 1000, margin: "0 auto" }}>
-        {grammarData.map((lessonData: any, index: number) => (
+        {grammarData.map((lessonData: Record<string, any>, index: number) => (
           <LessonCard key={index} lessonData={lessonData} index={index} isMobile={isMobile} />
         ))}
       </section>

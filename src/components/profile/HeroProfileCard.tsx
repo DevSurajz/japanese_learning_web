@@ -2,7 +2,7 @@ import { motion } from 'motion/react'
 import { getLevelInfo } from '@/lib/xp'
 
 interface HeroProfileCardProps {
-  profile: any
+  profile: Record<string, any>
   levelInfo: ReturnType<typeof getLevelInfo>
   onEditClick: () => void
 }

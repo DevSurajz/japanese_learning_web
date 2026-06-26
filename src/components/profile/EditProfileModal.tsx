@@ -5,8 +5,8 @@ import { createClient } from '@/utils/supabase/client'
 interface EditProfileModalProps {
   isOpen: boolean
   onClose: () => void
-  profile: any
-  onProfileUpdate: (updatedProfile: any) => void
+  profile: Record<string, any>
+  onProfileUpdate: (updatedProfile: Record<string, any>) => void
 }
 
 export default function EditProfileModal({ isOpen, onClose, profile, onProfileUpdate }: EditProfileModalProps) {
@@ -58,9 +58,9 @@ export default function EditProfileModal({ isOpen, onClose, profile, onProfileUp
         onClose()
         setSuccess('')
       }, 1500)
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err)
-      setError(err.message || 'Failed to update profile')
+      setError(err instanceof Error ? err.message : 'Failed to update profile')
     } finally {
       setLoading(false)
     }

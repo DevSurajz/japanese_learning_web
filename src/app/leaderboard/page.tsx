@@ -15,7 +15,7 @@ import JLPTProgressCard from '@/components/profile/JLPTProgressCard'
 import AchievementsCard from '@/components/profile/AchievementsCard'
 
 export default function LeaderboardPage() {
-  const [users, setUsers] = useState<any[]>([])
+  const [users, setUsers] = useState<Record<string, any>[]>([])
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [achievements, setAchievements] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
@@ -36,7 +36,7 @@ export default function LeaderboardPage() {
 
       if (user) {
         const earned = await getUserAchievements(user.id)
-        setAchievements(earned.map((e: any) => e.badge_id))
+        setAchievements(earned.map((e: { badge_id: string }) => e.badge_id))
       }
       setLoading(false)
     }

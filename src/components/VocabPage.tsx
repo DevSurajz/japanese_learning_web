@@ -1,6 +1,6 @@
 "use client"
 
-import { useDeferredValue, useState, useMemo, useEffect } from "react"
+import React, { useDeferredValue, useState, useMemo, useEffect } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { useRouter } from "next/navigation"
 import { vocabData } from "@/vocabData"
@@ -39,6 +39,64 @@ function TypeBadge({ type }: { type: string }) {
   )
 }
 
+const VocabCard = React.memo(function VocabCard({ word, index, isMobile }: { word: Record<string, any>; index: number; isMobile: boolean }) {
+  return isMobile ? (
+    <motion.div
+      key={word.id}
+      initial={{ opacity: 0, x: -6 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: index * 0.012, duration: 0.2 }}
+      style={{
+        background: "#fff", border: "1px solid #e2e8f0", borderRadius: 12,
+        padding: "14px 16px", marginBottom: 8,
+        display: "flex", flexDirection: "column", gap: 4,
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontFamily: "'Noto Sans JP'", fontSize: 20, color: "#1e293b", fontWeight: 400 }}>{word.kana}</span>
+          {word.kana ? <SpeakButton text={word.kana} /> : null}
+        </div>
+        <TypeBadge type={word.type} />
+      </div>
+      <span style={{ fontFamily: "'Space Grotesk'", fontSize: 12, color: "#64748b" }}>{word.romaji} / {word.reading}</span>
+      <span style={{ fontFamily: "'Space Grotesk'", fontSize: 13, color: "#334155" }}>{word.meaning}</span>
+    </motion.div>
+  ) : (
+    <motion.div
+      key={word.id}
+      initial={{ opacity: 0, x: -6 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: index * 0.012, duration: 0.2 }}
+      style={{
+        display: "grid",
+        gridTemplateColumns: "52px 1fr 1fr 160px 1fr",
+        borderBottom: "1px solid #f1f5f9",
+        background: index % 2 === 0 ? "#fff" : "#fafbfc",
+        transition: "background 0.15s",
+      }}
+      onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.background = "#f0f9ff"}
+      onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.background = index % 2 === 0 ? "#fff" : "#fafbfc"}
+    >
+      <div style={{ padding: "12px 16px", fontSize: 12, color: "#94a3b8", fontWeight: 500, borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>{word.id}</div>
+      <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center", gap: 8 }}>
+        <span style={{ fontFamily: "'Noto Sans JP'", fontWeight: 300, fontSize: 18, color: "#1e293b" }}>{word.kana}</span>
+        {word.kana ? <SpeakButton text={word.kana} /> : null}
+      </div>
+      <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", flexDirection: "column", justifyContent: "center", gap: 2 }}>
+        <span style={{ fontSize: 13, color: "#475569", fontWeight: 400 }}>{word.romaji}</span>
+        <span style={{ fontFamily: "'Noto Sans JP'", fontSize: 12, color: "#94a3b8", fontWeight: 100 }}>{word.reading}</span>
+      </div>
+      <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center", overflow: "hidden" }}>
+        <TypeBadge type={word.type} />
+      </div>
+      <div style={{ padding: "12px 16px", display: "flex", alignItems: "center" }}>
+        <span style={{ fontSize: 13, color: "#334155", lineHeight: 1.5 }}>{word.meaning}</span>
+      </div>
+    </motion.div>
+  )
+})
+
 export default function VocabPage() {
   const router = useRouter()
   const { isMobile } = useViewport()
@@ -59,14 +117,14 @@ export default function VocabPage() {
   }, [])
 
   const allTypes = useMemo(() => {
-    const s = new Set(vocabData.map((w: any) => w.type))
+    const s = new Set(vocabData.map((w: Record<string, any>) => w.type))
     return ["All", ...Array.from(s).sort()]
   }, [])
 
   const filtered = useMemo(() => {
     const q = deferredSearch.toLowerCase().trim()
     return vocabData
-      .filter((w: any) => {
+      .filter((w: Record<string, any>) => {
         const typeOk = typeFilter === "All" || w.type === typeFilter
         if (!typeOk) return false
         if (!q) return true
@@ -77,7 +135,7 @@ export default function VocabPage() {
           w.meaning.toLowerCase().includes(q)
         )
       })
-      .sort((a: any, b: any) => {
+      .sort((a: Record<string, any>, b: Record<string, any>) => {
         const va = a[sortKey], vb = b[sortKey]
         if (sortKey === "id") return sortDir * (va - vb)
         return sortDir * String(va).localeCompare(String(vb), "ja")
@@ -268,62 +326,8 @@ export default function VocabPage() {
           )}
           <AnimatePresence mode="wait">
             <motion.div key={page + search + sortKey + typeFilter} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
-              {pageData.length > 0 ? pageData.map((w: any, i: number) => (
-                isMobile ? (
-                  <motion.div
-                    key={w.id}
-                    initial={{ opacity: 0, x: -6 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.012, duration: 0.2 }}
-                    style={{
-                      background: "#fff", border: "1px solid #e2e8f0", borderRadius: 12,
-                      padding: "14px 16px", marginBottom: 8,
-                      display: "flex", flexDirection: "column", gap: 4,
-                    }}
-                  >
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        <span style={{ fontFamily: "'Noto Sans JP'", fontSize: 20, color: "#1e293b", fontWeight: 400 }}>{w.kana}</span>
-                        {w.kana ? <SpeakButton text={w.kana} /> : null}
-                      </div>
-                      <TypeBadge type={w.type} />
-                    </div>
-                    <span style={{ fontFamily: "'Space Grotesk'", fontSize: 12, color: "#64748b" }}>{w.romaji} / {w.reading}</span>
-                    <span style={{ fontFamily: "'Space Grotesk'", fontSize: 13, color: "#334155" }}>{w.meaning}</span>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key={w.id}
-                    initial={{ opacity: 0, x: -6 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.012, duration: 0.2 }}
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "52px 1fr 1fr 160px 1fr",
-                      borderBottom: "1px solid #f1f5f9",
-                      background: i % 2 === 0 ? "#fff" : "#fafbfc",
-                      transition: "background 0.15s",
-                    }}
-                    onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.background = "#f0f9ff"}
-                    onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.background = i % 2 === 0 ? "#fff" : "#fafbfc"}
-                  >
-                    <div style={{ padding: "12px 16px", fontSize: 12, color: "#94a3b8", fontWeight: 500, borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>{w.id}</div>
-                    <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center", gap: 8 }}>
-                      <span style={{ fontFamily: "'Noto Sans JP'", fontWeight: 300, fontSize: 18, color: "#1e293b" }}>{w.kana}</span>
-                      {w.kana ? <SpeakButton text={w.kana} /> : null}
-                    </div>
-                    <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", flexDirection: "column", justifyContent: "center", gap: 2 }}>
-                      <span style={{ fontSize: 13, color: "#475569", fontWeight: 400 }}>{w.romaji}</span>
-                      <span style={{ fontFamily: "'Noto Sans JP'", fontSize: 12, color: "#94a3b8", fontWeight: 100 }}>{w.reading}</span>
-                    </div>
-                    <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center", overflow: "hidden" }}>
-                      <TypeBadge type={w.type} />
-                    </div>
-                    <div style={{ padding: "12px 16px", display: "flex", alignItems: "center" }}>
-                      <span style={{ fontSize: 13, color: "#334155", lineHeight: 1.5 }}>{w.meaning}</span>
-                    </div>
-                  </motion.div>
-                )
+              {pageData.length > 0 ? pageData.map((w: Record<string, any>, i: number) => (
+                <VocabCard key={w.id} word={w} index={i} isMobile={isMobile} />
               )) : (
                 <div style={{ padding: "48px 0", textAlign: "center", color: "#cbd5e1", fontSize: 15 }}>
                   No results for &quot;{search}&quot;

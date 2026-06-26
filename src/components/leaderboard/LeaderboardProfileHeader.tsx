@@ -1,7 +1,7 @@
 import { getLevelInfo } from '@/lib/xp'
 
 interface LeaderboardProfileHeaderProps {
-  profile: any
+  profile: Record<string, any>
   levelInfo: ReturnType<typeof getLevelInfo>
 }
 

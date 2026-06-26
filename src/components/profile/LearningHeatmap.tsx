@@ -7,7 +7,7 @@ interface HeatmapData {
 }
 
 interface LearningHeatmapProps {
-  studyActivity?: any[]
+  studyActivity: Record<string, any>[]
 }
 
 export default function LearningHeatmap({ studyActivity = [] }: LearningHeatmapProps) {

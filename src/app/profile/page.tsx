@@ -19,16 +19,37 @@ import DailyGoalWidget from '@/components/profile/DailyGoalWidget'
 import LearningInsights from '@/components/profile/LearningInsights'
 import SettingsSection from '@/components/profile/SettingsSection'
 
+interface CardStats {
+  lessonsCompleted: number
+  kanaMastered: number
+  kanjiLearned: number
+  vocabLearned: number
+  grammarPoints: number
+  studyTimeMinutes: number
+  n5Completed: number
+  n4Completed: number
+}
+
+interface ActivityLog {
+  id: string
+  title: string
+  description: string
+  activity_type: string
+  created_at: string
+}
+
 export default function ProfilePage() {
-  const [profile, setProfile] = useState<any>(null)
+  const [profile, setProfile] = useState<Record<string, any> | null>(null)
   const [achievements, setAchievements] = useState<string[]>([])
-  const [studyActivity, setStudyActivity] = useState<any[]>([])
-  const [activityLogs, setActivityLogs] = useState<any[]>([])
-  const [cardProgressStats, setCardProgressStats] = useState<any>({
+  const [studyActivity, setStudyActivity] = useState<Record<string, any>[]>([])
+  const [activityLogs, setActivityLogs] = useState<ActivityLog[]>([])
+  const [cardProgressStats, setCardProgressStats] = useState<CardStats>({
+    lessonsCompleted: 0,
     kanaMastered: 0,
     kanjiLearned: 0,
     vocabLearned: 0,
     grammarPoints: 0,
+    studyTimeMinutes: 0,
     n5Completed: 0,
     n4Completed: 0,
   })
@@ -88,14 +109,16 @@ export default function ProfilePage() {
       const earned = await getUserAchievements(user.id)
       
       setProfile({ ...p, email: user.email })
-      setAchievements(earned.map((e: any) => e.badge_id))
+      setAchievements(earned.map((e: { badge_id: string }) => e.badge_id))
       setStudyActivity(sa ?? [])
       setActivityLogs(logs ?? [])
       setCardProgressStats({
+        lessonsCompleted: 0,
         kanaMastered: kana,
         kanjiLearned: kanji,
         vocabLearned: vocab,
         grammarPoints: grammar,
+        studyTimeMinutes: 0,
         n5Completed: 0, // Calculate this appropriately if lessons mapped
         n4Completed: 0,
       })

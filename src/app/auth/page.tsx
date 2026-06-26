@@ -23,10 +23,10 @@ export default function AuthPage() {
         },
       })
       if (error) throw error
-    } catch (err: any) {
-      if (err.message?.toLowerCase().includes('popup')) {
+    } catch (err: unknown) {
+      if (err instanceof Error && err.message?.toLowerCase().includes('popup')) {
         setErrorMsg("Please allow popups for this site.")
-      } else if (err.message?.toLowerCase().includes('network') || err.message?.toLowerCase().includes('fetch')) {
+      } else if (err instanceof Error && (err.message?.toLowerCase().includes('network') || err.message?.toLowerCase().includes('fetch'))) {
         setErrorMsg("Connection failed. Check your internet and try again.")
       } else {
         setErrorMsg("Sign-in was cancelled. Please try again.")
