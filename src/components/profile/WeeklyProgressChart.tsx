@@ -1,18 +1,40 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 
-export default function WeeklyProgressChart() {
+interface Props {
+  studyActivity?: any[]
+}
+
+export default function WeeklyProgressChart({ studyActivity = [] }: Props) {
   const [timeframe, setTimeframe] = useState<'7' | '30' | '90'>('7')
 
-  // Mock data for the chart
-  const data = [10, 45, 30, 80, 65, 90, 50]
-  const maxVal = Math.max(...data)
+  const chartData = useMemo(() => {
+    const days = parseInt(timeframe, 10)
+    const today = new Date()
+    const dataPoints: number[] = []
+    
+    // Create lookup map
+    const activityMap = new Map(studyActivity.map(s => [s.study_date, s.xp_earned]))
+    
+    for (let i = days - 1; i >= 0; i--) {
+      const d = new Date()
+      d.setDate(today.getDate() - i)
+      const dateStr = d.toISOString().split('T')[0]
+      dataPoints.push(activityMap.get(dateStr) ?? 0)
+    }
+    return dataPoints
+  }, [timeframe, studyActivity])
+
+  const totalXP = chartData.reduce((acc, val) => acc + val, 0)
+  
+  // Chart calculation
+  const maxVal = Math.max(...chartData, 10) // ensure non-zero max for division
   
   // Create simple SVG path
   const width = 300
   const height = 100
   
-  const points = data.map((val, i) => {
-    const x = (i / (data.length - 1)) * width
+  const points = chartData.map((val, i) => {
+    const x = (i / Math.max(chartData.length - 1, 1)) * width
     const y = height - (val / maxVal) * height
     return `${x},${y}`
   }).join(' L ')
@@ -26,7 +48,7 @@ export default function WeeklyProgressChart() {
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
         <h2 style={{ fontSize: 16, fontWeight: 500, color: '#0A0A0A', margin: 0, letterSpacing: '-0.01em' }}>
-          Weekly Progress
+          Progress Chart
         </h2>
         <div style={{ display: 'flex', gap: 8, background: '#F5F5F5', padding: 4, borderRadius: 8 }}>
           {(['7', '30', '90'] as const).map(t => (
@@ -53,12 +75,8 @@ export default function WeeklyProgressChart() {
 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
         <div>
-          <div style={{ fontSize: 24, fontWeight: 600, color: '#0A0A0A', lineHeight: 1.1 }}>370</div>
-          <div style={{ fontSize: 12, color: 'rgba(10,10,10,0.5)', marginTop: 4 }}>XP this week</div>
-        </div>
-        <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: 24, fontWeight: 600, color: '#0A0A0A', lineHeight: 1.1 }}>12</div>
-          <div style={{ fontSize: 12, color: 'rgba(10,10,10,0.5)', marginTop: 4 }}>Lessons</div>
+          <div style={{ fontSize: 24, fontWeight: 600, color: '#0A0A0A', lineHeight: 1.1 }}>{totalXP}</div>
+          <div style={{ fontSize: 12, color: 'rgba(10,10,10,0.5)', marginTop: 4 }}>XP earned</div>
         </div>
       </div>
 
@@ -79,9 +97,11 @@ export default function WeeklyProgressChart() {
           />
           
           {/* Data points */}
-          {data.map((val, i) => {
-            const x = (i / (data.length - 1)) * width
+          {chartData.map((val, i) => {
+            const x = (i / Math.max(chartData.length - 1, 1)) * width
             const y = height - (val / maxVal) * height
+            // Only draw points if there aren't too many
+            if (chartData.length > 30) return null
             return (
               <circle
                 key={i}

@@ -1,22 +1,36 @@
 import { motion } from 'motion/react'
 
-interface JLPTLevelData {
-  level: string
-  lessonsCompleted: number
-  totalLessons: number
-}
-
 interface JLPTProgressCardProps {
-  progressData?: JLPTLevelData[]
+  stats?: {
+    kanaMastered: number
+    kanjiLearned: number
+    vocabLearned: number
+    grammarPoints: number
+  }
 }
 
-export default function JLPTProgressCard({ progressData }: JLPTProgressCardProps) {
-  const data = progressData || [
-    { level: 'N5', lessonsCompleted: 78, totalLessons: 100 },
-    { level: 'N4', lessonsCompleted: 34, totalLessons: 120 },
-    { level: 'N3', lessonsCompleted: 0, totalLessons: 150 },
-    { level: 'N2', lessonsCompleted: 0, totalLessons: 200 },
-    { level: 'N1', lessonsCompleted: 0, totalLessons: 250 },
+export default function JLPTProgressCard({ stats }: JLPTProgressCardProps) {
+  // Approximate total items per JLPT level
+  const totalN5 = { kanji: 100, vocab: 800, grammar: 80 }
+  const totalN4 = { kanji: 300, vocab: 1500, grammar: 120 }
+  
+  const currentKanji = stats?.kanjiLearned || 0
+  const currentVocab = stats?.vocabLearned || 0
+  const currentGrammar = stats?.grammarPoints || 0
+  
+  const calculateProgress = (totals: typeof totalN5) => {
+    const kProgress = Math.min(currentKanji / totals.kanji, 1)
+    const vProgress = Math.min(currentVocab / totals.vocab, 1)
+    const gProgress = Math.min(currentGrammar / totals.grammar, 1)
+    return (kProgress + vProgress + gProgress) / 3
+  }
+
+  const data = [
+    { level: 'N5', percent: Math.round(calculateProgress(totalN5) * 100) },
+    { level: 'N4', percent: Math.round(calculateProgress(totalN4) * 100) },
+    { level: 'N3', percent: 0 },
+    { level: 'N2', percent: 0 },
+    { level: 'N1', percent: 0 },
   ]
 
   return (
@@ -35,7 +49,7 @@ export default function JLPTProgressCard({ progressData }: JLPTProgressCardProps
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         {data.map((item, index) => {
-          const percent = Math.round((item.lessonsCompleted / item.totalLessons) * 100)
+          const percent = item.percent
           
           return (
             <div key={item.level} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
@@ -50,7 +64,7 @@ export default function JLPTProgressCard({ progressData }: JLPTProgressCardProps
                   initial={{ width: 0 }}
                   animate={{ width: `${percent}%` }}
                   transition={{ duration: 1, delay: index * 0.1, ease: 'easeOut' }}
-                  style={{ height: '100%', background: percent === 100 ? '#10B981' : '#0A0A0A', borderRadius: 999 }}
+                  style={{ height: '100%', background: '#0A0A0A', borderRadius: 999 }}
                 />
               </div>
               

@@ -82,6 +82,18 @@ export async function addXP(amount: number, userId?: string) {
     })
     .eq('id', userId)
 
+  // Track daily XP for heatmap and charts
+  await supabase
+    .from('study_activity')
+    .upsert(
+      {
+        user_id: userId,
+        study_date: today,
+        xp_earned: newTodayXP,
+      },
+      { onConflict: 'user_id, study_date' }
+    )
+
   // Check achievements after XP update
   await checkAchievements(userId, newTotalXP)
   

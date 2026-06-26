@@ -1,10 +1,11 @@
 import { motion } from 'motion/react'
+import { Flame, Trophy, Star, Clock, Type, SpellCheck2, Book, BookOpen } from 'lucide-react'
 
 interface StatCardProps {
   label: string
   value: string | number
   unit: string
-  icon: string
+  icon: React.ReactNode
 }
 
 const StatCard = ({ label, value, unit, icon }: StatCardProps) => (
@@ -23,7 +24,9 @@ const StatCard = ({ label, value, unit, icon }: StatCardProps) => (
     }}
   >
     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-      <span style={{ fontSize: 18 }}>{icon}</span>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24, color: '#0A0A0A' }}>
+        {icon}
+      </div>
       <span style={{ fontSize: 12, fontWeight: 500, color: 'rgba(10,10,10,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
         {label}
       </span>
@@ -52,14 +55,14 @@ interface LearningOverviewProps {
 }
 
 export default function LearningOverview({ profile, stats }: LearningOverviewProps) {
-  // Using mocks for missing stats to fulfill the design requirements
+  // Use real data only, fallback to 0
   const s = stats || {
-    lessonsCompleted: 14,
-    kanaMastered: 104,
-    kanjiLearned: 120,
-    vocabLearned: 450,
-    grammarPoints: 35,
-    studyTimeMinutes: 1240
+    lessonsCompleted: 0,
+    kanaMastered: 0,
+    kanjiLearned: 0,
+    vocabLearned: 0,
+    grammarPoints: 0,
+    studyTimeMinutes: 0
   }
 
   return (
@@ -72,15 +75,15 @@ export default function LearningOverview({ profile, stats }: LearningOverviewPro
         gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
         gap: 16
       }}>
-        <StatCard label="Current Streak" value={profile?.current_streak ?? 0} unit="days" icon="🔥" />
-        <StatCard label="Best Streak" value={profile?.longest_streak ?? 0} unit="days" icon="🏆" />
-        <StatCard label="Total XP" value={profile?.total_xp ?? 0} unit="XP earned" icon="⭐" />
-        <StatCard label="Study Time" value={Math.floor(s.studyTimeMinutes / 60)} unit="hours" icon="⏱" />
+        <StatCard label="Current Streak" value={profile?.current_streak ?? 0} unit="days" icon={<Flame size={18} strokeWidth={2} />} />
+        <StatCard label="Best Streak" value={profile?.longest_streak ?? 0} unit="days" icon={<Trophy size={18} strokeWidth={2} />} />
+        <StatCard label="Total XP" value={profile?.total_xp ?? 0} unit="XP earned" icon={<Star size={18} strokeWidth={2} />} />
+        <StatCard label="Study Time" value={Math.floor(s.studyTimeMinutes / 60)} unit="hours" icon={<Clock size={18} strokeWidth={2} />} />
         
-        <StatCard label="Kana Mastered" value={s.kanaMastered} unit="/ 104 kana" icon="✍" />
-        <StatCard label="Kanji Learned" value={s.kanjiLearned} unit="kanji" icon="🈶" />
-        <StatCard label="Vocab Learned" value={s.vocabLearned} unit="words" icon="📖" />
-        <StatCard label="Grammar Points" value={s.grammarPoints} unit="completed" icon="📝" />
+        <StatCard label="Kana Mastered" value={s.kanaMastered} unit="/ 104 kana" icon={<Type size={18} strokeWidth={2} />} />
+        <StatCard label="Kanji Learned" value={s.kanjiLearned} unit="kanji" icon={<SpellCheck2 size={18} strokeWidth={2} />} />
+        <StatCard label="Vocab Learned" value={s.vocabLearned} unit="words" icon={<Book size={18} strokeWidth={2} />} />
+        <StatCard label="Grammar Points" value={s.grammarPoints} unit="completed" icon={<BookOpen size={18} strokeWidth={2} />} />
       </div>
     </div>
   )

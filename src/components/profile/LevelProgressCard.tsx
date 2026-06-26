@@ -6,9 +6,7 @@ interface LevelProgressCardProps {
 }
 
 export default function LevelProgressCard({ levelInfo }: LevelProgressCardProps) {
-  // Mock estimation: 1 lesson ~ 10 XP
   const xpRemaining = levelInfo.neededXP - levelInfo.progressXP
-  const lessonsRemaining = Math.max(1, Math.ceil(xpRemaining / 10))
 
   return (
     <div style={{
@@ -58,7 +56,7 @@ export default function LevelProgressCard({ levelInfo }: LevelProgressCardProps)
             {levelInfo.progressXP} <span style={{ color: 'rgba(10,10,10,0.5)', fontWeight: 400 }}>/ {levelInfo.neededXP} XP</span>
           </span>
           <span style={{ fontSize: 13, color: 'rgba(10,10,10,0.5)' }}>
-            ~{lessonsRemaining} lessons remaining
+            {xpRemaining} XP remaining
           </span>
         </div>
       </div>

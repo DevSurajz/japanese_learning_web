@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/client'
 import { getGamificationProvider } from '@/providers/GamificationProvider'
+import { logActivity } from './activity'
 
 export const BADGES = {
   FIRST_STEP: {
@@ -85,6 +86,7 @@ export async function checkAchievements(
 
     if (unlocked) {
       await supabase.from('achievements').insert({ user_id: userId, badge_id: badge.id })
+      await logActivity(userId, 'Earned Badge', `You unlocked the ${badge.name} badge!`, 'achievement')
       newBadges.push(badge)
     }
   }

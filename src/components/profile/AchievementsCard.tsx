@@ -1,6 +1,21 @@
 import { useState } from 'react'
 import { motion } from 'motion/react'
 import { BADGES } from '@/lib/achievements'
+import { Zap, Flame, Crown, Target, Swords, Percent, Medal, BookOpen } from 'lucide-react'
+
+const getBadgeIcon = (id: string, size: number = 24) => {
+  switch (id) {
+    case 'first_step': return <Zap size={size} strokeWidth={2} />
+    case 'week_warrior': return <Flame size={size} strokeWidth={2} />
+    case 'month_master': return <Crown size={size} strokeWidth={2} />
+    case 'assessment_ace': return <Target size={size} strokeWidth={2} />
+    case 'nihongo_warrior': return <Swords size={size} strokeWidth={2} />
+    case 'century': return <Percent size={size} strokeWidth={2} />
+    case 'dedicated': return <Medal size={size} strokeWidth={2} />
+    case 'scholar': return <BookOpen size={size} strokeWidth={2} />
+    default: return <Medal size={size} strokeWidth={2} />
+  }
+}
 
 interface AchievementsCardProps {
   earnedBadges: string[]
@@ -54,7 +69,9 @@ export default function AchievementsCard({ earnedBadges }: AchievementsCardProps
                 boxShadow: isSelected ? '0 0 0 2px #0A0A0A' : 'none',
               }}
             >
-              <span style={{ fontSize: 28 }}>{badge.icon}</span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0A0A0A' }}>
+                {getBadgeIcon(badge.id, 28)}
+              </div>
             </motion.div>
           )
         })}
@@ -78,7 +95,9 @@ export default function AchievementsCard({ earnedBadges }: AchievementsCardProps
             const earned = earnedBadges.includes(b.id)
             return (
               <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-                <span style={{ fontSize: 32 }}>{b.icon}</span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0A0A0A' }}>
+                  {getBadgeIcon(b.id, 32)}
+                </div>
                 <div>
                   <h3 style={{ fontSize: 14, fontWeight: 600, color: '#0A0A0A', margin: '0 0 4px' }}>
                     {b.name}

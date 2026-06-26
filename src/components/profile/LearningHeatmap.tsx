@@ -7,38 +7,41 @@ interface HeatmapData {
 }
 
 interface LearningHeatmapProps {
-  data?: HeatmapData[]
+  studyActivity?: any[]
 }
 
-const generateMockData = () => {
-  const data: HeatmapData[] = []
-  const today = new Date()
-  for (let i = 364; i >= 0; i--) {
-    const d = new Date()
-    d.setDate(today.getDate() - i)
-    // Random intensity (0 to 4)
-    const intensity = Math.random() > 0.4 ? Math.floor(Math.random() * 4) + 1 : 0
-    data.push({
-      date: d.toISOString().split('T')[0],
-      xp: intensity * 15,
-      minutes: intensity * 12
-    })
-  }
-  return data
-}
-
-export default function LearningHeatmap({ data }: LearningHeatmapProps) {
-  const heatmapData = useMemo(() => data || generateMockData(), [data])
+export default function LearningHeatmap({ studyActivity = [] }: LearningHeatmapProps) {
+  const heatmapData = useMemo(() => {
+    const data: HeatmapData[] = []
+    const today = new Date()
+    
+    // Create map for O(1) lookup
+    const activityMap = new Map(studyActivity.map(s => [s.study_date, s]))
+    
+    // Generate exactly 365 days leading up to today
+    for (let i = 364; i >= 0; i--) {
+      const d = new Date()
+      d.setDate(today.getDate() - i)
+      const dateStr = d.toISOString().split('T')[0]
+      const activity = activityMap.get(dateStr)
+      data.push({
+        date: dateStr,
+        xp: activity?.xp_earned ?? 0,
+        minutes: activity?.minutes_studied ?? 0
+      })
+    }
+    return data
+  }, [studyActivity])
 
   const [hoveredDay, setHoveredDay] = useState<HeatmapData | null>(null)
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 })
 
   const getColor = (xp: number) => {
-    if (xp === 0) return '#F5F5F5' // Empty
-    if (xp < 15) return '#D9F99D' // Light green (Tailwind lime-200)
-    if (xp < 30) return '#84CC16' // lime-500
-    if (xp < 45) return '#4D7C0F' // lime-700
-    return '#14532D' // green-900
+    if (xp === 0) return '#F5F5F5' 
+    if (xp < 15) return '#E5E5E5' // Light gray
+    if (xp < 30) return '#A3A3A3' // Medium gray
+    if (xp < 45) return '#525252' // Dark gray
+    return '#171717' // Black
   }
 
   // Group data by weeks (columns)
@@ -124,10 +127,10 @@ export default function LearningHeatmap({ data }: LearningHeatmapProps) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: 'rgba(10,10,10,0.5)', marginTop: 12, justifyContent: 'flex-end' }}>
             <span>Less</span>
             <div style={{ width: 12, height: 12, borderRadius: 3, background: '#F5F5F5' }} />
-            <div style={{ width: 12, height: 12, borderRadius: 3, background: '#D9F99D' }} />
-            <div style={{ width: 12, height: 12, borderRadius: 3, background: '#84CC16' }} />
-            <div style={{ width: 12, height: 12, borderRadius: 3, background: '#4D7C0F' }} />
-            <div style={{ width: 12, height: 12, borderRadius: 3, background: '#14532D' }} />
+            <div style={{ width: 12, height: 12, borderRadius: 3, background: '#E5E5E5' }} />
+            <div style={{ width: 12, height: 12, borderRadius: 3, background: '#A3A3A3' }} />
+            <div style={{ width: 12, height: 12, borderRadius: 3, background: '#525252' }} />
+            <div style={{ width: 12, height: 12, borderRadius: 3, background: '#171717' }} />
             <span>More</span>
           </div>
         </div>

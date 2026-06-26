@@ -13,9 +13,11 @@ export default function EditProfileModal({ isOpen, onClose, profile, onProfileUp
   const [formData, setFormData] = useState({
     display_name: profile?.display_name || '',
     bio: profile?.bio || '',
+    avatar_url: profile?.avatar_url || '',
     preferred_language: profile?.preferred_language || 'en',
     timezone: profile?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
   })
+  const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -27,6 +29,7 @@ export default function EditProfileModal({ isOpen, onClose, profile, onProfileUp
     e.preventDefault()
     setLoading(true)
     setError('')
+    setSuccess('')
     
     try {
       const supabase = createClient()
@@ -39,6 +42,7 @@ export default function EditProfileModal({ isOpen, onClose, profile, onProfileUp
         .update({
           display_name: formData.display_name,
           bio: formData.bio,
+          avatar_url: formData.avatar_url,
           preferred_language: formData.preferred_language,
           timezone: formData.timezone,
         })
@@ -49,7 +53,11 @@ export default function EditProfileModal({ isOpen, onClose, profile, onProfileUp
       if (updateError) throw updateError
 
       onProfileUpdate(data)
-      onClose()
+      setSuccess('Profile updated successfully!')
+      setTimeout(() => {
+        onClose()
+        setSuccess('')
+      }, 1500)
     } catch (err: any) {
       console.error(err)
       setError(err.message || 'Failed to update profile')
@@ -90,17 +98,35 @@ export default function EditProfileModal({ isOpen, onClose, profile, onProfileUp
                 {error}
               </div>
             )}
+            
+            {success && (
+              <div style={{ background: '#D1FAE5', color: '#065F46', padding: '12px 16px', borderRadius: 8, fontSize: 13, marginBottom: 20 }}>
+                {success}
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <div>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 6 }}>Display Name</label>
-                <input
-                  name="display_name"
-                  value={formData.display_name}
-                  onChange={handleChange}
-                  required
-                  style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none' }}
-                />
+              <div style={{ display: 'flex', gap: 16 }}>
+                <div style={{ flex: 1 }}>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 6 }}>Display Name</label>
+                  <input
+                    name="display_name"
+                    value={formData.display_name}
+                    onChange={handleChange}
+                    required
+                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none' }}
+                  />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 6 }}>Avatar URL</label>
+                  <input
+                    name="avatar_url"
+                    value={formData.avatar_url}
+                    onChange={handleChange}
+                    placeholder="https://..."
+                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none' }}
+                  />
+                </div>
               </div>
 
               <div>
