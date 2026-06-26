@@ -10,19 +10,19 @@ import SpeakButton from "@/components/SpeakButton"
 const PER_PAGE = 25
 
 const TYPE_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  "Pronoun":        { bg: "#eff6ff", text: "#3b82f6", border: "#bfdbfe" },
-  "Demonstrative":  { bg: "#f5f3ff", text: "#7c3aed", border: "#ddd6fe" },
-  "Expression":     { bg: "#fef3c7", text: "#d97706", border: "#fde68a" },
-  "Noun":           { bg: "#f0fdf4", text: "#16a34a", border: "#bbf7d0" },
-  "Noun (Color)":   { bg: "#fff1f2", text: "#e11d48", border: "#fecdd3" },
-  "Noun (Position)":{ bg: "#ecfdf5", text: "#059669", border: "#a7f3d0" },
-  "Verb, Godan":    { bg: "#fff7ed", text: "#ea580c", border: "#fed7aa" },
-  "Verb, Ichidan":  { bg: "#fef9ee", text: "#ca8a04", border: "#fde68a" },
-  "Verb, Irregular":{ bg: "#fdf2f8", text: "#9333ea", border: "#e9d5ff" },
-  "i-Adjective":    { bg: "#f0f9ff", text: "#0284c7", border: "#bae6fd" },
-  "na-Adjective":   { bg: "#fdf4ff", text: "#a21caf", border: "#f0abfc" },
-  "Adverb":         { bg: "#f8fafc", text: "#475569", border: "#cbd5e1" },
-  "Conjunction":    { bg: "#fefce8", text: "#854d0e", border: "#fef08a" },
+  "Pronoun": { bg: "#eff6ff", text: "#3b82f6", border: "#bfdbfe" },
+  "Demonstrative": { bg: "#f5f3ff", text: "#7c3aed", border: "#ddd6fe" },
+  "Expression": { bg: "#fef3c7", text: "#d97706", border: "#fde68a" },
+  "Noun": { bg: "#f0fdf4", text: "#16a34a", border: "#bbf7d0" },
+  "Noun (Color)": { bg: "#fff1f2", text: "#e11d48", border: "#fecdd3" },
+  "Noun (Position)": { bg: "#ecfdf5", text: "#059669", border: "#a7f3d0" },
+  "Verb, Godan": { bg: "#fff7ed", text: "#ea580c", border: "#fed7aa" },
+  "Verb, Ichidan": { bg: "#fef9ee", text: "#ca8a04", border: "#fde68a" },
+  "Verb, Irregular": { bg: "#fdf2f8", text: "#9333ea", border: "#e9d5ff" },
+  "i-Adjective": { bg: "#f0f9ff", text: "#0284c7", border: "#bae6fd" },
+  "na-Adjective": { bg: "#fdf4ff", text: "#a21caf", border: "#f0abfc" },
+  "Adverb": { bg: "#f8fafc", text: "#475569", border: "#cbd5e1" },
+  "Conjunction": { bg: "#fefce8", text: "#854d0e", border: "#fef08a" },
 }
 
 function TypeBadge({ type }: { type: string }) {
@@ -100,11 +100,11 @@ const VocabCard = React.memo(function VocabCard({ word, index, isMobile }: { wor
 export default function VocabPage() {
   const router = useRouter()
   const { isMobile } = useViewport()
-  
-  const [search, setSearch]   = useState("")
-  const [page, setPage]       = useState(1)
-  const [sortKey, setSortKey] = useState("id")   
-  const [sortDir, setSortDir] = useState(1)       
+
+  const [search, setSearch] = useState("")
+  const [page, setPage] = useState(1)
+  const [sortKey, setSortKey] = useState("id")
+  const [sortDir, setSortDir] = useState(1)
   const [typeFilter, setTypeFilter] = useState("All")
   const [weakCount, setWeakCount] = useState(0)
   const deferredSearch = useDeferredValue(search)
@@ -113,7 +113,7 @@ export default function VocabPage() {
     fetch('/api/review/due?filter=weak&type=VOCAB')
       .then(r => r.ok ? r.json() : { cards: [] })
       .then(d => setWeakCount(d.cards?.length ?? 0))
-      .catch(() => {})
+      .catch(() => { })
   }, [])
 
   const allTypes = useMemo(() => {
@@ -149,8 +149,8 @@ export default function VocabPage() {
   )
 
   const handleSearch = (v: string) => { setSearch(v); setPage(1) }
-  const handleType   = (v: string) => { setTypeFilter(v); setPage(1) }
-  const handleSort   = (key: string) => {
+  const handleType = (v: string) => { setTypeFilter(v); setPage(1) }
+  const handleSort = (key: string) => {
     if (sortKey === key) setSortDir(d => -d)
     else { setSortKey(key); setSortDir(1) }
     setPage(1)
@@ -299,29 +299,29 @@ export default function VocabPage() {
               background: "#f8fafc",
               borderBottom: "2px solid #e2e8f0",
             }}>
-            {[
-              { key: "id",      label: "#" },
-              { key: "kana",    label: "Kana / Written" },
-              { key: "romaji",  label: "Romaji / Reading" },
-              { key: null,      label: "Type" },
-              { key: "meaning", label: "Meaning" },
-            ].map(({ key, label }, i) => (
-              <div
-                key={label}
-                onClick={key ? () => handleSort(key) : undefined}
-                style={{
-                  padding: "12px 16px",
-                  fontSize: 10, fontWeight: 600, letterSpacing: "0.12em",
-                  textTransform: "uppercase", color: "#64748b",
-                  cursor: key ? "pointer" : "default",
-                  userSelect: "none",
-                  borderRight: i < 4 ? "1px solid #e2e8f0" : "none",
-                  display: "flex", alignItems: "center", gap: 4,
-                }}
-              >
-                {label}{key ? sortIcon(key) : ""}
-              </div>
-            ))}
+              {[
+                { key: "id", label: "#" },
+                { key: "kana", label: "Kana / Written" },
+                { key: "romaji", label: "Romaji / Reading" },
+                { key: null, label: "Type" },
+                { key: "meaning", label: "Meaning" },
+              ].map(({ key, label }, i) => (
+                <div
+                  key={label}
+                  onClick={key ? () => handleSort(key) : undefined}
+                  style={{
+                    padding: "12px 16px",
+                    fontSize: 10, fontWeight: 600, letterSpacing: "0.12em",
+                    textTransform: "uppercase", color: "#64748b",
+                    cursor: key ? "pointer" : "default",
+                    userSelect: "none",
+                    borderRight: i < 4 ? "1px solid #e2e8f0" : "none",
+                    display: "flex", alignItems: "center", gap: 4,
+                  }}
+                >
+                  {label}{key ? sortIcon(key) : ""}
+                </div>
+              ))}
             </div>
           )}
           <AnimatePresence mode="wait">
@@ -347,7 +347,7 @@ export default function VocabPage() {
                 cursor: page === 1 ? "not-allowed" : "pointer", opacity: page === 1 ? 0.4 : 1,
                 fontFamily: "'Space Grotesk'",
               }}>← Prev</motion.button>
-              
+
             {isMobile ? (
               <span style={{ fontFamily: "'Space Grotesk'", fontSize: 13, color: "#475569", fontWeight: 500 }}>
                 {page} / {totalPages}
@@ -366,7 +366,7 @@ export default function VocabPage() {
                   }}>{pg}</motion.button>
               ))
             )}
-            
+
             <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
               onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
               style={{
