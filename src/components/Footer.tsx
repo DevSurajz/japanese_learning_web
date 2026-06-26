@@ -26,7 +26,7 @@ const SupportCard = ({ title, description, link, icon, isMobile }: { title: stri
         flex: 1,
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 12 : 16 }}>
+      <div style={{ display: "flex", alignItems: "flex-start", gap: isMobile ? 12 : 16 }}>
         <div style={{
           width: isMobile ? 36 : 40, height: isMobile ? 36 : 40, borderRadius: 10, background: "#FAFAFA", border: "1px solid #EAEAEA",
           display: "flex", alignItems: "center", justifyContent: "center", color: "#0A0A0A"
