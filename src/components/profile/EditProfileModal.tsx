@@ -85,7 +85,8 @@ export default function EditProfileModal({ isOpen, onClose, profile, onProfileUp
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             style={{
               position: 'fixed', top: '50%', left: '50%', x: '-50%', y: '-50%',
-              background: 'white', borderRadius: 24, padding: 32, width: '90%', maxWidth: 500,
+              background: 'white', borderRadius: 24, padding: '32px', width: '90%', maxWidth: 540,
+              maxHeight: '90vh', overflowY: 'auto',
               zIndex: 101, boxShadow: '0 24px 48px rgba(0,0,0,0.1)', fontFamily: "'Space Grotesk', sans-serif"
             }}
           >
@@ -105,79 +106,93 @@ export default function EditProfileModal({ isOpen, onClose, profile, onProfileUp
               </div>
             )}
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <div style={{ display: 'flex', gap: 16 }}>
-                <div style={{ flex: 1 }}>
-                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 6 }}>Display Name</label>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20 }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 8 }}>Display Name</label>
                   <input
                     name="display_name"
                     value={formData.display_name}
                     onChange={handleChange}
                     required
-                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none' }}
+                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none', transition: 'border-color 0.2s', background: '#FAFAFA' }}
+                    onFocus={e => e.target.style.borderColor = '#0A0A0A'}
+                    onBlur={e => e.target.style.borderColor = '#EAEAEA'}
                   />
                 </div>
-                <div style={{ flex: 1 }}>
-                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 6 }}>Avatar URL</label>
+                <div>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 8 }}>Avatar URL</label>
                   <input
                     name="avatar_url"
                     value={formData.avatar_url}
                     onChange={handleChange}
                     placeholder="https://..."
-                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none' }}
+                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none', transition: 'border-color 0.2s', background: '#FAFAFA' }}
+                    onFocus={e => e.target.style.borderColor = '#0A0A0A'}
+                    onBlur={e => e.target.style.borderColor = '#EAEAEA'}
                   />
                 </div>
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 6 }}>Bio</label>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 8 }}>Bio</label>
                 <textarea
                   name="bio"
                   value={formData.bio}
                   onChange={handleChange}
                   rows={3}
-                  style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none', resize: 'vertical' }}
+                  style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none', resize: 'vertical', transition: 'border-color 0.2s', background: '#FAFAFA' }}
                   placeholder="Tell us a bit about your Japanese learning journey..."
+                  onFocus={e => e.target.style.borderColor = '#0A0A0A'}
+                  onBlur={e => e.target.style.borderColor = '#EAEAEA'}
                 />
               </div>
 
-              <div style={{ display: 'flex', gap: 16 }}>
-                <div style={{ flex: 1 }}>
-                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 6 }}>Language</label>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20 }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 8 }}>Language</label>
                   <select
                     name="preferred_language"
                     value={formData.preferred_language}
                     onChange={handleChange}
-                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none', background: 'white' }}
+                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none', transition: 'border-color 0.2s', background: '#FAFAFA', cursor: 'pointer' }}
+                    onFocus={e => e.target.style.borderColor = '#0A0A0A'}
+                    onBlur={e => e.target.style.borderColor = '#EAEAEA'}
                   >
                     <option value="en">English</option>
                     <option value="es">Español</option>
                     <option value="fr">Français</option>
                   </select>
                 </div>
-                <div style={{ flex: 1 }}>
-                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 6 }}>Timezone</label>
+                <div>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 8 }}>Timezone</label>
                   <input
                     name="timezone"
                     value={formData.timezone}
                     onChange={handleChange}
-                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none' }}
+                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none', transition: 'border-color 0.2s', background: '#FAFAFA' }}
+                    onFocus={e => e.target.style.borderColor = '#0A0A0A'}
+                    onBlur={e => e.target.style.borderColor = '#EAEAEA'}
                   />
                 </div>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, marginTop: 24 }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, marginTop: 24, paddingTop: 24, borderTop: '1px solid #F5F5F5' }}>
                 <button
                   type="button"
                   onClick={onClose}
-                  style={{ padding: '10px 20px', borderRadius: 8, border: '1px solid #EAEAEA', background: 'white', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}
+                  style={{ padding: '10px 24px', borderRadius: 8, border: '1px solid #EAEAEA', background: 'white', fontSize: 14, fontWeight: 500, cursor: 'pointer', transition: 'background 0.2s' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#F9F9F9'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'white'}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  style={{ padding: '10px 20px', borderRadius: 8, border: 'none', background: '#0A0A0A', color: 'white', fontSize: 14, fontWeight: 500, cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}
+                  style={{ padding: '10px 24px', borderRadius: 8, border: 'none', background: '#0A0A0A', color: 'white', fontSize: 14, fontWeight: 500, cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1, transition: 'background 0.2s' }}
+                  onMouseEnter={e => !loading && (e.currentTarget.style.background = '#222')}
+                  onMouseLeave={e => !loading && (e.currentTarget.style.background = '#0A0A0A')}
                 >
                   {loading ? 'Saving...' : 'Save Changes'}
                 </button>
