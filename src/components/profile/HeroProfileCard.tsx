@@ -12,7 +12,10 @@ export default function HeroProfileCard({ profile, levelInfo, onEditClick }: Her
 
   return (
     <div style={{
-      background: 'white',
+      background: 'linear-gradient(to right, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.75)), url("/profile_torii.png")',
+      backgroundSize: 'cover',
+      backgroundPosition: 'right center',
+      backgroundRepeat: 'no-repeat',
       border: '1px solid #EAEAEA',
       borderRadius: 24,
       padding: '32px 32px',
