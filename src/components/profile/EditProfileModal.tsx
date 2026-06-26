@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { createClient } from '@/utils/supabase/client'
 
@@ -66,28 +66,40 @@ export default function EditProfileModal({ isOpen, onClose, profile, onProfileUp
     }
   }
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen])
+
   return (
     <AnimatePresence>
       {isOpen && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            style={{
-              position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 100, backdropFilter: 'blur(4px)'
-            }}
-          />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 100,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(4px)'
+          }}
+        >
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            onClick={(e) => e.stopPropagation()}
             style={{
-              position: 'fixed', top: '50%', left: '50%', x: '-50%', y: '-50%',
-              background: 'white', borderRadius: 24, padding: '32px', width: '90%', maxWidth: 540,
-              maxHeight: '90vh', overflowY: 'auto',
-              zIndex: 101, boxShadow: '0 24px 48px rgba(0,0,0,0.1)', fontFamily: "'Space Grotesk', sans-serif"
+              background: 'white', borderRadius: 24, padding: '32px', 
+              width: '90%', maxWidth: 560, maxHeight: '90vh', overflowY: 'auto',
+              boxShadow: '0 24px 48px rgba(0,0,0,0.1)', fontFamily: "'Space Grotesk', sans-serif"
             }}
           >
             <h2 style={{ fontSize: 24, fontWeight: 500, margin: '0 0 24px', color: '#0A0A0A', letterSpacing: '-0.02em' }}>
@@ -199,7 +211,7 @@ export default function EditProfileModal({ isOpen, onClose, profile, onProfileUp
               </div>
             </form>
           </motion.div>
-        </>
+        </motion.div>
       )}
     </AnimatePresence>
   )
