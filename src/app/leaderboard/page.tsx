@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/client'
 import { getLevelInfo } from '@/lib/xp'
 import Navbar from '@/components/Navbar'
 import { motion } from 'motion/react'
+import StreakIndicator from '@/components/StreakIndicator'
 
 export default function LeaderboardPage() {
   const [users, setUsers] = useState<Record<string, any>[]>([])
@@ -67,7 +68,7 @@ export default function LeaderboardPage() {
             {[
               { label: 'Rank', value: myRank > 0 ? `#${myRank}` : '—' },
               { label: 'XP', value: (myProfile.total_xp ?? 0).toLocaleString() },
-              { label: 'Streak', value: `${myProfile.current_streak ?? 0} 🔥` },
+              { label: 'Streak', value: <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}><span>{myProfile.current_streak ?? 0}</span><StreakIndicator streak={myProfile.current_streak ?? 0} size={20} /></div> },
               { label: 'Percentile', value: percentile ? `Top ${percentile}%` : '—' },
               { label: 'Level', value: `Lv. ${myLevelInfo.current.level}` },
             ].map(stat => (

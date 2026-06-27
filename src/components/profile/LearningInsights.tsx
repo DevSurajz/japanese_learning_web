@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { getLevelInfo } from '@/lib/xp'
-import { Lightbulb, Flame } from 'lucide-react'
+import { Lightbulb } from 'lucide-react'
+import StreakIndicator from '@/components/StreakIndicator'
 
 interface LearningInsightsProps {
   profile: Record<string, any>
@@ -12,7 +13,7 @@ export default function LearningInsights({ profile, levelInfo }: LearningInsight
   
   const insights = [
     { icon: <Lightbulb size={18} strokeWidth={2} />, text: `You are only ${xpToLevel} XP away from Level ${levelInfo.next?.level ?? 'MAX'}.` },
-    { icon: <Flame size={18} strokeWidth={2} />, text: profile?.current_streak > 3 ? `You're on a ${profile.current_streak} day streak! Keep it up.` : 'Study today to build your streak.' },
+    { icon: <StreakIndicator streak={profile?.current_streak ?? 0} size={18} />, text: profile?.current_streak > 3 ? `You're on a ${profile.current_streak} day streak! Keep it up.` : 'Study today to build your streak.' },
   ]
 
   return (

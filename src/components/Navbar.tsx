@@ -8,6 +8,7 @@ import { useViewport } from "@/hooks"
 import { createClient } from "@/utils/supabase/client"
 import type { User } from "@supabase/supabase-js"
 import ConfirmDialog from "@/components/ConfirmDialog"
+import StreakIndicator from "@/components/StreakIndicator"
 
 const NAV_LINKS = [
   { label: "KANA", to: "/kana" },
@@ -253,15 +254,10 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
 
             {/* Right CTA / Auth */}
             <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 20 }}>
-              {user && streak > 0 && (
-                <span style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  fontWeight: 300, fontSize: 13,
-                  color: textColor, letterSpacing: "0.04em",
-                  display: "flex", alignItems: "center", gap: 4,
-                }}>
-                  🔥 {streak} {streak === 1 ? 'day' : 'days'}
-                </span>
+              {user && (
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <StreakIndicator streak={streak} showText={true} size={14} />
+                </div>
               )}
               {renderProfileMenu()}
             </div>

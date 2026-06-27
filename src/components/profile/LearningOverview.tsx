@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
-import { Flame, Trophy, Star, Clock, Type, SpellCheck2, Book, BookOpen } from 'lucide-react'
+import { Trophy, Star, Clock, Type, SpellCheck2, Book, BookOpen } from 'lucide-react'
+import StreakIndicator from '@/components/StreakIndicator'
 
 interface StatCardProps {
   label: string
@@ -75,7 +76,7 @@ export default function LearningOverview({ profile, stats }: LearningOverviewPro
         gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
         gap: 16
       }}>
-        <StatCard label="Current Streak" value={profile?.current_streak ?? 0} unit="days" icon={<Flame size={18} strokeWidth={2} />} />
+        <StatCard label="Current Streak" value={profile?.current_streak ?? 0} unit="days" icon={<StreakIndicator streak={profile?.current_streak ?? 0} size={18} />} />
         <StatCard label="Best Streak" value={profile?.longest_streak ?? 0} unit="days" icon={<Trophy size={18} strokeWidth={2} />} />
         <StatCard label="Total XP" value={profile?.total_xp ?? 0} unit="XP earned" icon={<Star size={18} strokeWidth={2} />} />
         <StatCard label="Study Time" value={Math.floor(s.studyTimeMinutes / 60)} unit="hours" icon={<Clock size={18} strokeWidth={2} />} />
