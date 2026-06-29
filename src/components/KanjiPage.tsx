@@ -491,6 +491,7 @@ export default function KanjiPage() {
             >
               <span>⚠</span>
               Review {weakCount} weak {weakCount === 1 ? 'kanji' : 'kanji'}
+            </a>
             <a
               href="/kanji/practice"
               style={{
