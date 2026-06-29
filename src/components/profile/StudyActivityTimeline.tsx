@@ -19,7 +19,9 @@ const getIcon = (type: string) => {
     case 'lesson': return <BookOpen size={16} strokeWidth={2} />
     case 'quiz': return <Target size={16} strokeWidth={2} />
     case 'level_up': return <ArrowUpCircle size={16} strokeWidth={2} />
-    case 'kanji': return <Star size={16} strokeWidth={2} />
+    case 'kanji': 
+    case 'KANJI_LEARNED': return <Star size={16} strokeWidth={2} />
+    case 'PRACTICE_SESSION': return <Target size={16} strokeWidth={2} />
     default: return <Activity size={16} strokeWidth={2} />
   }
 }

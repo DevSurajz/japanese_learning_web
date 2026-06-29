@@ -102,6 +102,65 @@ export async function addXP(amount: number, userId?: string) {
   return newTotalXP
 }
 
+export async function addPracticeXP(amount: number, userId?: string) {
+  if (!userId) {
+    // Guest: use localStorage
+    const raw = localStorage.getItem('nihongopath_guest_xp')
+    const data = raw ? JSON.parse(raw) : { totalXP: 0, todayXP: 0, todayDate: '', practiceXP: 0 }
+    const today = new Date().toISOString().split('T')[0]
+    data.totalXP += amount
+    data.practiceXP = (data.practiceXP || 0) + amount
+    data.todayXP = data.todayDate === today ? data.todayXP + amount : amount
+    data.todayDate = today
+    localStorage.setItem('nihongopath_guest_xp', JSON.stringify(data))
+    
+    getGamificationProvider()?.showXP(amount)
+    return data.totalXP
+  }
+
+  const supabase = createClient()
+  const today = new Date().toISOString().split('T')[0]
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('total_xp, today_xp, today_xp_date, practice_xp')
+    .eq('id', userId)
+    .single()
+
+  if (!profile) return
+
+  const isSameDay = profile.today_xp_date === today
+  const newTotalXP = (profile.total_xp ?? 0) + amount
+  const newTodayXP = isSameDay ? (profile.today_xp ?? 0) + amount : amount
+  const newPracticeXP = (profile.practice_xp ?? 0) + amount
+
+  await supabase
+    .from('profiles')
+    .update({
+      total_xp: newTotalXP,
+      today_xp: newTodayXP,
+      today_xp_date: today,
+      practice_xp: newPracticeXP
+    })
+    .eq('id', userId)
+
+  await supabase
+    .from('study_activity')
+    .upsert(
+      {
+        user_id: userId,
+        study_date: today,
+        xp_earned: newTodayXP,
+      },
+      { onConflict: 'user_id, study_date' }
+    )
+
+  await checkAchievements(userId, newTotalXP)
+  getGamificationProvider()?.showXP(amount)
+
+  return newTotalXP
+}
+
 export async function updateStreak(userId?: string) {
   const today = new Date().toISOString().split('T')[0]
   const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0]

@@ -23,6 +23,7 @@ interface CardStats {
   lessonsCompleted: number
   kanaMastered: number
   kanjiLearned: number
+  kanjiMastered: number
   vocabLearned: number
   grammarPoints: number
   studyTimeMinutes: number
@@ -47,6 +48,7 @@ export default function ProfilePage() {
     lessonsCompleted: 0,
     kanaMastered: 0,
     kanjiLearned: 0,
+    kanjiMastered: 0,
     vocabLearned: 0,
     grammarPoints: 0,
     studyTimeMinutes: 0,
@@ -94,12 +96,23 @@ export default function ProfilePage() {
         .select('card_type, repetitions')
         .eq('user_id', user.id)
 
-      let kana = 0, kanji = 0, vocab = 0, grammar = 0;
+      // Fetch kanji from new tables
+      const { count: kanjiLearnedCount } = await supabase
+        .from('kanji_learned')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+
+      const { count: kanjiMasteredCount } = await supabase
+        .from('kanji_mastery')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+        .gte('mastery_percent', 70)
+
+      let kana = 0, vocab = 0, grammar = 0;
       if (cards) {
         for (const c of cards) {
           if (c.repetitions > 0) {
             if (c.card_type === 'KANA') kana++
-            if (c.card_type === 'KANJI') kanji++
             if (c.card_type === 'VOCAB') vocab++
             if (c.card_type === 'GRAMMAR') grammar++
           }
@@ -115,7 +128,8 @@ export default function ProfilePage() {
       setCardProgressStats({
         lessonsCompleted: 0,
         kanaMastered: kana,
-        kanjiLearned: kanji,
+        kanjiLearned: kanjiLearnedCount || 0,
+        kanjiMastered: kanjiMasteredCount || 0,
         vocabLearned: vocab,
         grammarPoints: grammar,
         studyTimeMinutes: 0,

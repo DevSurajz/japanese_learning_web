@@ -4,6 +4,7 @@ interface JLPTProgressCardProps {
   stats?: {
     kanaMastered: number
     kanjiLearned: number
+    kanjiMastered: number
     vocabLearned: number
     grammarPoints: number
   }
@@ -11,18 +12,20 @@ interface JLPTProgressCardProps {
 
 export default function JLPTProgressCard({ stats }: JLPTProgressCardProps) {
   // Approximate total items per JLPT level
-  const totalN5 = { kanji: 100, vocab: 800, grammar: 80 }
-  const totalN4 = { kanji: 300, vocab: 1500, grammar: 120 }
+  const totalN5 = { kana: 92, kanji: 100, vocab: 800, grammar: 80 }
+  const totalN4 = { kana: 92, kanji: 300, vocab: 1500, grammar: 120 }
   
+  const currentKana = stats?.kanaMastered || 0
   const currentKanji = stats?.kanjiLearned || 0
   const currentVocab = stats?.vocabLearned || 0
   const currentGrammar = stats?.grammarPoints || 0
   
   const calculateProgress = (totals: typeof totalN5) => {
-    const kProgress = Math.min(currentKanji / totals.kanji, 1)
+    const kProgress = Math.min(currentKana / totals.kana, 1)
+    const kjProgress = Math.min(currentKanji / totals.kanji, 1)
     const vProgress = Math.min(currentVocab / totals.vocab, 1)
     const gProgress = Math.min(currentGrammar / totals.grammar, 1)
-    return (kProgress + vProgress + gProgress) / 3
+    return (kProgress + kjProgress + vProgress + gProgress) / 4
   }
 
   const data = [

@@ -21,6 +21,14 @@ export default async function DashboardPage() {
 
   const displayName = profile?.display_name || user.email?.split('@')[0] || 'Learner'
 
+  // Fetch Kanji Learned
+  const { count: kanjiLearnedCount } = await supabase
+    .from('kanji_learned')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+
+  const kanjiLearned = kanjiLearnedCount || 0
+
   return (
     <div style={{ minHeight: '100vh', background: '#FAFAFA' }}>
       <AuthSync />
@@ -55,9 +63,11 @@ export default async function DashboardPage() {
             </div>
 
             <div style={{ background: '#FFF', border: '1px solid rgba(10,10,10,0.08)', padding: 32, borderRadius: 2 }}>
-              <h3 style={{ fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 300, fontSize: 24, color: "#0A0A0A", marginBottom: 8 }}>Katakana</h3>
-              <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 13, color: "rgba(10,10,10,0.5)", marginBottom: 24 }}>0 / 46 Mastered</p>
-              <div style={{ width: '100%', height: 2, background: 'rgba(10,10,10,0.05)', position: 'relative' }}></div>
+              <h3 style={{ fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 300, fontSize: 24, color: "#0A0A0A", marginBottom: 8 }}>Kanji</h3>
+              <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 13, color: "rgba(10,10,10,0.5)", marginBottom: 24 }}>{kanjiLearned} Learned</p>
+              <div style={{ width: '100%', height: 2, background: 'rgba(10,10,10,0.05)', position: 'relative' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: `${Math.min((kanjiLearned / 100) * 100, 100)}%`, background: '#0A0A0A' }} />
+              </div>
             </div>
           </div>
         </section>

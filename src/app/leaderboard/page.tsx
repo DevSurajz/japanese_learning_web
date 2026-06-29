@@ -19,8 +19,8 @@ export default function LeaderboardPage() {
 
       const { data } = await supabase
         .from('profiles')
-        .select('id, display_name, avatar_url, total_xp, current_streak, longest_streak, email, created_at, today_xp')
-        .order('total_xp', { ascending: false })
+        .select('id, display_name, avatar_url, total_xp, practice_xp, current_streak, longest_streak, email, created_at, today_xp')
+        .order('practice_xp', { ascending: false, nullsFirst: false })
         .limit(100)
 
       setUsers(data ?? [])
@@ -67,7 +67,7 @@ export default function LeaderboardPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 20, background: 'white', border: '1px solid #EAEAEA', borderRadius: 16, padding: '24px 32px' }}>
             {[
               { label: 'Rank', value: myRank > 0 ? `#${myRank}` : '—' },
-              { label: 'XP', value: (myProfile.total_xp ?? 0).toLocaleString() },
+              { label: 'Practice XP', value: (myProfile.practice_xp ?? 0).toLocaleString() },
               { label: 'Streak', value: <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}><span>{myProfile.current_streak ?? 0}</span><StreakIndicator streak={myProfile.current_streak ?? 0} size={20} /></div> },
               { label: 'Percentile', value: percentile ? `Top ${percentile}%` : '—' },
               { label: 'Level', value: `Lv. ${myLevelInfo.current.level}` },
@@ -104,7 +104,7 @@ export default function LeaderboardPage() {
                     {displayName}
                   </div>
                   <div style={{ fontSize: 12, color: 'rgba(10,10,10,0.5)', marginBottom: 16 }}>
-                    {(spot.user.total_xp ?? 0).toLocaleString()} XP
+                    {(spot.user.practice_xp ?? 0).toLocaleString()} XP
                   </div>
                   <div style={{ 
                     width: '100%', height: spot.height, background: 'white', 
@@ -169,7 +169,7 @@ export default function LeaderboardPage() {
                   </div>
                   
                   <span style={{ fontSize: 13, color: 'rgba(10,10,10,0.6)' }}>Lv.{levelInfo.current.level}</span>
-                  <span style={{ fontSize: 13, fontWeight: 500, color: '#0A0A0A' }}>{(user.total_xp ?? 0).toLocaleString()}</span>
+                  <span style={{ fontSize: 13, fontWeight: 500, color: '#0A0A0A' }}>{(user.practice_xp ?? 0).toLocaleString()}</span>
                   <span style={{ fontSize: 13, color: 'rgba(10,10,10,0.6)' }}>{user.current_streak ?? 0}</span>
                   
                   <span style={{ 

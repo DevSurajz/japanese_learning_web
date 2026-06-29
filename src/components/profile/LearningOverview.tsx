@@ -49,6 +49,7 @@ interface LearningOverviewProps {
     lessonsCompleted: number
     kanaMastered: number
     kanjiLearned: number
+    kanjiMastered: number
     vocabLearned: number
     grammarPoints: number
     studyTimeMinutes: number
@@ -61,6 +62,7 @@ export default function LearningOverview({ profile, stats }: LearningOverviewPro
     lessonsCompleted: 0,
     kanaMastered: 0,
     kanjiLearned: 0,
+    kanjiMastered: 0,
     vocabLearned: 0,
     grammarPoints: 0,
     studyTimeMinutes: 0
@@ -83,6 +85,7 @@ export default function LearningOverview({ profile, stats }: LearningOverviewPro
         
         <StatCard label="Kana Mastered" value={s.kanaMastered} unit="/ 104 kana" icon={<Type size={18} strokeWidth={2} />} />
         <StatCard label="Kanji Learned" value={s.kanjiLearned} unit="kanji" icon={<SpellCheck2 size={18} strokeWidth={2} />} />
+        <StatCard label="Kanji Mastered" value={s.kanjiMastered} unit="mastered" icon={<Trophy size={18} strokeWidth={2} />} />
         <StatCard label="Vocab Learned" value={s.vocabLearned} unit="words" icon={<Book size={18} strokeWidth={2} />} />
         <StatCard label="Grammar Points" value={s.grammarPoints} unit="completed" icon={<BookOpen size={18} strokeWidth={2} />} />
       </div>

@@ -7,27 +7,20 @@ import { kanjiData } from "@/kanjiData"
 import { useViewport } from "@/hooks"
 import SpeakButton from "@/components/SpeakButton"
 import StrokeOrderViewer from "@/components/kanji/StrokeOrderViewer"
+import { createClient } from '@/utils/supabase/client'
 
 const CARDS_PER_PAGE = 20
 
-function KanjiModal({ item, onClose, isMobile }: { item: Record<string, any>; onClose: () => void; isMobile: boolean }) {
+function KanjiModal({ item, onClose, isMobile, isLearned, onMarkLearned }: { item: Record<string, any>; onClose: () => void; isMobile: boolean; isLearned: boolean; onMarkLearned: () => void }) {
   const [activeTab, setActiveTab] = useState<'info' | 'stroke'>('info')
-  const [isCompleted, setIsCompleted] = useState(false)
   
   useEffect(() => {
     setActiveTab('info')
-    setIsCompleted(false)
   }, [item])
 
   const handleComplete = async () => {
-    if (isCompleted) return;
-    setIsCompleted(true);
-    const { createClient } = await import('@/utils/supabase/client');
-    const { addXP, updateStreak } = await import('@/lib/xp');
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    await addXP(2, user?.id);
-    await updateStreak(user?.id);
+    if (isLearned) return;
+    onMarkLearned();
   }
 
   return (
@@ -177,20 +170,20 @@ function KanjiModal({ item, onClose, isMobile }: { item: Record<string, any>; on
             )}
 
             <motion.button
-              whileHover={{ scale: isCompleted ? 1 : 1.02, background: isCompleted ? "#10b981" : "#334155" }}
-              whileTap={{ scale: isCompleted ? 1 : 0.98 }}
+              whileHover={{ scale: isLearned ? 1 : 1.02, background: isLearned ? "#10b981" : "#334155" }}
+              whileTap={{ scale: isLearned ? 1 : 0.98 }}
               onClick={handleComplete}
               style={{
-                background: isCompleted ? "#10b981" : "#0f172a", color: "#fff",
+                background: isLearned ? "#10b981" : "#0f172a", color: "#fff",
                 border: "none", borderRadius: 14,
                 padding: "15px 24px",
                 fontFamily: "'Space Grotesk', sans-serif",
                 fontWeight: 400, fontSize: 12,
                 letterSpacing: "0.2em", textTransform: "uppercase",
-                cursor: isCompleted ? "default" : "pointer", transition: "all 0.3s",
+                cursor: isLearned ? "default" : "pointer", transition: "all 0.3s",
               }}
             >
-              {isCompleted ? "Completed ✔" : "Mark as Completed"}
+              {isLearned ? "Learned ✔" : "Mark as Learned"}
             </motion.button>
           </motion.div>
         </motion.div>
@@ -199,7 +192,9 @@ function KanjiModal({ item, onClose, isMobile }: { item: Record<string, any>; on
   )
 }
 
-function KanjiCard({ item, index, onClick }: { item: Record<string, any>; index: number; onClick: (item: Record<string, any>) => void }) {
+function KanjiCard({ item, index, onClick, isLearned, masteryPercent }: { item: Record<string, any>; index: number; onClick: (item: Record<string, any>) => void; isLearned: boolean; masteryPercent: number }) {
+  const isMastered = masteryPercent >= 70;
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 28 }}
@@ -208,21 +203,34 @@ function KanjiCard({ item, index, onClick }: { item: Record<string, any>; index:
       transition={{ duration: 0.42, delay: index * 0.035, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ scale: 1.05, y: -4 }}
       onClick={() => onClick(item)}
-      style={{ cursor: "pointer" }}
+      style={{ cursor: "pointer", position: "relative" }}
     >
       <div style={{
-        background: "#fff",
+        background: isMastered ? "#fefcbf" : "#fff",
         borderRadius: 18,
-        border: "1px solid #e2e8f0",
+        border: isMastered ? "2px solid #ecc94b" : "1px solid #e2e8f0",
         boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
         padding: "22px 16px 20px",
         display: "flex", flexDirection: "column", alignItems: "center", gap: 10,
         height: "100%",
-        transition: "box-shadow 0.4s ease",
+        transition: "box-shadow 0.4s ease, border 0.4s ease, background 0.4s ease",
+        position: "relative",
       }}
         onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.boxShadow = "0 12px 40px rgba(0,0,0,0.1)"}
         onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.04)"}
       >
+        {isLearned && (
+          <div style={{
+            position: "absolute", top: 10, right: 10,
+            background: isMastered ? "#d69e2e" : "#10b981",
+            color: "#fff", borderRadius: "50%", width: 22, height: 22,
+            display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10,
+            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+            zIndex: 10,
+          }}>
+            ✔
+          </div>
+        )}
         <div style={{
           position: "relative", width: 90, height: 90,
           border: "2px solid #bfdbfe", borderRadius: 14,
@@ -273,6 +281,58 @@ export default function KanjiPage() {
   const [page, setPage] = useState(1)
   const [weakCount, setWeakCount] = useState(0)
   const deferredSearch = useDeferredValue(search)
+  
+  const [learnedSet, setLearnedSet] = useState<Set<string>>(new Set())
+  const [masteryMap, setMasteryMap] = useState<Record<string, number>>({})
+
+  useEffect(() => {
+    async function loadProgress() {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+
+      const [{ data: learned }, { data: mastery }] = await Promise.all([
+        supabase.from('kanji_learned').select('kanji_id').eq('user_id', user.id),
+        supabase.from('kanji_mastery').select('kanji_id, mastery_percent').eq('user_id', user.id)
+      ])
+
+      if (learned) setLearnedSet(new Set(learned.map(l => l.kanji_id)))
+      if (mastery) {
+        const mMap: Record<string, number> = {}
+        mastery.forEach(m => { mMap[m.kanji_id] = m.mastery_percent })
+        setMasteryMap(mMap)
+      }
+    }
+    loadProgress()
+  }, [])
+
+  const handleMarkLearned = async () => {
+    if (!selected) return;
+    const kanjiId = selected.kanji;
+    if (learnedSet.has(kanjiId)) return;
+    
+    // Optimistic update
+    setLearnedSet(prev => {
+      const next = new Set(prev)
+      next.add(kanjiId)
+      return next
+    })
+
+    const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return
+
+    await supabase.from('kanji_learned').insert({ user_id: user.id, kanji_id: kanjiId })
+    await supabase.from('activity_logs').insert({
+      user_id: user.id,
+      title: `Learned Kanji`,
+      description: `✓ Learned ${kanjiId}`,
+      activity_type: 'KANJI_LEARNED'
+    })
+    
+    const { updateStreak } = await import('@/lib/xp')
+    await updateStreak(user.id)
+  }
 
   useEffect(() => {
     fetch('/api/review/due?filter=weak&type=KANJI')
@@ -431,6 +491,39 @@ export default function KanjiPage() {
             >
               <span>⚠</span>
               Review {weakCount} weak {weakCount === 1 ? 'kanji' : 'kanji'}
+            <a
+              href="/kanji/practice"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                background: '#e0e7ff', border: '1px solid #c7d2fe',
+                color: '#4338ca', padding: '8px 20px', borderRadius: 99,
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: 11, fontWeight: 600, letterSpacing: '0.12em',
+                textTransform: 'uppercase', textDecoration: 'none', marginLeft: 16
+              }}
+            >
+              <span>✏️</span>
+              Practice Learned Kanji
+            </a>
+          </div>
+        )}
+        
+        {/* If no weak count but we have learned kanji, still show Practice button */}
+        {weakCount === 0 && learnedSet.size > 0 && (
+          <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 32 }}>
+            <a
+              href="/kanji/practice"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                background: '#e0e7ff', border: '1px solid #c7d2fe',
+                color: '#4338ca', padding: '8px 20px', borderRadius: 99,
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: 11, fontWeight: 600, letterSpacing: '0.12em',
+                textTransform: 'uppercase', textDecoration: 'none',
+              }}
+            >
+              <span>✏️</span>
+              Practice Learned Kanji
             </a>
           </div>
         )}
@@ -449,7 +542,14 @@ export default function KanjiPage() {
             }}
           >
             {paginated.length > 0 ? paginated.map((item: any, i: number) => (
-              <KanjiCard key={item.kanji} item={item} index={i} onClick={setSelected} />
+              <KanjiCard 
+                key={item.kanji} 
+                item={item} 
+                index={i} 
+                onClick={setSelected} 
+                isLearned={learnedSet.has(item.kanji)}
+                masteryPercent={masteryMap[item.kanji] || 0}
+              />
             )) : (
               <div style={{ gridColumn: "1/-1", textAlign: "center", padding: "64px 0", color: "#cbd5e1", fontSize: 16 }}>
                 No kanji found for &quot;{search}&quot;
@@ -504,7 +604,13 @@ export default function KanjiPage() {
         )}
       </div>
 
-      <KanjiModal item={selected} onClose={() => setSelected(null)} isMobile={isMobile} />
+      <KanjiModal 
+        item={selected} 
+        onClose={() => setSelected(null)} 
+        isMobile={isMobile} 
+        isLearned={selected ? learnedSet.has(selected.kanji) : false}
+        onMarkLearned={handleMarkLearned}
+      />
     </motion.div>
   )
 }
