@@ -6,26 +6,33 @@ interface StreakIndicatorProps {
   streak: number
   showText?: boolean
   size?: number
+  isCompletedToday?: boolean
 }
 
-export default function StreakIndicator({ streak, showText = false, size = 18 }: StreakIndicatorProps) {
-  const [prevStreak, setPrevStreak] = useState(streak)
+export default function StreakIndicator({ streak, showText = false, size = 18, isCompletedToday = true }: StreakIndicatorProps) {
+  const [prevCompleted, setPrevCompleted] = useState(isCompletedToday)
   const [justActivated, setJustActivated] = useState(false)
 
   useEffect(() => {
-    if (streak > 0 && prevStreak === 0) {
+    if (isCompletedToday && !prevCompleted && streak > 0) {
       setJustActivated(true)
       const timer = setTimeout(() => setJustActivated(false), 2000)
       return () => clearTimeout(timer)
     }
-    setPrevStreak(streak)
-  }, [streak, prevStreak])
+    setPrevCompleted(isCompletedToday)
+  }, [isCompletedToday, prevCompleted, streak])
 
   let color = '#A3A3A3' // muted gray for 0
   let fill = 'none'
   let filter = 'none'
 
-  if (streak >= 100) {
+  if (streak === 0 && !isCompletedToday) {
+    color = '#A3A3A3'
+    fill = 'none'
+  } else if (!isCompletedToday) {
+    color = '#737373'
+    fill = 'none'
+  } else if (streak >= 100) {
     color = '#000000'
     fill = '#000000'
     filter = 'drop-shadow(0 0 8px rgba(0,0,0,0.3))' // legendary
@@ -44,8 +51,8 @@ export default function StreakIndicator({ streak, showText = false, size = 18 }:
   const animateProps = justActivated 
     ? {
         initial: { scale: 0.8, opacity: 0 },
-        animate: { scale: [0.8, 1.1, 1.0], opacity: 1 },
-        transition: { duration: 0.4, ease: "easeOut" as const }
+        animate: { scale: [0.8, 1.2, 1.0], opacity: 1 },
+        transition: { duration: 0.5, ease: "easeOut" as const }
       }
     : {
         initial: false,
@@ -55,15 +62,15 @@ export default function StreakIndicator({ streak, showText = false, size = 18 }:
   return (
     <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
       <AnimatePresence mode="wait">
-        <motion.div key={streak > 0 ? 'filled' : 'outline'} {...animateProps} style={{ display: 'flex', alignItems: 'center', filter }}>
-          <Flame size={size} color={color} fill={fill} strokeWidth={2} />
+        <motion.div key={isCompletedToday ? 'filled' : 'outline'} {...animateProps} style={{ display: 'flex', alignItems: 'center', filter }}>
+          <Flame size={size} color={color} fill={fill} strokeWidth={isCompletedToday ? 2 : 1.5} />
         </motion.div>
       </AnimatePresence>
       {showText && (
         <span style={{ 
           fontSize: size * 0.8, 
-          fontWeight: streak > 0 ? 600 : 400, 
-          color: streak > 0 ? '#171717' : '#737373',
+          fontWeight: isCompletedToday ? 600 : 400, 
+          color: isCompletedToday ? '#171717' : '#737373',
           fontFamily: "'Space Grotesk', sans-serif"
         }}>
           {streak} {streak === 1 ? 'day' : 'days'}

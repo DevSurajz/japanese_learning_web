@@ -2,6 +2,7 @@ import { motion } from 'motion/react'
 import { getLevelInfo } from '@/lib/xp'
 import { Lightbulb } from 'lucide-react'
 import StreakIndicator from '@/components/StreakIndicator'
+import { useState, useEffect } from 'react'
 
 interface LearningInsightsProps {
   profile: Record<string, any>
@@ -11,9 +12,17 @@ interface LearningInsightsProps {
 export default function LearningInsights({ profile, levelInfo }: LearningInsightsProps) {
   const xpToLevel = levelInfo.neededXP - levelInfo.progressXP
   
+  const [streakState, setStreakState] = useState({ displayStreak: profile?.current_streak ?? 0, isCompletedToday: true })
+
+  useEffect(() => {
+    import('@/utils/dateUtils').then(({ evaluateStreakState }) => {
+      setStreakState(evaluateStreakState(profile?.current_streak ?? 0, profile?.last_studied_date))
+    })
+  }, [profile?.current_streak, profile?.last_studied_date])
+
   const insights = [
     { icon: <Lightbulb size={18} strokeWidth={2} />, text: `You are only ${xpToLevel} XP away from Level ${levelInfo.next?.level ?? 'MAX'}.` },
-    { icon: <StreakIndicator streak={profile?.current_streak ?? 0} size={18} />, text: profile?.current_streak > 3 ? `You're on a ${profile.current_streak} day streak! Keep it up.` : 'Study today to build your streak.' },
+    { icon: <StreakIndicator streak={streakState.displayStreak} size={18} isCompletedToday={streakState.isCompletedToday} />, text: streakState.displayStreak > 3 ? `You're on a ${streakState.displayStreak} day streak! Keep it up.` : 'Study today to build your streak.' },
   ]
 
   return (

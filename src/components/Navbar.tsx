@@ -40,6 +40,7 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
   const [user, setUser] = useState<User | null>(null)
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false)
   const [streak, setStreak] = useState<number>(0)
+  const [isStreakCompletedToday, setIsStreakCompletedToday] = useState<boolean>(true)
   const [xpToday, setXpToday] = useState<number>(0)
   const [dailyGoal, setDailyGoal] = useState<number>(20)
   const [toast, setToast] = useState<string | null>(null)
@@ -60,18 +61,26 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
 
   useEffect(() => {
     if (!user) return
-    supabase
-      .from('profiles')
-      .select('current_streak, xp_today_earned, daily_goal_xp, xp_today_date')
-      .eq('id', user.id)
-      .single()
-      .then(({ data }) => {
-        if (!data) return
-        setStreak(data.current_streak ?? 0)
-        const today = new Date().toISOString().split('T')[0]
-        setXpToday(data.xp_today_date === today ? (data.xp_today_earned ?? 0) : 0)
-        setDailyGoal(data.daily_goal_xp ?? 20)
-      })
+    
+    // Dynamically import dateUtils on the client to get local evaluated date state
+    import('@/utils/dateUtils').then(({ evaluateStreakState, getLocalToday }) => {
+      supabase
+        .from('profiles')
+        .select('current_streak, last_studied_date, xp_today_earned, daily_goal_xp, xp_today_date')
+        .eq('id', user.id)
+        .single()
+        .then(({ data }) => {
+          if (!data) return
+          
+          const state = evaluateStreakState(data.current_streak ?? 0, data.last_studied_date)
+          setStreak(state.displayStreak)
+          setIsStreakCompletedToday(state.isCompletedToday)
+
+          const today = getLocalToday()
+          setXpToday(data.xp_today_date === today ? (data.xp_today_earned ?? 0) : 0)
+          setDailyGoal(data.daily_goal_xp ?? 20)
+        })
+    })
   }, [user, supabase])
 
   const handleLogout = async () => {
@@ -256,7 +265,7 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
             <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 20 }}>
               {user && (
                 <div style={{ display: "flex", alignItems: "center" }}>
-                  <StreakIndicator streak={streak} showText={true} size={14} />
+                  <StreakIndicator streak={streak} showText={true} size={14} isCompletedToday={isStreakCompletedToday} />
                 </div>
               )}
               {renderProfileMenu()}

@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { Trophy, Star, Clock, Type, SpellCheck2, Book, BookOpen } from 'lucide-react'
 import StreakIndicator from '@/components/StreakIndicator'
+import { useState, useEffect } from 'react'
 
 interface StatCardProps {
   label: string
@@ -57,6 +58,14 @@ interface LearningOverviewProps {
 }
 
 export default function LearningOverview({ profile, stats }: LearningOverviewProps) {
+  const [streakState, setStreakState] = useState({ displayStreak: profile?.current_streak ?? 0, isCompletedToday: true })
+
+  useEffect(() => {
+    import('@/utils/dateUtils').then(({ evaluateStreakState }) => {
+      setStreakState(evaluateStreakState(profile?.current_streak ?? 0, profile?.last_studied_date))
+    })
+  }, [profile?.current_streak, profile?.last_studied_date])
+
   // Use real data only, fallback to 0
   const s = stats || {
     lessonsCompleted: 0,
@@ -78,7 +87,7 @@ export default function LearningOverview({ profile, stats }: LearningOverviewPro
         gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
         gap: 16
       }}>
-        <StatCard label="Current Streak" value={profile?.current_streak ?? 0} unit="days" icon={<StreakIndicator streak={profile?.current_streak ?? 0} size={18} />} />
+        <StatCard label="Current Streak" value={streakState.displayStreak} unit="days" icon={<StreakIndicator streak={streakState.displayStreak} size={18} isCompletedToday={streakState.isCompletedToday} />} />
         <StatCard label="Best Streak" value={profile?.longest_streak ?? 0} unit="days" icon={<Trophy size={18} strokeWidth={2} />} />
         <StatCard label="Total XP" value={profile?.total_xp ?? 0} unit="XP earned" icon={<Star size={18} strokeWidth={2} />} />
         <StatCard label="Study Time" value={Math.floor(s.studyTimeMinutes / 60)} unit="hours" icon={<Clock size={18} strokeWidth={2} />} />

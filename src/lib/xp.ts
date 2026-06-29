@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/client'
 import { checkAchievements } from './achievements'
 import { getGamificationProvider } from '@/providers/GamificationProvider'
+import { getLocalToday, getLocalYesterday } from '@/utils/dateUtils'
 
 export const XP_VALUES = {
   CORRECT_LEARN: 5,
@@ -47,7 +48,7 @@ export async function addXP(amount: number, userId?: string) {
   if (!userId) {
     const raw = localStorage.getItem('nihongopath_guest_xp')
     const data = raw ? JSON.parse(raw) : { totalXP: 0, todayXP: 0, todayDate: '' }
-    const today = new Date().toISOString().split('T')[0]
+    const today = getLocalToday()
     data.totalXP += amount
     data.todayXP = data.todayDate === today ? data.todayXP + amount : amount
     data.todayDate = today
@@ -59,7 +60,7 @@ export async function addXP(amount: number, userId?: string) {
 
   // Logged in: update DB
   const supabase = createClient()
-  const today = new Date().toISOString().split('T')[0]
+  const today = getLocalToday()
 
   const { data: profile } = await supabase
     .from('profiles')
@@ -107,7 +108,7 @@ export async function addPracticeXP(amount: number, userId?: string) {
     // Guest: use localStorage
     const raw = localStorage.getItem('nihongopath_guest_xp')
     const data = raw ? JSON.parse(raw) : { totalXP: 0, todayXP: 0, todayDate: '', practiceXP: 0 }
-    const today = new Date().toISOString().split('T')[0]
+    const today = getLocalToday()
     data.totalXP += amount
     data.practiceXP = (data.practiceXP || 0) + amount
     data.todayXP = data.todayDate === today ? data.todayXP + amount : amount
@@ -119,7 +120,7 @@ export async function addPracticeXP(amount: number, userId?: string) {
   }
 
   const supabase = createClient()
-  const today = new Date().toISOString().split('T')[0]
+  const today = getLocalToday()
 
   const { data: profile } = await supabase
     .from('profiles')
@@ -162,8 +163,8 @@ export async function addPracticeXP(amount: number, userId?: string) {
 }
 
 export async function updateStreak(userId?: string) {
-  const today = new Date().toISOString().split('T')[0]
-  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0]
+  const today = getLocalToday()
+  const yesterday = getLocalYesterday()
 
   if (!userId) {
     const raw = localStorage.getItem('nihongopath_guest_streak')

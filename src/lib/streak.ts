@@ -1,4 +1,5 @@
 import { createClient } from '@/utils/supabase/server'
+import { getLocalToday, getLocalYesterday } from '@/utils/dateUtils'
 
 export const XP_MAP: Record<string, number> = {
   again: 1,
@@ -25,8 +26,8 @@ export async function updateStreakAndXP(userId: string, xpEarned: number) {
 
   if (!profile) return null
 
-  const today = new Date().toISOString().split('T')[0]
-  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0]
+  const today = getLocalToday()
+  const yesterday = getLocalYesterday()
   const lastStudied = profile.last_studied_date
 
   let currentStreak = profile.current_streak ?? 0

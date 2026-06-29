@@ -19,7 +19,7 @@ export default function LeaderboardPage() {
 
       const { data } = await supabase
         .from('profiles')
-        .select('id, display_name, avatar_url, total_xp, practice_xp, current_streak, longest_streak, email, created_at, today_xp')
+        .select('id, display_name, avatar_url, total_xp, practice_xp, current_streak, longest_streak, email, created_at, today_xp, last_studied_date')
         .order('practice_xp', { ascending: false, nullsFirst: false })
         .limit(100)
 
@@ -29,11 +29,21 @@ export default function LeaderboardPage() {
     load()
   }, [])
 
+  const [myStreakState, setMyStreakState] = useState({ displayStreak: 0, isCompletedToday: true })
+  
   const myRank = users.findIndex((u) => u.id === currentUserId) + 1
   const myProfile = users.find((u) => u.id === currentUserId)
   const totalUsers = users.length
   const percentile = myRank > 0 ? Math.round(((totalUsers - myRank) / totalUsers) * 100) : null
   const myLevelInfo = getLevelInfo(myProfile?.total_xp ?? 0)
+
+  useEffect(() => {
+    if (myProfile) {
+      import('@/utils/dateUtils').then(({ evaluateStreakState }) => {
+        setMyStreakState(evaluateStreakState(myProfile.current_streak ?? 0, myProfile.last_studied_date))
+      })
+    }
+  }, [myProfile])
 
   if (loading) return <div style={{ padding: 40, textAlign: 'center', fontFamily: "'Space Grotesk', sans-serif" }}>Loading...</div>
 
@@ -68,7 +78,7 @@ export default function LeaderboardPage() {
             {[
               { label: 'Rank', value: myRank > 0 ? `#${myRank}` : '—' },
               { label: 'Practice XP', value: (myProfile.practice_xp ?? 0).toLocaleString() },
-              { label: 'Streak', value: <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}><span>{myProfile.current_streak ?? 0}</span><StreakIndicator streak={myProfile.current_streak ?? 0} size={20} /></div> },
+              { label: 'Streak', value: <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}><span>{myStreakState.displayStreak}</span><StreakIndicator streak={myStreakState.displayStreak} size={20} isCompletedToday={myStreakState.isCompletedToday} /></div> },
               { label: 'Percentile', value: percentile ? `Top ${percentile}%` : '—' },
               { label: 'Level', value: `Lv. ${myLevelInfo.current.level}` },
             ].map(stat => (
