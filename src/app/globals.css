@@ -1,19 +1,29 @@
 @import "tailwindcss";
 
+:root {
+  --bg-primary: #FAF8F4;
+  --bg-card: #FFFFFF;
+  --text-primary: #111111;
+  --text-secondary: #666666;
+  --accent-red: #D9381E;
+  --border-color: rgba(0,0,0,0.08);
+}
+
 /* Reset all defaults */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { background: #FAFAFA; color: #0A0A0A; overflow-x: hidden; }
-::selection { background: #0A0A0A; color: #FAFAFA; }
+body { background: var(--bg-primary); color: var(--text-primary); overflow-x: hidden; }
+::selection { background: var(--text-primary); color: var(--bg-card); }
 
 /* Ensure full viewport height */
 html, body { min-height: 100vh; }
 
 /* NProgress Customization */
 #nprogress .bar {
-  background: #0A0A0A !important;
+  background: var(--text-primary) !important;
   height: 3px !important;
 }
 #nprogress .peg {
-  box-shadow: 0 0 10px #0A0A0A, 0 0 5px #0A0A0A !important;
+  box-shadow: 0 0 10px var(--text-primary), 0 0 5px var(--text-primary) !important;
 }
+

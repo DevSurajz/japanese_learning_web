@@ -33,7 +33,7 @@ function TypeBadge({ type }: { type: string }) {
       border: `1px solid ${c.border}`,
       borderRadius: 99, padding: "2px 9px",
       fontSize: 11, fontWeight: 500,
-      fontFamily: "'Space Grotesk', sans-serif",
+      fontFamily: "var(--font-inter)",
       whiteSpace: "nowrap",
     }}>{type}</span>
   )
@@ -47,20 +47,20 @@ const VocabCard = React.memo(function VocabCard({ word, index, isMobile }: { wor
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.012, duration: 0.2 }}
       style={{
-        background: "#fff", border: "1px solid #e2e8f0", borderRadius: 12,
+        background: "var(--bg-card)", border: "1px solid var(--border-color)", borderRadius: 12,
         padding: "14px 16px", marginBottom: 8,
         display: "flex", flexDirection: "column", gap: 4,
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontFamily: "'Noto Sans JP'", fontSize: 20, color: "#1e293b", fontWeight: 400 }}>{word.kana}</span>
+          <span style={{ fontFamily: "var(--font-noto-sans-jp)", fontSize: 20, color: "var(--text-primary)", fontWeight: 400 }}>{word.kana}</span>
           {word.kana ? <SpeakButton text={word.kana} /> : null}
         </div>
         <TypeBadge type={word.type} />
       </div>
-      <span style={{ fontFamily: "'Space Grotesk'", fontSize: 12, color: "#64748b" }}>{word.romaji} / {word.reading}</span>
-      <span style={{ fontFamily: "'Space Grotesk'", fontSize: 13, color: "#334155" }}>{word.meaning}</span>
+      <span style={{ fontFamily: "var(--font-inter)", fontSize: 12, color: "var(--text-secondary)" }}>{word.romaji} / {word.reading}</span>
+      <span style={{ fontFamily: "var(--font-inter)", fontSize: 13, color: "var(--text-primary)" }}>{word.meaning}</span>
     </motion.div>
   ) : (
     <motion.div
@@ -71,27 +71,27 @@ const VocabCard = React.memo(function VocabCard({ word, index, isMobile }: { wor
       style={{
         display: "grid",
         gridTemplateColumns: "52px 1fr 1fr 160px 1fr",
-        borderBottom: "1px solid #f1f5f9",
-        background: index % 2 === 0 ? "#fff" : "#fafbfc",
+        borderBottom: "1px solid var(--border-color)",
+        background: index % 2 === 0 ? "var(--bg-card)" : "var(--bg-primary)",
         transition: "background 0.15s",
       }}
-      onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.background = "#f0f9ff"}
-      onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.background = index % 2 === 0 ? "#fff" : "#fafbfc"}
+      onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.background = "rgba(139, 92, 246, 0.05)"}
+      onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.background = index % 2 === 0 ? "var(--bg-card)" : "var(--bg-primary)"}
     >
-      <div style={{ padding: "12px 16px", fontSize: 12, color: "#94a3b8", fontWeight: 500, borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center" }}>{word.id}</div>
-      <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center", gap: 8 }}>
-        <span style={{ fontFamily: "'Noto Sans JP'", fontWeight: 300, fontSize: 18, color: "#1e293b" }}>{word.kana}</span>
+      <div style={{ padding: "12px 16px", fontSize: 12, color: "var(--text-secondary)", fontWeight: 500, borderRight: "1px solid var(--border-color)", display: "flex", alignItems: "center" }}>{word.id}</div>
+      <div style={{ padding: "12px 16px", borderRight: "1px solid var(--border-color)", display: "flex", alignItems: "center", gap: 8 }}>
+        <span style={{ fontFamily: "var(--font-noto-sans-jp)", fontWeight: 300, fontSize: 18, color: "var(--text-primary)" }}>{word.kana}</span>
         {word.kana ? <SpeakButton text={word.kana} /> : null}
       </div>
-      <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", flexDirection: "column", justifyContent: "center", gap: 2 }}>
-        <span style={{ fontSize: 13, color: "#475569", fontWeight: 400 }}>{word.romaji}</span>
-        <span style={{ fontFamily: "'Noto Sans JP'", fontSize: 12, color: "#94a3b8", fontWeight: 100 }}>{word.reading}</span>
+      <div style={{ padding: "12px 16px", borderRight: "1px solid var(--border-color)", display: "flex", flexDirection: "column", justifyContent: "center", gap: 2 }}>
+        <span style={{ fontSize: 13, color: "var(--text-secondary)", fontWeight: 400 }}>{word.romaji}</span>
+        <span style={{ fontFamily: "var(--font-noto-sans-jp)", fontSize: 12, color: "var(--text-secondary)", fontWeight: 100 }}>{word.reading}</span>
       </div>
-      <div style={{ padding: "12px 16px", borderRight: "1px solid #f1f5f9", display: "flex", alignItems: "center", overflow: "hidden" }}>
+      <div style={{ padding: "12px 16px", borderRight: "1px solid var(--border-color)", display: "flex", alignItems: "center", overflow: "hidden" }}>
         <TypeBadge type={word.type} />
       </div>
       <div style={{ padding: "12px 16px", display: "flex", alignItems: "center" }}>
-        <span style={{ fontSize: 13, color: "#334155", lineHeight: 1.5 }}>{word.meaning}</span>
+        <span style={{ fontSize: 13, color: "var(--text-primary)", lineHeight: 1.5 }}>{word.meaning}</span>
       </div>
     </motion.div>
   )
@@ -165,32 +165,33 @@ export default function VocabPage() {
       transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
       style={{
         minHeight: "100vh",
-        background: "#f8fafc",
+        background: "var(--bg-primary)",
         overflowY: "auto",
-        fontFamily: "'Space Grotesk', sans-serif",
+        fontFamily: "var(--font-inter)",
       }}
     >
       <div style={{
         position: "sticky", top: 0, zIndex: 10,
-        background: "rgba(248,250,252,0.95)",
+        background: "var(--bg-primary)",
         backdropFilter: "blur(12px)",
-        borderBottom: "1px solid #e2e8f0",
+        borderBottom: "1px solid var(--border-color)",
         padding: isMobile ? "12px 16px" : "14px 48px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
         flexWrap: "nowrap", overflow: "hidden",
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, overflow: "hidden" }}>
-          <span style={{ fontFamily: "'Noto Sans JP'", fontWeight: 100, fontSize: isMobile ? 14 : 18, color: "#64748b", whiteSpace: "nowrap" }}>日本語</span>
-          <span style={{ fontSize: isMobile ? 11 : 13, fontWeight: 500, color: "#1e293b", whiteSpace: "nowrap" }}>NihongoPath</span>
-          {!isMobile && <span style={{ color: "#cbd5e1" }}>/</span>}
+          <span style={{ fontFamily: "var(--font-noto-sans-jp)", fontWeight: 100, fontSize: isMobile ? 14 : 18, color: "var(--text-secondary)", whiteSpace: "nowrap" }}>日本語</span>
+          <span style={{ fontSize: isMobile ? 11 : 13, fontWeight: 500, color: "var(--text-primary)", whiteSpace: "nowrap" }}>NihongoPath</span>
+          {!isMobile && <span style={{ color: "var(--text-secondary)" }}>/</span>}
           {!isMobile && <span style={{ fontSize: 11, color: "#8b5cf6", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600, whiteSpace: "nowrap" }}>N5 Vocabulary</span>}
         </div>
         <motion.button
           whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
           onClick={() => router.push('/')}
           style={{
-            background: "#0f172a", color: "#fff", border: "none",
+            background: "transparent", color: "var(--text-primary)", border: "1px solid var(--border-color)",
             borderRadius: 99, padding: isMobile ? "6px 12px" : "8px 20px",
+            fontFamily: "var(--font-inter)",
             fontSize: isMobile ? 10 : 11, fontWeight: 400, letterSpacing: "0.12em",
             textTransform: "uppercase", cursor: "pointer", whiteSpace: "nowrap",
           }}
@@ -201,18 +202,18 @@ export default function VocabPage() {
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 6,
-            background: "#f5f3ff", borderRadius: 99, padding: "5px 14px", marginBottom: 16,
+            background: "rgba(139, 92, 246, 0.08)", borderRadius: 99, padding: "5px 14px", marginBottom: 16,
           }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#8b5cf6", display: "inline-block" }} />
-            <span style={{ fontSize: 10, fontWeight: 700, color: "#7c3aed", letterSpacing: "0.15em", textTransform: "uppercase" }}>JLPT N5</span>
+            <span style={{ fontSize: 10, fontWeight: 700, color: "#8b5cf6", letterSpacing: "0.15em", textTransform: "uppercase" }}>JLPT N5</span>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "flex-end", flexDirection: isMobile ? "column" : "row", flexWrap: "wrap", gap: 20, marginBottom: 28 }}>
             <div>
-              <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(36px,8vw,56px)", color: "#0f172a", lineHeight: 1.1 }}>
+              <h1 style={{ fontFamily: "var(--font-cormorant)", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(36px,8vw,56px)", color: "var(--text-primary)", lineHeight: 1.1 }}>
                 N5 Vocabulary
               </h1>
-              <p style={{ fontSize: 13, color: "#94a3b8", marginTop: 6, fontWeight: 300 }}>
-                Complete JLPT N5 word list — <strong style={{ color: "#475569" }}>{vocabData.length} words</strong> · showing <strong style={{ color: "#475569" }}>{filtered.length}</strong>
+              <p style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 6, fontWeight: 300 }}>
+                Complete JLPT N5 word list — <strong style={{ color: "var(--text-primary)" }}>{vocabData.length} words</strong> · showing <strong style={{ color: "var(--text-primary)" }}>{filtered.length}</strong>
               </p>
             </div>
             <div style={{ display: "flex", gap: 0 }}>
@@ -223,15 +224,15 @@ export default function VocabPage() {
               ].map(({ label, value }, i) => (
                 <div key={label} style={{
                   textAlign: "center",
-                  borderTop: "2px solid #0f172a",
+                  borderTop: "2px solid var(--text-primary)",
                   paddingTop: 10, paddingBottom: 14,
                   paddingLeft: i === 0 ? 0 : 24,
                   paddingRight: i === 2 ? 0 : 24,
-                  borderRight: i < 2 ? "1px solid #e2e8f0" : "none",
+                  borderRight: i < 2 ? "1px solid var(--border-color)" : "none",
                   minWidth: 70,
                 }}>
-                  <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 30, fontWeight: 600, color: "#0f172a", lineHeight: 1 }}>{value}</p>
-                  <p style={{ fontSize: 9, color: "#94a3b8", letterSpacing: "0.15em", textTransform: "uppercase", marginTop: 4 }}>{label}</p>
+                  <p style={{ fontFamily: "var(--font-cormorant)", fontSize: 30, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1 }}>{value}</p>
+                  <p style={{ fontSize: 9, color: "var(--text-secondary)", letterSpacing: "0.15em", textTransform: "uppercase", marginTop: 4 }}>{label}</p>
                 </div>
               ))}
             </div>
@@ -243,16 +244,16 @@ export default function VocabPage() {
                 type="text" placeholder="Search kana, romaji, or meaning…"
                 value={search} onChange={e => handleSearch(e.target.value)}
                 style={{
-                  width: "100%", background: "#fff",
-                  border: "1px solid #e2e8f0", borderRadius: 10,
+                  width: "100%", background: "var(--bg-card)",
+                  border: "1px solid var(--border-color)", borderRadius: 10,
                   padding: "10px 14px 10px 38px",
-                  fontSize: 13, color: "#334155",
-                  fontFamily: "'Space Grotesk', sans-serif", outline: "none",
+                  fontSize: 13, color: "var(--text-primary)",
+                  fontFamily: "var(--font-inter)", outline: "none",
                 }}
                 onFocus={e => e.target.style.borderColor = "#c4b5fd"}
-                onBlur={e => e.target.style.borderColor = "#e2e8f0"}
+                onBlur={e => e.target.style.borderColor = "var(--border-color)"}
               />
-              <svg style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 15, height: 15, color: "#c4b5fd" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 15, height: 15, color: "var(--text-secondary)" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
@@ -260,9 +261,9 @@ export default function VocabPage() {
               value={typeFilter} onChange={e => handleType(e.target.value)}
               style={{
                 width: isMobile ? "100%" : "auto",
-                background: "#fff", border: "1px solid #e2e8f0", borderRadius: 10,
-                padding: "10px 14px", fontSize: 12, color: "#475569",
-                fontFamily: "'Space Grotesk', sans-serif", cursor: "pointer", outline: "none",
+                background: "var(--bg-card)", border: "1px solid var(--border-color)", borderRadius: 10,
+                padding: "10px 14px", fontSize: 12, color: "var(--text-primary)",
+                fontFamily: "var(--font-inter)", cursor: "pointer", outline: "none",
               }}
             >
               {allTypes.map(t => <option key={t} value={t}>{t}</option>)}
@@ -279,7 +280,7 @@ export default function VocabPage() {
                 display: 'inline-flex', alignItems: 'center', gap: 8,
                 background: '#fff7ed', border: '1px solid #fed7aa',
                 color: '#c2410c', padding: '8px 20px', borderRadius: 99,
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "var(--font-inter)",
                 fontSize: 11, fontWeight: 600, letterSpacing: '0.12em',
                 textTransform: 'uppercase', textDecoration: 'none',
               }}
@@ -290,14 +291,14 @@ export default function VocabPage() {
           </div>
         )}
 
-        <div style={{ background: isMobile ? "transparent" : "#fff", borderRadius: 16, border: isMobile ? "none" : "1px solid #e2e8f0", overflow: "hidden", boxShadow: isMobile ? "none" : "0 1px 6px rgba(0,0,0,0.04)" }}>
+        <div style={{ background: isMobile ? "transparent" : "var(--bg-card)", borderRadius: 16, border: isMobile ? "none" : "1px solid var(--border-color)", overflow: "hidden", boxShadow: isMobile ? "none" : "0 1px 6px rgba(0,0,0,0.02)" }}>
           {!isMobile && (
             <div style={{
               position: "sticky", top: 72, zIndex: 5,
               display: "grid",
               gridTemplateColumns: "52px 1fr 1fr 160px 1fr",
-              background: "#f8fafc",
-              borderBottom: "2px solid #e2e8f0",
+              background: "var(--bg-primary)",
+              borderBottom: "2px solid var(--border-color)",
             }}>
               {[
                 { key: "id", label: "#" },
@@ -312,10 +313,10 @@ export default function VocabPage() {
                   style={{
                     padding: "12px 16px",
                     fontSize: 10, fontWeight: 600, letterSpacing: "0.12em",
-                    textTransform: "uppercase", color: "#64748b",
+                    textTransform: "uppercase", color: "var(--text-secondary)",
                     cursor: key ? "pointer" : "default",
                     userSelect: "none",
-                    borderRight: i < 4 ? "1px solid #e2e8f0" : "none",
+                    borderRight: i < 4 ? "1px solid var(--border-color)" : "none",
                     display: "flex", alignItems: "center", gap: 4,
                   }}
                 >
@@ -342,14 +343,14 @@ export default function VocabPage() {
             <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
               onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
               style={{
-                padding: "8px 16px", borderRadius: 99, border: "1px solid #e2e8f0",
-                background: "#fff", fontSize: 12, color: "#64748b",
+                padding: "8px 16px", borderRadius: 99, border: "1px solid var(--border-color)",
+                background: "var(--bg-card)", fontSize: 12, color: "var(--text-secondary)",
                 cursor: page === 1 ? "not-allowed" : "pointer", opacity: page === 1 ? 0.4 : 1,
-                fontFamily: "'Space Grotesk'",
+                fontFamily: "var(--font-inter)",
               }}>← Prev</motion.button>
 
             {isMobile ? (
-              <span style={{ fontFamily: "'Space Grotesk'", fontSize: 13, color: "#475569", fontWeight: 500 }}>
+              <span style={{ fontFamily: "var(--font-inter)", fontSize: 13, color: "var(--text-secondary)", fontWeight: 500 }}>
                 {page} / {totalPages}
               </span>
             ) : (
@@ -358,11 +359,11 @@ export default function VocabPage() {
                   onClick={() => setPage(pg)}
                   style={{
                     width: 34, height: 34, borderRadius: "50%",
-                    border: "1px solid", borderColor: pg === page ? "#8b5cf6" : "#e2e8f0",
-                    background: pg === page ? "#8b5cf6" : "#fff",
-                    color: pg === page ? "#fff" : "#64748b",
+                    border: "1px solid", borderColor: pg === page ? "#8b5cf6" : "var(--border-color)",
+                    background: pg === page ? "#8b5cf6" : "var(--bg-card)",
+                    color: pg === page ? "#fff" : "var(--text-secondary)",
                     fontSize: 12, cursor: "pointer",
-                    fontFamily: "'Space Grotesk'",
+                    fontFamily: "var(--font-inter)",
                   }}>{pg}</motion.button>
               ))
             )}
@@ -370,11 +371,11 @@ export default function VocabPage() {
             <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
               onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
               style={{
-                padding: "8px 16px", borderRadius: 99, border: "1px solid #e2e8f0",
-                background: "#fff", fontSize: 12, color: "#64748b",
+                padding: "8px 16px", borderRadius: 99, border: "1px solid var(--border-color)",
+                background: "var(--bg-card)", fontSize: 12, color: "var(--text-secondary)",
                 cursor: page === totalPages ? "not-allowed" : "pointer",
                 opacity: page === totalPages ? 0.4 : 1,
-                fontFamily: "'Space Grotesk'",
+                fontFamily: "var(--font-inter)",
               }}>Next →</motion.button>
           </div>
         )}

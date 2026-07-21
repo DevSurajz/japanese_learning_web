@@ -71,7 +71,7 @@ export default function StreakIndicator({ streak, showText = false, size = 18, i
           fontSize: size * 0.8, 
           fontWeight: isCompletedToday ? 600 : 400, 
           color: isCompletedToday ? '#171717' : '#737373',
-          fontFamily: "'Space Grotesk', sans-serif"
+          fontFamily: "var(--font-inter)"
         }}>
           {streak} {streak === 1 ? 'day' : 'days'}
         </span>

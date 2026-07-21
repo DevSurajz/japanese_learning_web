@@ -15,8 +15,8 @@ const SupportCard = ({ title, description, link, icon, isMobile }: { title: stri
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        background: "#FFF",
-        border: "1px solid #EAEAEA",
+        background: "var(--bg-card)",
+        border: "1px solid var(--border-color)",
         borderRadius: 16,
         padding: isMobile ? "12px 16px" : "16px 20px",
         textDecoration: "none",
@@ -28,16 +28,16 @@ const SupportCard = ({ title, description, link, icon, isMobile }: { title: stri
     >
       <div style={{ display: "flex", alignItems: "flex-start", gap: isMobile ? 12 : 16 }}>
         <div style={{
-          width: isMobile ? 36 : 40, height: isMobile ? 36 : 40, borderRadius: 10, background: "#FAFAFA", border: "1px solid #EAEAEA",
-          display: "flex", alignItems: "center", justifyContent: "center", color: "#0A0A0A"
+          width: isMobile ? 36 : 40, height: isMobile ? 36 : 40, borderRadius: 10, background: "var(--bg-primary)", border: "1px solid var(--border-color)",
+          display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-primary)"
         }}>
           {icon}
         </div>
         <div>
-          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: isMobile ? 14 : 15, color: "#0A0A0A", letterSpacing: "0.01em" }}>
+          <div style={{ fontFamily: "var(--font-inter)", fontWeight: 500, fontSize: isMobile ? 14 : 15, color: "var(--text-primary)", letterSpacing: "0.01em" }}>
             {title}
           </div>
-          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: isMobile ? 12 : 13, color: "rgba(10,10,10,0.55)", marginTop: isMobile ? 2 : 4, lineHeight: 1.4 }}>
+          <div style={{ fontFamily: "var(--font-inter)", fontWeight: 300, fontSize: isMobile ? 12 : 13, color: "var(--text-secondary)", marginTop: isMobile ? 2 : 4, lineHeight: 1.4 }}>
             {description}
           </div>
         </div>
@@ -57,8 +57,8 @@ export default function Footer() {
 
   return (
     <footer style={{
-      background: "#FAFAFA",
-      borderTop: "1px solid rgba(10,10,10,0.06)",
+      background: "var(--bg-primary)",
+      borderTop: "1px solid var(--border-color)",
       padding: isMobile ? "64px 24px 40px" : "80px 48px 40px",
       display: "flex",
       flexDirection: "column",
@@ -78,20 +78,20 @@ export default function Footer() {
         {/* Left Side: Editorial description */}
         <div style={{ flex: 1, maxWidth: 500 }}>
           <div style={{
-            display: "inline-block", padding: "4px 10px", borderRadius: 4, background: "rgba(10,10,10,0.04)",
-            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 10, letterSpacing: "0.15em", color: "rgba(10,10,10,0.6)",
+            display: "inline-block", padding: "4px 10px", borderRadius: 4, background: "rgba(0,0,0,0.04)",
+            fontFamily: "var(--font-inter)", fontWeight: 500, fontSize: 10, letterSpacing: "0.15em", color: "var(--text-secondary)",
             marginBottom: 20,
           }}>
             OPEN SOURCE • INDEPENDENT
           </div>
           <h3 style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 400, fontSize: isMobile ? 24 : 32, color: "#0A0A0A",
+            fontFamily: "var(--font-inter)", fontWeight: 400, fontSize: isMobile ? 24 : 32, color: "var(--text-primary)",
             lineHeight: 1.2, margin: "0 0 16px 0", letterSpacing: "-0.02em"
           }}>
             Help us build the ultimate Japanese learning experience.
           </h3>
           <p style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 15, color: "rgba(10,10,10,0.6)",
+            fontFamily: "var(--font-inter)", fontWeight: 300, fontSize: 15, color: "var(--text-secondary)",
             lineHeight: 1.6, margin: 0
           }}>
             NihongoPath is independently built and completely free to use. Your support helps fund development, new lessons, JLPT resources, hosting costs, and continuous improvements.
@@ -136,13 +136,13 @@ export default function Footer() {
         maxWidth: 1200, margin: "0 auto", width: "100%",
         display: "flex", flexDirection: "column", gap: 32
       }}>
-        <div style={{ height: 1, background: "rgba(10,10,10,0.06)", width: "100%" }} />
+        <div style={{ height: 1, background: "var(--border-color)", width: "100%" }} />
 
         <div style={{
           display: "flex", flexDirection: isMobile ? "column" : "row",
           justifyContent: "space-between", alignItems: "center",
           gap: isMobile ? 24 : 0,
-          fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 13, color: "rgba(10,10,10,0.5)",
+          fontFamily: "var(--font-inter)", fontWeight: 300, fontSize: 13, color: "var(--text-secondary)",
         }}>
           {/* Left */}
           <div style={{ display: "flex", gap: 8, alignItems: "center", width: isMobile ? "100%" : 200, justifyContent: isMobile ? "center" : "flex-start" }}>

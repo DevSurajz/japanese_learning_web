@@ -41,16 +41,16 @@ export default function WeeklyProgressChart({ studyActivity = [] }: Props) {
 
   return (
     <div style={{
-      background: 'white',
-      border: '1px solid #EAEAEA',
+      background: "var(--bg-primary)",
+      border: "1px solid var(--border-color)",
       borderRadius: 16,
       padding: '24px',
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-        <h2 style={{ fontSize: 16, fontWeight: 500, color: '#0A0A0A', margin: 0, letterSpacing: '-0.01em' }}>
+        <h2 style={{ fontSize: 16, fontWeight: 500, color: "var(--text-primary)", margin: 0, letterSpacing: '-0.01em' }}>
           Progress Chart
         </h2>
-        <div style={{ display: 'flex', gap: 8, background: '#F5F5F5', padding: 4, borderRadius: 8 }}>
+        <div style={{ display: 'flex', gap: 8, background: "var(--bg-primary)", padding: 4, borderRadius: 8 }}>
           {(['7', '30', '90'] as const).map(t => (
             <button
               key={t}
@@ -75,8 +75,8 @@ export default function WeeklyProgressChart({ studyActivity = [] }: Props) {
 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
         <div>
-          <div style={{ fontSize: 24, fontWeight: 600, color: '#0A0A0A', lineHeight: 1.1 }}>{totalXP}</div>
-          <div style={{ fontSize: 12, color: 'rgba(10,10,10,0.5)', marginTop: 4 }}>XP earned</div>
+          <div style={{ fontSize: 24, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.1 }}>{totalXP}</div>
+          <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 4 }}>XP earned</div>
         </div>
       </div>
 

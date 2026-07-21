@@ -30,16 +30,16 @@ export default function AchievementsCard({ earnedBadges }: AchievementsCardProps
 
   return (
     <div style={{
-      background: 'white',
-      border: '1px solid #EAEAEA',
+      background: "var(--bg-primary)",
+      border: "1px solid var(--border-color)",
       borderRadius: 16,
       padding: '24px',
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <h2 style={{ fontSize: 16, fontWeight: 500, color: '#0A0A0A', margin: 0, letterSpacing: '-0.01em' }}>
+        <h2 style={{ fontSize: 16, fontWeight: 500, color: "var(--text-primary)", margin: 0, letterSpacing: '-0.01em' }}>
           Achievements
         </h2>
-        <div style={{ fontSize: 13, color: 'rgba(10,10,10,0.5)', fontWeight: 500 }}>
+        <div style={{ fontSize: 13, color: "var(--text-secondary)", fontWeight: 500 }}>
           {earnedCount} / {allBadges.length} ({percentComplete}%)
         </div>
       </div>
@@ -69,7 +69,7 @@ export default function AchievementsCard({ earnedBadges }: AchievementsCardProps
                 boxShadow: isSelected ? '0 0 0 2px #0A0A0A' : 'none',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0A0A0A' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: "var(--text-primary)" }}>
                 {getBadgeIcon(badge.id, 28)}
               </div>
             </motion.div>
@@ -84,9 +84,9 @@ export default function AchievementsCard({ earnedBadges }: AchievementsCardProps
           style={{
             marginTop: 16,
             padding: '16px',
-            background: '#F5F5F5',
+            background: "var(--bg-primary)",
             borderRadius: 12,
-            border: '1px solid #EAEAEA'
+            border: "1px solid var(--border-color)"
           }}
         >
           {(() => {
@@ -95,18 +95,18 @@ export default function AchievementsCard({ earnedBadges }: AchievementsCardProps
             const earned = earnedBadges.includes(b.id)
             return (
               <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0A0A0A' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: "var(--text-primary)" }}>
                   {getBadgeIcon(b.id, 32)}
                 </div>
                 <div>
-                  <h3 style={{ fontSize: 14, fontWeight: 600, color: '#0A0A0A', margin: '0 0 4px' }}>
+                  <h3 style={{ fontSize: 14, fontWeight: 600, color: "var(--text-primary)", margin: '0 0 4px' }}>
                     {b.name}
                   </h3>
-                  <p style={{ fontSize: 13, color: 'rgba(10,10,10,0.6)', margin: 0 }}>
+                  <p style={{ fontSize: 13, color: "var(--text-secondary)", margin: 0 }}>
                     {b.description}
                   </p>
                   {!earned && (
-                    <div style={{ fontSize: 11, color: 'rgba(10,10,10,0.4)', marginTop: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                       Locked
                     </div>
                   )}

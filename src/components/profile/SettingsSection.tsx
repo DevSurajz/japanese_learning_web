@@ -21,17 +21,17 @@ export default function SettingsSection() {
 
   return (
     <div style={{
-      background: 'white',
-      border: '1px solid #EAEAEA',
+      background: "var(--bg-primary)",
+      border: "1px solid var(--border-color)",
       borderRadius: 16,
       padding: '24px',
     }}>
-      <h2 style={{ fontSize: 16, fontWeight: 500, color: '#0A0A0A', margin: '0 0 24px', letterSpacing: '-0.01em' }}>
+      <h2 style={{ fontSize: 16, fontWeight: 500, color: "var(--text-primary)", margin: '0 0 24px', letterSpacing: '-0.01em' }}>
         Settings
       </h2>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <div style={{ display: 'flex', gap: 8, borderBottom: '1px solid #EAEAEA', paddingBottom: 16, overflowX: 'auto' }}>
+        <div style={{ display: 'flex', gap: 8, borderBottom: "1px solid var(--border-color)", paddingBottom: 16, overflowX: 'auto' }}>
           {tabs.map(tab => (
             <button
               key={tab.id}
@@ -56,7 +56,7 @@ export default function SettingsSection() {
         <div style={{ minHeight: 200 }}>
           {activeTab === 'account' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <p style={{ fontSize: 14, color: 'rgba(10,10,10,0.7)', margin: 0 }}>
+              <p style={{ fontSize: 14, color: "var(--text-secondary)", margin: 0 }}>
                 Manage your account settings and preferences. Profile details can be edited from the top of the page.
               </p>
               <div>
@@ -66,9 +66,9 @@ export default function SettingsSection() {
                   style={{
                     padding: '10px 20px',
                     borderRadius: 8,
-                    border: '1px solid #EAEAEA',
-                    background: 'white',
-                    color: '#0A0A0A',
+                    border: "1px solid var(--border-color)",
+                    background: "var(--bg-primary)",
+                    color: "var(--text-primary)",
                     fontSize: 13,
                     fontWeight: 500,
                     cursor: loading ? 'not-allowed' : 'pointer'
@@ -82,7 +82,7 @@ export default function SettingsSection() {
 
           {activeTab === 'notifications' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <p style={{ fontSize: 14, color: 'rgba(10,10,10,0.7)', margin: 0 }}>
+              <p style={{ fontSize: 14, color: "var(--text-secondary)", margin: 0 }}>
                 Notification settings will be available in the next update.
               </p>
             </div>
@@ -90,7 +90,7 @@ export default function SettingsSection() {
 
           {activeTab === 'privacy' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <p style={{ fontSize: 14, color: 'rgba(10,10,10,0.7)', margin: 0 }}>
+              <p style={{ fontSize: 14, color: "var(--text-secondary)", margin: 0 }}>
                 Privacy settings will be available in the next update.
               </p>
             </div>

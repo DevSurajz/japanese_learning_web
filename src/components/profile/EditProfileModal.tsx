@@ -97,12 +97,12 @@ export default function EditProfileModal({ isOpen, onClose, profile, onProfileUp
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: 'white', borderRadius: 24, padding: '32px', 
+              background: "var(--bg-primary)", borderRadius: 24, padding: '32px', 
               width: '90%', maxWidth: 560, maxHeight: '90vh', overflowY: 'auto',
-              boxShadow: '0 24px 48px rgba(0,0,0,0.1)', fontFamily: "'Space Grotesk', sans-serif"
+              boxShadow: '0 24px 48px rgba(0,0,0,0.1)', fontFamily: "var(--font-inter)"
             }}
           >
-            <h2 style={{ fontSize: 24, fontWeight: 500, margin: '0 0 24px', color: '#0A0A0A', letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontSize: 24, fontWeight: 500, margin: '0 0 24px', color: "var(--text-primary)", letterSpacing: '-0.02em' }}>
               Edit Profile
             </h2>
 
@@ -121,25 +121,25 @@ export default function EditProfileModal({ isOpen, onClose, profile, onProfileUp
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20 }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 8 }}>Display Name</label>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: "var(--text-secondary)", marginBottom: 8 }}>Display Name</label>
                   <input
                     name="display_name"
                     value={formData.display_name}
                     onChange={handleChange}
                     required
-                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none', transition: 'border-color 0.2s', background: '#FAFAFA' }}
+                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: "1px solid var(--border-color)", fontSize: 14, outline: 'none', transition: 'border-color 0.2s', background: "var(--bg-primary)" }}
                     onFocus={e => e.target.style.borderColor = '#0A0A0A'}
                     onBlur={e => e.target.style.borderColor = '#EAEAEA'}
                   />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 8 }}>Avatar URL</label>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: "var(--text-secondary)", marginBottom: 8 }}>Avatar URL</label>
                   <input
                     name="avatar_url"
                     value={formData.avatar_url}
                     onChange={handleChange}
                     placeholder="https://..."
-                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none', transition: 'border-color 0.2s', background: '#FAFAFA' }}
+                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: "1px solid var(--border-color)", fontSize: 14, outline: 'none', transition: 'border-color 0.2s', background: "var(--bg-primary)" }}
                     onFocus={e => e.target.style.borderColor = '#0A0A0A'}
                     onBlur={e => e.target.style.borderColor = '#EAEAEA'}
                   />
@@ -147,13 +147,13 @@ export default function EditProfileModal({ isOpen, onClose, profile, onProfileUp
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 8 }}>Bio</label>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: "var(--text-secondary)", marginBottom: 8 }}>Bio</label>
                 <textarea
                   name="bio"
                   value={formData.bio}
                   onChange={handleChange}
                   rows={3}
-                  style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none', resize: 'vertical', transition: 'border-color 0.2s', background: '#FAFAFA' }}
+                  style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: "1px solid var(--border-color)", fontSize: 14, outline: 'none', resize: 'vertical', transition: 'border-color 0.2s', background: "var(--bg-primary)" }}
                   placeholder="Tell us a bit about your Japanese learning journey..."
                   onFocus={e => e.target.style.borderColor = '#0A0A0A'}
                   onBlur={e => e.target.style.borderColor = '#EAEAEA'}
@@ -162,12 +162,12 @@ export default function EditProfileModal({ isOpen, onClose, profile, onProfileUp
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20 }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 8 }}>Language</label>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: "var(--text-secondary)", marginBottom: 8 }}>Language</label>
                   <select
                     name="preferred_language"
                     value={formData.preferred_language}
                     onChange={handleChange}
-                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none', transition: 'border-color 0.2s', background: '#FAFAFA', cursor: 'pointer' }}
+                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: "1px solid var(--border-color)", fontSize: 14, outline: 'none', transition: 'border-color 0.2s', background: "var(--bg-primary)", cursor: 'pointer' }}
                     onFocus={e => e.target.style.borderColor = '#0A0A0A'}
                     onBlur={e => e.target.style.borderColor = '#EAEAEA'}
                   >
@@ -177,12 +177,12 @@ export default function EditProfileModal({ isOpen, onClose, profile, onProfileUp
                   </select>
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'rgba(10,10,10,0.7)', marginBottom: 8 }}>Timezone</label>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: "var(--text-secondary)", marginBottom: 8 }}>Timezone</label>
                   <input
                     name="timezone"
                     value={formData.timezone}
                     onChange={handleChange}
-                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid #EAEAEA', fontSize: 14, outline: 'none', transition: 'border-color 0.2s', background: '#FAFAFA' }}
+                    style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: "1px solid var(--border-color)", fontSize: 14, outline: 'none', transition: 'border-color 0.2s', background: "var(--bg-primary)" }}
                     onFocus={e => e.target.style.borderColor = '#0A0A0A'}
                     onBlur={e => e.target.style.borderColor = '#EAEAEA'}
                   />
@@ -193,7 +193,7 @@ export default function EditProfileModal({ isOpen, onClose, profile, onProfileUp
                 <button
                   type="button"
                   onClick={onClose}
-                  style={{ padding: '10px 24px', borderRadius: 8, border: '1px solid #EAEAEA', background: 'white', fontSize: 14, fontWeight: 500, cursor: 'pointer', transition: 'background 0.2s' }}
+                  style={{ padding: '10px 24px', borderRadius: 8, border: "1px solid var(--border-color)", background: "var(--bg-primary)", fontSize: 14, fontWeight: 500, cursor: 'pointer', transition: 'background 0.2s' }}
                   onMouseEnter={e => e.currentTarget.style.background = '#F9F9F9'}
                   onMouseLeave={e => e.currentTarget.style.background = 'white'}
                 >

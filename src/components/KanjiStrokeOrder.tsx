@@ -110,7 +110,7 @@ export default function KanjiStrokeOrder({ kanji }: KanjiStrokeOrderProps) {
           style={{
             background: "#f1f5f9", color: "#475569", border: "none",
             padding: "6px 12px", borderRadius: 99, cursor: "pointer",
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: 11,
+            fontFamily: "var(--font-inter)", fontSize: 11,
             letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 500
           }}
         >
@@ -121,7 +121,7 @@ export default function KanjiStrokeOrder({ kanji }: KanjiStrokeOrderProps) {
           style={{
             background: "transparent", color: "#64748b", border: "1px solid #e2e8f0",
             padding: "6px 12px", borderRadius: 99, cursor: "pointer",
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: 11,
+            fontFamily: "var(--font-inter)", fontSize: 11,
             letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 500
           }}
         >

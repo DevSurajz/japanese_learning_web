@@ -13,8 +13,8 @@ export default function DailyGoalWidget({ xpToday, dailyGoalXP }: DailyGoalWidge
 
   return (
     <div style={{
-      background: 'white',
-      border: '1px solid #EAEAEA',
+      background: "var(--bg-primary)",
+      border: "1px solid var(--border-color)",
       borderRadius: 16,
       padding: '24px',
       display: 'flex',
@@ -47,19 +47,19 @@ export default function DailyGoalWidget({ xpToday, dailyGoalXP }: DailyGoalWidge
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           flexDirection: 'column'
         }}>
-          <span style={{ fontSize: 20, fontWeight: 600, color: '#0A0A0A', lineHeight: 1 }}>{percent}%</span>
+          <span style={{ fontSize: 20, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1 }}>{percent}%</span>
         </div>
       </div>
       
       <div style={{ flex: 1 }}>
-        <h2 style={{ fontSize: 16, fontWeight: 500, color: '#0A0A0A', margin: '0 0 4px', letterSpacing: '-0.01em' }}>
+        <h2 style={{ fontSize: 16, fontWeight: 500, color: "var(--text-primary)", margin: '0 0 4px', letterSpacing: '-0.01em' }}>
           Daily Goal
         </h2>
-        <p style={{ fontSize: 13, color: 'rgba(10,10,10,0.6)', margin: '0 0 12px' }}>
+        <p style={{ fontSize: 13, color: "var(--text-secondary)", margin: '0 0 12px' }}>
           {percent >= 100 ? "You've reached your daily goal! Great job." : "Keep going to reach your daily goal."}
         </p>
-        <div style={{ fontSize: 14, fontWeight: 500, color: '#0A0A0A' }}>
-          {xpToday} <span style={{ color: 'rgba(10,10,10,0.4)', fontWeight: 400 }}>/ {dailyGoalXP} XP</span>
+        <div style={{ fontSize: 14, fontWeight: 500, color: "var(--text-primary)" }}>
+          {xpToday} <span style={{ color: "var(--text-secondary)", fontWeight: 400 }}>/ {dailyGoalXP} XP</span>
         </div>
       </div>
     </div>

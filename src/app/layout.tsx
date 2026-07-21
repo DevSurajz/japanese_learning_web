@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Cormorant_Garamond, Space_Grotesk, Noto_Sans_JP } from 'next/font/google'
+import { Cormorant_Garamond, Inter, Noto_Sans_JP } from 'next/font/google'
 import './globals.css'
 import { ViewportProvider } from '@/hooks'
 import { Analytics } from "@vercel/analytics/react"
@@ -14,10 +14,9 @@ const cormorant = Cormorant_Garamond({
   display: 'swap',
 })
 
-const spaceGrotesk = Space_Grotesk({
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['300', '400', '500'],
-  variable: '--font-space-grotesk',
+  variable: '--font-inter',
   display: 'swap',
 })
 
@@ -50,7 +49,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${spaceGrotesk.variable} ${notoSansJP.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${inter.variable} ${notoSansJP.variable}`}>
       <head>
         <link rel="icon" type="image/jpeg" href="/favicon.jpg" />
       </head>

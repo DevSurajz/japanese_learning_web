@@ -141,18 +141,18 @@ export default function ProfilePage() {
     load()
   }, [])
 
-  if (loading) return <div style={{ padding: 40, textAlign: 'center', fontFamily: "'Space Grotesk', sans-serif" }}>Loading...</div>
+  if (loading) return <div style={{ padding: 40, textAlign: 'center', fontFamily: "var(--font-inter)" }}>Loading...</div>
   if (!profile) return (
-    <div style={{ minHeight: '100vh', background: '#FAFAFA' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       <Navbar variant="page" />
-      <div style={{ padding: 40, textAlign: 'center', fontFamily: "'Space Grotesk', sans-serif" }}>Please sign in to view your profile.</div>
+      <div style={{ padding: 40, textAlign: 'center', fontFamily: "var(--font-inter)" }}>Please sign in to view your profile.</div>
     </div>
   )
 
   const levelInfo = getLevelInfo(profile.total_xp ?? 0)
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAFA', fontFamily: "'Space Grotesk', sans-serif", paddingBottom: 80 }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', fontFamily: "var(--font-inter)", paddingBottom: 80 }}>
       <Navbar variant="page" />
       
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '40px 20px', display: 'flex', flexDirection: 'column', gap: 24 }}>

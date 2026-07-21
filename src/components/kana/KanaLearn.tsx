@@ -18,10 +18,10 @@ function KanaCard({ item, index, isMobile }: { item: KanaItem; index: number; is
       whileTap={{ scale: 0.95 }}
       onClick={() => item.kana && playKanaAudio(item.kana)}
       style={{
-        background: "#fff",
+        background: "var(--bg-card)",
         borderRadius: isMobile ? 12 : 16,
-        border: "1px solid #e2e8f0",
-        boxShadow: "0 2px 10px rgba(0,0,0,0.03)",
+        border: "1px solid var(--border-color)",
+        boxShadow: "0 2px 10px rgba(0,0,0,0.01)",
         padding: isMobile ? "10px 6px" : "20px 14px",
         display: "flex", flexDirection: "column", alignItems: "center", gap: isMobile ? 6 : 10,
         height: "100%",
@@ -29,8 +29,8 @@ function KanaCard({ item, index, isMobile }: { item: KanaItem; index: number; is
         transition: "box-shadow 0.3s ease",
         position: "relative",
       }}
-      onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.boxShadow = "0 10px 30px rgba(0,0,0,0.08)"}
-      onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 10px rgba(0,0,0,0.03)"}
+      onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.boxShadow = "0 10px 30px rgba(0,0,0,0.04)"}
+      onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 10px rgba(0,0,0,0.01)"}
     >
       <div style={{ position: "absolute", top: 8, right: 8 }}>
         {item.kana ? <SpeakButton text={item.kana ?? ''} /> : null}
@@ -39,16 +39,16 @@ function KanaCard({ item, index, isMobile }: { item: KanaItem; index: number; is
       <div style={{
         position: "relative", width: isMobile ? 52 : 72, height: isMobile ? 52 : 72,
         borderRadius: isMobile ? 10 : 12,
-        background: "#f8fafc",
-        border: "1px solid #f1f5f9",
+        background: "var(--bg-primary)",
+        border: "1px solid var(--border-color)",
         display: "flex", alignItems: "center", justifyContent: "center",
       }}>
-        <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 300, fontSize: isMobile ? 28 : 40, color: "#0f172a", lineHeight: 1 }}>
+        <span style={{ fontFamily: "var(--font-noto-sans-jp)", fontWeight: 300, fontSize: isMobile ? 28 : 40, color: "var(--text-primary)", lineHeight: 1 }}>
           {item.kana}
         </span>
       </div>
 
-      <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: isMobile ? 11 : 13, color: "#64748b", textTransform: "lowercase", letterSpacing: "0.05em" }}>
+      <p style={{ fontFamily: "var(--font-inter)", fontWeight: 600, fontSize: isMobile ? 11 : 13, color: "var(--text-secondary)", textTransform: "lowercase", letterSpacing: "0.05em" }}>
         {item.romaji}
       </p>
     </motion.div>
@@ -66,10 +66,10 @@ export function KanaLearn({ activeTab, isMobile, sections }: KanaLearnProps) {
     <>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 40 }}>
         <div>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 600, color: "#1e293b", marginBottom: 4 }}>
+          <h2 style={{ fontFamily: "var(--font-cormorant)", fontSize: 24, fontWeight: 600, color: "var(--text-primary)", marginBottom: 4 }}>
             Learn {activeTab}
           </h2>
-          <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, color: "#64748b" }}>
+          <p style={{ fontFamily: "var(--font-inter)", fontSize: 14, color: "var(--text-secondary)" }}>
             Click any character to hear its native pronunciation.
           </p>
         </div>
@@ -78,10 +78,10 @@ export function KanaLearn({ activeTab, isMobile, sections }: KanaLearnProps) {
       {sections.map((section, sIdx) => (
         <div key={section.title} style={{ marginBottom: 64 }}>
           <div style={{ marginBottom: 24, paddingLeft: 4 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 600, color: "#1e293b", marginBottom: 4 }}>
+            <h3 style={{ fontFamily: "var(--font-cormorant)", fontSize: 28, fontWeight: 600, color: "var(--text-primary)", marginBottom: 4 }}>
               {section.title}
             </h3>
-            <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 13, color: "#94a3b8" }}>{section.desc}</p>
+            <p style={{ fontFamily: "var(--font-inter)", fontSize: 13, color: "var(--text-secondary)" }}>{section.desc}</p>
           </div>
 
           <div style={{

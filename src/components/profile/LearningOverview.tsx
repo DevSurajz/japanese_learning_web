@@ -14,8 +14,8 @@ const StatCard = ({ label, value, unit, icon }: StatCardProps) => (
   <motion.div
     whileHover={{ y: -2, boxShadow: '0 8px 24px rgba(0,0,0,0.04)' }}
     style={{
-      background: 'white',
-      border: '1px solid #EAEAEA',
+      background: "var(--bg-primary)",
+      border: "1px solid var(--border-color)",
       borderRadius: 16,
       padding: '20px',
       display: 'flex',
@@ -26,18 +26,18 @@ const StatCard = ({ label, value, unit, icon }: StatCardProps) => (
     }}
   >
     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24, color: '#0A0A0A' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24, color: "var(--text-primary)" }}>
         {icon}
       </div>
-      <span style={{ fontSize: 12, fontWeight: 500, color: 'rgba(10,10,10,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+      <span style={{ fontSize: 12, fontWeight: 500, color: "var(--text-secondary)", textTransform: 'uppercase', letterSpacing: '0.05em' }}>
         {label}
       </span>
     </div>
     <div>
-      <div style={{ fontSize: 28, fontWeight: 600, color: '#0A0A0A', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+      <div style={{ fontSize: 28, fontWeight: 600, color: "var(--text-primary)", letterSpacing: '-0.02em', lineHeight: 1.1 }}>
         {value}
       </div>
-      <div style={{ fontSize: 13, color: 'rgba(10,10,10,0.5)', marginTop: 4 }}>
+      <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 4 }}>
         {unit}
       </div>
     </div>
@@ -79,7 +79,7 @@ export default function LearningOverview({ profile, stats }: LearningOverviewPro
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <h2 style={{ fontSize: 18, fontWeight: 500, color: '#0A0A0A', margin: 0, letterSpacing: '-0.01em' }}>
+      <h2 style={{ fontSize: 18, fontWeight: 500, color: "var(--text-primary)", margin: 0, letterSpacing: '-0.01em' }}>
         Learning Overview
       </h2>
       <div style={{

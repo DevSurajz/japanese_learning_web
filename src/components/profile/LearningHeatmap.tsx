@@ -71,13 +71,13 @@ export default function LearningHeatmap({ studyActivity = [] }: LearningHeatmapP
 
   return (
     <div style={{
-      background: 'white',
-      border: '1px solid #EAEAEA',
+      background: "var(--bg-primary)",
+      border: "1px solid var(--border-color)",
       borderRadius: 16,
       padding: '24px',
       position: 'relative'
     }}>
-      <h2 style={{ fontSize: 16, fontWeight: 500, color: '#0A0A0A', margin: '0 0 16px', letterSpacing: '-0.01em' }}>
+      <h2 style={{ fontSize: 16, fontWeight: 500, color: "var(--text-primary)", margin: '0 0 16px', letterSpacing: '-0.01em' }}>
         Learning Activity
       </h2>
       
@@ -85,14 +85,14 @@ export default function LearningHeatmap({ studyActivity = [] }: LearningHeatmapP
         <div style={{ display: 'inline-flex', flexDirection: 'column', gap: 4, minWidth: '100%' }}>
           <div style={{ display: 'flex', gap: 4, marginLeft: 24, marginBottom: 4 }}>
             {/* Month labels simplified for now, ideally calculated from columns */}
-            <span style={{ fontSize: 11, color: 'rgba(10,10,10,0.5)', width: 64 }}>365 Days</span>
+            <span style={{ fontSize: 11, color: "var(--text-secondary)", width: 64 }}>365 Days</span>
           </div>
           
           <div style={{ display: 'flex', gap: 4 }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 14 }}>
-              <span style={{ fontSize: 10, color: 'rgba(10,10,10,0.4)', lineHeight: '12px' }}>Mon</span>
-              <span style={{ fontSize: 10, color: 'rgba(10,10,10,0.4)', lineHeight: '12px', marginTop: 16 }}>Wed</span>
-              <span style={{ fontSize: 10, color: 'rgba(10,10,10,0.4)', lineHeight: '12px', marginTop: 16 }}>Fri</span>
+              <span style={{ fontSize: 10, color: "var(--text-secondary)", lineHeight: '12px' }}>Mon</span>
+              <span style={{ fontSize: 10, color: "var(--text-secondary)", lineHeight: '12px', marginTop: 16 }}>Wed</span>
+              <span style={{ fontSize: 10, color: "var(--text-secondary)", lineHeight: '12px', marginTop: 16 }}>Fri</span>
             </div>
             
             <div style={{ display: 'flex', gap: 4 }}>
@@ -124,9 +124,9 @@ export default function LearningHeatmap({ studyActivity = [] }: LearningHeatmapP
             </div>
           </div>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: 'rgba(10,10,10,0.5)', marginTop: 12, justifyContent: 'flex-end' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: "var(--text-secondary)", marginTop: 12, justifyContent: 'flex-end' }}>
             <span>Less</span>
-            <div style={{ width: 12, height: 12, borderRadius: 3, background: '#F5F5F5' }} />
+            <div style={{ width: 12, height: 12, borderRadius: 3, background: "var(--bg-primary)" }} />
             <div style={{ width: 12, height: 12, borderRadius: 3, background: '#E5E5E5' }} />
             <div style={{ width: 12, height: 12, borderRadius: 3, background: '#A3A3A3' }} />
             <div style={{ width: 12, height: 12, borderRadius: 3, background: '#525252' }} />
@@ -151,7 +151,7 @@ export default function LearningHeatmap({ studyActivity = [] }: LearningHeatmapP
           pointerEvents: 'none',
           zIndex: 100,
           whiteSpace: 'nowrap',
-          fontFamily: "'Space Grotesk', sans-serif",
+          fontFamily: "var(--font-inter)",
           boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
         }}>
           {hoveredDay.xp > 0 ? `${hoveredDay.xp} XP / ${hoveredDay.minutes} mins` : 'No activity'}

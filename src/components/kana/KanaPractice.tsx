@@ -98,10 +98,10 @@ export function KanaPractice({ isMobile, kanaList, weakCharacters, onComplete }:
   if (questions.length === 0) {
     return (
       <div style={{ textAlign: "center", padding: "60px 20px" }}>
-        <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, color: "#0f172a", marginBottom: 12 }}>
+        <h3 style={{ fontFamily: "var(--font-cormorant)", fontSize: 28, color: "var(--text-primary)", marginBottom: 12 }}>
           You have no weak characters!
         </h3>
-        <p style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#64748b" }}>
+        <p style={{ fontFamily: "var(--font-inter)", color: "var(--text-secondary)" }}>
           Great job. Try taking an assessment to find areas to improve.
         </p>
       </div>
@@ -124,27 +124,27 @@ export function KanaPractice({ isMobile, kanaList, weakCharacters, onComplete }:
         animate={{ opacity: 1, scale: 1, y: 0 }}
         style={{
           maxWidth: 400, margin: "60px auto",
-          background: "#fff", borderRadius: 24,
+          background: "var(--bg-card)", borderRadius: 24,
           padding: "48px 32px", textAlign: "center",
-          boxShadow: "0 10px 40px rgba(0,0,0,0.05)",
-          border: "1px solid #e2e8f0"
+          boxShadow: "0 10px 40px rgba(0,0,0,0.02)",
+          border: "1px solid var(--border-color)"
         }}
       >
         <div style={{ fontSize: 48, marginBottom: 16 }}>{message.split(" ")[message.split(" ").length - 1]}</div>
-        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 32, color: "#0f172a", marginBottom: 8 }}>
+        <h2 style={{ fontFamily: "var(--font-cormorant)", fontSize: 32, color: "var(--text-primary)", marginBottom: 8 }}>
           {message.slice(0, -2)}
         </h2>
-        <p style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#64748b", marginBottom: 32 }}>
+        <p style={{ fontFamily: "var(--font-inter)", color: "var(--text-secondary)", marginBottom: 32 }}>
           You got {score} out of {total} correct.
         </p>
 
         <div style={{ display: "flex", gap: 16, marginBottom: 40, justifyContent: "center" }}>
-          <div style={{ background: "#ecfdf5", color: "#10b981", padding: "16px 24px", borderRadius: 16 }}>
-            <div style={{ fontSize: 24, fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>{score}</div>
+          <div style={{ background: "rgba(16, 185, 129, 0.1)", color: "#10b981", padding: "16px 24px", borderRadius: 16 }}>
+            <div style={{ fontSize: 24, fontWeight: 700, fontFamily: "var(--font-inter)" }}>{score}</div>
             <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 600 }}>Right</div>
           </div>
-          <div style={{ background: "#fef2f2", color: "#ef4444", padding: "16px 24px", borderRadius: 16 }}>
-            <div style={{ fontSize: 24, fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>{total - score}</div>
+          <div style={{ background: "rgba(239, 68, 68, 0.1)", color: "var(--accent-red)", padding: "16px 24px", borderRadius: 16 }}>
+            <div style={{ fontSize: 24, fontWeight: 700, fontFamily: "var(--font-inter)" }}>{total - score}</div>
             <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 600 }}>Wrong</div>
           </div>
         </div>
@@ -153,9 +153,9 @@ export function KanaPractice({ isMobile, kanaList, weakCharacters, onComplete }:
           <button
             onClick={handleRetry}
             style={{
-              background: "#f1f5f9", color: "#475569",
-              border: "none", padding: "16px", borderRadius: 16,
-              fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 14,
+              background: "var(--bg-primary)", color: "var(--text-secondary)",
+              border: "1px solid var(--border-color)", padding: "16px", borderRadius: 16,
+              fontFamily: "var(--font-inter)", fontWeight: 600, fontSize: 14,
               cursor: "pointer", transition: "background 0.2s"
             }}
           >
@@ -164,9 +164,9 @@ export function KanaPractice({ isMobile, kanaList, weakCharacters, onComplete }:
           <button
             onClick={handleContinue}
             style={{
-              background: "#0f172a", color: "#fff",
+              background: "var(--accent-red)", color: "#fff",
               border: "none", padding: "16px", borderRadius: 16,
-              fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 14,
+              fontFamily: "var(--font-inter)", fontWeight: 600, fontSize: 14,
               cursor: "pointer", transition: "background 0.2s"
             }}
           >
@@ -184,16 +184,16 @@ export function KanaPractice({ isMobile, kanaList, weakCharacters, onComplete }:
     <div style={{ maxWidth: 500, margin: "0 auto", padding: "20px 0" }}>
       {/* Progress Bar */}
       <div style={{ marginBottom: 40 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, fontFamily: "'Space Grotesk', sans-serif", fontSize: 12, color: "#64748b" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, fontFamily: "var(--font-inter)", fontSize: 12, color: "var(--text-secondary)" }}>
           <span>Practice Progress</span>
           <span>{currentIndex + 1} / {questions.length}</span>
         </div>
-        <div style={{ width: "100%", height: 4, background: "#e2e8f0", borderRadius: 2, overflow: "hidden" }}>
+        <div style={{ width: "100%", height: 4, background: "var(--border-color)", borderRadius: 2, overflow: "hidden" }}>
           <motion.div 
             initial={{ width: 0 }} 
             animate={{ width: `${progress}%` }} 
             transition={{ duration: 0.3 }}
-            style={{ height: "100%", background: "#10b981" }} 
+            style={{ height: "100%", background: "var(--accent-red)" }} 
           />
         </div>
       </div>
@@ -205,10 +205,10 @@ export function KanaPractice({ isMobile, kanaList, weakCharacters, onComplete }:
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
         style={{
-          background: "#fff",
+          background: "var(--bg-card)",
           borderRadius: 24,
-          border: `2px solid ${status === "correct" ? "#10b981" : status === "incorrect" ? "#ef4444" : "#f1f5f9"}`,
-          boxShadow: "0 10px 40px rgba(0,0,0,0.04)",
+          border: `2px solid ${status === "correct" ? "#10b981" : status === "incorrect" ? "var(--accent-red)" : "var(--border-color)"}`,
+          boxShadow: "0 10px 40px rgba(0,0,0,0.02)",
           padding: "60px 20px",
           display: "flex", flexDirection: "column", alignItems: "center",
           position: "relative"
@@ -218,7 +218,7 @@ export function KanaPractice({ isMobile, kanaList, weakCharacters, onComplete }:
           onClick={() => playKanaAudio(currentKana.kana!)}
           style={{
             background: "none", border: "none", cursor: "pointer",
-            position: "absolute", top: 20, right: 20, color: "#cbd5e1"
+            position: "absolute", top: 20, right: 20, color: "var(--text-secondary)"
           }}
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -227,7 +227,7 @@ export function KanaPractice({ isMobile, kanaList, weakCharacters, onComplete }:
           </svg>
         </button>
 
-        <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 300, fontSize: 80, color: "#0f172a", lineHeight: 1, marginBottom: 40 }}>
+        <span style={{ fontFamily: "var(--font-noto-sans-jp)", fontWeight: 300, fontSize: 80, color: "var(--text-primary)", lineHeight: 1, marginBottom: 40 }}>
           {currentKana.kana}
         </span>
 
@@ -242,12 +242,12 @@ export function KanaPractice({ isMobile, kanaList, weakCharacters, onComplete }:
             autoFocus
             style={{
               width: "100%", padding: "16px",
-              background: "#f8fafc",
-              border: "1px solid #e2e8f0",
+              background: "var(--bg-primary)",
+              border: "1px solid var(--border-color)",
               borderRadius: 12,
-              fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, textAlign: "center",
+              fontFamily: "var(--font-inter)", fontSize: 16, textAlign: "center",
               outline: "none",
-              color: status === "correct" ? "#10b981" : status === "incorrect" ? "#ef4444" : "#0f172a",
+              color: status === "correct" ? "#10b981" : status === "incorrect" ? "var(--accent-red)" : "var(--text-primary)",
               transition: "all 0.2s ease"
             }}
           />
@@ -258,8 +258,8 @@ export function KanaPractice({ isMobile, kanaList, weakCharacters, onComplete }:
                 animate={{ opacity: 1, y: 0 }}
                 style={{
                   position: "absolute", top: -30, left: 0, right: 0,
-                  textAlign: "center", fontFamily: "'Space Grotesk', sans-serif",
-                  fontSize: 13, color: "#ef4444", fontWeight: 500
+                  textAlign: "center", fontFamily: "var(--font-inter)",
+                  fontSize: 13, color: "var(--accent-red)", fontWeight: 500
                 }}
               >
                 Correct: {currentKana.romaji}

@@ -30,10 +30,10 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
   const defaultScrollY = useTransform(() => 0)
   const activeScrollY = scrollY ?? defaultScrollY
 
-  const bg = useTransform(activeScrollY, [0, 80], ["rgba(250,250,250,0)", "rgba(250,250,250,1)"])
+  const bg = useTransform(activeScrollY, [0, 80], ["rgba(250,248,244,0)", "var(--bg-primary)"])
   const borderOpacity = useTransform(activeScrollY, [0, 80], [0, 1])
-  const borderBottom = useTransform(borderOpacity, v => v > 0.01 ? "1px solid rgba(0,0,0,0.08)" : "none")
-  const textColor = "#0A0A0A"
+  const borderBottom = useTransform(borderOpacity, v => v > 0.01 ? "1px solid var(--border-color)" : "none")
+  const textColor = "var(--text-primary)"
 
   const [menuOpen, setMenuOpen] = useState(false)
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
@@ -111,9 +111,9 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
         justifyContent: isMobile ? "space-between" as const : undefined,
         gridTemplateColumns: isMobile ? undefined : "1fr auto 1fr",
         padding: isMobile ? "20px 24px" : "24px 48px",
-        background: "rgba(250,250,250,0.95)",
+        background: "rgba(250,248,244,0.95)",
         backdropFilter: "blur(12px)",
-        borderBottom: "1px solid rgba(0,0,0,0.08)",
+        borderBottom: "1px solid var(--border-color)",
       }
     : {
         position: "fixed" as const, top: 0, left: 0, right: 0, zIndex: 100,
@@ -132,10 +132,10 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
             whileHover={{ opacity: 0.8 }}
             whileTap={{ scale: 0.97 }}
             style={{
-              background: "#0A0A0A", color: "#FAFAFA",
+              background: "var(--text-primary)", color: "var(--bg-card)",
               border: "none", borderRadius: 0,
               padding: "10px 20px",
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "var(--font-inter)",
               fontWeight: 300, fontSize: 11,
               letterSpacing: "0.18em", textTransform: "uppercase",
               cursor: "pointer",
@@ -165,7 +165,7 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
           {user.user_metadata?.avatar_url ? (
             <img src={user.user_metadata.avatar_url} alt="Profile Avatar" style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover", flexShrink: 0 }} />
           ) : (
-            <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#0A0A0A", color: "#FFF", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontFamily: "'Space Grotesk', sans-serif", flexShrink: 0 }}>
+            <div style={{ width: 32, height: 32, borderRadius: "50%", background: "var(--text-primary)", color: "var(--bg-card)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontFamily: "var(--font-inter)", flexShrink: 0 }}>
               {user.email?.[0].toUpperCase()}
             </div>
           )}
@@ -177,15 +177,15 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} transition={{ duration: 0.2 }}
               style={{
                 position: "absolute", top: "100%", right: 0, marginTop: 16,
-                background: "#FFF", border: "1px solid rgba(10,10,10,0.08)", borderRadius: 4,
+                background: "var(--bg-card)", border: "1px solid var(--border-color)", borderRadius: 4,
                 boxShadow: "0 10px 30px rgba(0,0,0,0.05)", padding: 8, minWidth: 160, zIndex: 101
               }}
             >
-              <Link href="/dashboard" style={{ display: "block", padding: "10px 16px", textDecoration: "none", color: "#0A0A0A", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }} onClick={() => setProfileMenuOpen(false)}>Dashboard</Link>
-              <Link href="/profile" style={{ display: "block", padding: "10px 16px", textDecoration: "none", color: "rgba(10,10,10,0.5)", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }} onClick={() => setProfileMenuOpen(false)}>Profile</Link>
-              <Link href="/leaderboard" style={{ display: "block", padding: "10px 16px", textDecoration: "none", color: "rgba(10,10,10,0.5)", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }} onClick={() => setProfileMenuOpen(false)}>Leaderboard</Link>
-              <div style={{ height: 1, background: "rgba(10,10,10,0.05)", margin: "4px 0" }} />
-              <button onClick={requestLogout} style={{ width: "100%", textAlign: "left", background: "none", border: "none", padding: "10px 16px", cursor: "pointer", color: "#0A0A0A", fontFamily: "'Space Grotesk', sans-serif", fontSize: 13 }}>Log Out</button>
+              <Link href="/dashboard" style={{ display: "block", padding: "10px 16px", textDecoration: "none", color: "var(--text-primary)", fontFamily: "var(--font-inter)", fontSize: 13 }} onClick={() => setProfileMenuOpen(false)}>Dashboard</Link>
+              <Link href="/profile" style={{ display: "block", padding: "10px 16px", textDecoration: "none", color: "var(--text-secondary)", fontFamily: "var(--font-inter)", fontSize: 13 }} onClick={() => setProfileMenuOpen(false)}>Profile</Link>
+              <Link href="/leaderboard" style={{ display: "block", padding: "10px 16px", textDecoration: "none", color: "var(--text-secondary)", fontFamily: "var(--font-inter)", fontSize: 13 }} onClick={() => setProfileMenuOpen(false)}>Leaderboard</Link>
+              <div style={{ height: 1, background: "var(--border-color)", margin: "4px 0" }} />
+              <button onClick={requestLogout} style={{ width: "100%", textAlign: "left", background: "none", border: "none", padding: "10px 16px", cursor: "pointer", color: "var(--text-primary)", fontFamily: "var(--font-inter)", fontSize: 13 }}>Log Out</button>
             </motion.div>
           )}
         </AnimatePresence>
@@ -217,7 +217,7 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
           >日本語</motion.span>
           <motion.span
             style={{
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "var(--font-inter)",
               fontWeight: 300, fontSize: 13,
               color: textColor, letterSpacing: "0.12em",
             }}
@@ -231,7 +231,7 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
               onClick={() => setMenuOpen(open => !open)}
               style={{
                 background: "none", border: "none", cursor: "pointer",
-                fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300,
+                fontFamily: "var(--font-inter)", fontWeight: 300,
                 fontSize: 24, color: textColor, padding: 8, margin: -8
               }}
             >
@@ -247,7 +247,7 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
                   key={label}
                   href={to}
                   style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: "var(--font-inter)",
                     fontWeight: 300, fontSize: 11,
                     letterSpacing: "0.18em", textTransform: "uppercase",
                     textDecoration: "none", cursor: "pointer",
@@ -276,11 +276,11 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
 
       {/* Ambient daily goal progress bar */}
       {user && (
-        <div style={{ position: variant === 'page' ? 'sticky' : 'fixed', top: variant === 'page' ? 'auto' : 72, left: 0, right: 0, zIndex: 99, height: 3, background: 'rgba(10,10,10,0.05)' }}>
+        <div style={{ position: variant === 'page' ? 'sticky' : 'fixed', top: variant === 'page' ? 'auto' : 72, left: 0, right: 0, zIndex: 99, height: 3, background: 'var(--border-color)' }}>
           <div style={{
             height: '100%',
             width: `${Math.min(100, (xpToday / dailyGoal) * 100)}%`,
-            background: xpToday >= dailyGoal ? '#10b981' : '#0A0A0A',
+            background: xpToday >= dailyGoal ? 'var(--accent-red)' : 'var(--text-primary)',
             transition: 'width 0.6s ease, background 0.4s ease',
           }} />
         </div>
@@ -295,9 +295,9 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
             exit={{ opacity: 0, y: 20, x: '-50%' }}
             style={{
               position: 'fixed', bottom: 24, left: '50%',
-              background: '#0A0A0A', color: '#FAFAFA',
+              background: 'var(--text-primary)', color: 'var(--bg-card)',
               padding: '12px 24px', zIndex: 300,
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "var(--font-inter)",
               fontSize: 13, fontWeight: 300,
               letterSpacing: '0.05em',
               border: '1px solid rgba(255,255,255,0.1)',
@@ -317,26 +317,26 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
             exit={{ height: 0, opacity: 0 }}
             style={{
               position: "fixed", top: 68, left: 0, right: 0, zIndex: 99,
-              background: "#FAFAFA",
-              borderBottom: "1px solid rgba(0,0,0,0.08)",
+              background: "var(--bg-primary)",
+              borderBottom: "1px solid var(--border-color)",
               display: "flex", flexDirection: "column",
               padding: "24px", gap: 24, overflow: "hidden",
             }}
           >
             {user && (
-              <div style={{ display: "flex", alignItems: "center", gap: 16, paddingBottom: 24, borderBottom: "1px solid rgba(10,10,10,0.08)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 16, paddingBottom: 24, borderBottom: "1px solid var(--border-color)" }}>
                 {user.user_metadata?.avatar_url ? (
                   <img src={user.user_metadata.avatar_url} alt="Avatar" style={{ width: 48, height: 48, borderRadius: "50%" }} />
                 ) : (
-                  <div style={{ width: 48, height: 48, borderRadius: "50%", background: "#0A0A0A", color: "#FFF", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, fontFamily: "'Space Grotesk', sans-serif" }}>
+                  <div style={{ width: 48, height: 48, borderRadius: "50%", background: "var(--text-primary)", color: "var(--bg-card)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, fontFamily: "var(--font-inter)" }}>
                     {user.email?.[0].toUpperCase()}
                   </div>
                 )}
                 <div>
-                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, color: textColor, fontWeight: 500 }}>
+                  <div style={{ fontFamily: "var(--font-inter)", fontSize: 16, color: textColor, fontWeight: 500 }}>
                     {user.user_metadata?.full_name || user.email?.split('@')[0]}
                   </div>
-                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 12, color: "rgba(10,10,10,0.5)" }}>
+                  <div style={{ fontFamily: "var(--font-inter)", fontSize: 12, color: "var(--text-secondary)" }}>
                     {user.email}
                   </div>
                 </div>
@@ -349,7 +349,7 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
                 href={to}
                 onClick={() => setMenuOpen(false)}
                 style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "var(--font-inter)",
                   fontWeight: 300, fontSize: 14,
                   letterSpacing: "0.18em", textTransform: "uppercase",
                   textDecoration: "none", color: textColor,
@@ -360,25 +360,25 @@ export default function Navbar({ scrollY, variant = "home" }: NavbarProps) {
               </Link>
             ))}
             
-            <div style={{ height: 1, background: "rgba(10,10,10,0.08)", margin: "8px 0" }} />
+            <div style={{ height: 1, background: "var(--border-color)", margin: "8px 0" }} />
 
             {user ? (
               <>
-                <Link href="/dashboard" onClick={() => setMenuOpen(false)} style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", color: textColor, display: "block" }}>
+                <Link href="/dashboard" onClick={() => setMenuOpen(false)} style={{ fontFamily: "var(--font-inter)", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", color: textColor, display: "block" }}>
                   DASHBOARD
                 </Link>
-                <Link href="/profile" onClick={() => setMenuOpen(false)} style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", color: textColor, display: "block" }}>
+                <Link href="/profile" onClick={() => setMenuOpen(false)} style={{ fontFamily: "var(--font-inter)", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", color: textColor, display: "block" }}>
                   PROFILE
                 </Link>
-                <Link href="/leaderboard" onClick={() => setMenuOpen(false)} style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", color: textColor, display: "block" }}>
+                <Link href="/leaderboard" onClick={() => setMenuOpen(false)} style={{ fontFamily: "var(--font-inter)", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", color: textColor, display: "block" }}>
                   LEADERBOARD
                 </Link>
-                <button onClick={requestLogout} style={{ background: "none", border: "none", padding: 0, textAlign: "left", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", color: textColor, display: "block", cursor: "pointer" }}>
+                <button onClick={requestLogout} style={{ background: "none", border: "none", padding: 0, textAlign: "left", fontFamily: "var(--font-inter)", fontWeight: 300, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", color: textColor, display: "block", cursor: "pointer" }}>
                   LOG OUT
                 </button>
               </>
             ) : (
-              <Link href="/auth" onClick={() => setMenuOpen(false)} style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", color: textColor, display: "block" }}>
+              <Link href="/auth" onClick={() => setMenuOpen(false)} style={{ fontFamily: "var(--font-inter)", fontWeight: 500, fontSize: 14, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", color: textColor, display: "block" }}>
                 SIGN IN →
               </Link>
             )}

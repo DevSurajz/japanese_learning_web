@@ -38,15 +38,15 @@ export default function JLPTProgressCard({ stats }: JLPTProgressCardProps) {
 
   return (
     <div style={{
-      background: 'white',
-      border: '1px solid #EAEAEA',
+      background: "var(--bg-primary)",
+      border: "1px solid var(--border-color)",
       borderRadius: 16,
       padding: '24px',
       display: 'flex',
       flexDirection: 'column',
       gap: 20
     }}>
-      <h2 style={{ fontSize: 16, fontWeight: 500, color: '#0A0A0A', margin: 0, letterSpacing: '-0.01em' }}>
+      <h2 style={{ fontSize: 16, fontWeight: 500, color: "var(--text-primary)", margin: 0, letterSpacing: '-0.01em' }}>
         JLPT Progress
       </h2>
       
@@ -62,7 +62,7 @@ export default function JLPTProgressCard({ stats }: JLPTProgressCardProps) {
                 {item.level}
               </div>
               
-              <div style={{ flex: 1, background: '#F5F5F5', borderRadius: 999, height: 8, overflow: 'hidden' }}>
+              <div style={{ flex: 1, background: "var(--bg-primary)", borderRadius: 999, height: 8, overflow: 'hidden' }}>
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${percent}%` }}

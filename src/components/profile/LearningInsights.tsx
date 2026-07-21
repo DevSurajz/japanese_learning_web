@@ -27,12 +27,12 @@ export default function LearningInsights({ profile, levelInfo }: LearningInsight
 
   return (
     <div style={{
-      background: 'white',
-      border: '1px solid #EAEAEA',
+      background: "var(--bg-primary)",
+      border: "1px solid var(--border-color)",
       borderRadius: 16,
       padding: '24px',
     }}>
-      <h2 style={{ fontSize: 16, fontWeight: 500, color: '#0A0A0A', margin: '0 0 20px', letterSpacing: '-0.01em' }}>
+      <h2 style={{ fontSize: 16, fontWeight: 500, color: "var(--text-primary)", margin: '0 0 20px', letterSpacing: '-0.01em' }}>
         Learning Insights
       </h2>
       
@@ -51,7 +51,7 @@ export default function LearningInsights({ profile, levelInfo }: LearningInsight
               border: '1px solid #F5F5F5'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0A0A0A', width: 24, height: 24 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: "var(--text-primary)", width: 24, height: 24 }}>
               {insight.icon}
             </div>
             <span style={{ fontSize: 14, color: 'rgba(10,10,10,0.8)' }}>{insight.text}</span>

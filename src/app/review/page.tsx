@@ -129,7 +129,7 @@ function ReviewPageInner() {
   if (loading) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60vh' }}>
-        <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 13, color: 'rgba(10,10,10,0.4)', letterSpacing: '0.1em' }}>
+        <span style={{ fontFamily: "var(--font-inter)", fontSize: 13, color: 'var(--text-secondary)', letterSpacing: '0.1em' }}>
           Loading cards…
         </span>
       </div>
@@ -145,25 +145,25 @@ function ReviewPageInner() {
       >
         <div style={{ fontSize: 48, marginBottom: 24 }}>✓</div>
         <h2 style={{
-          fontFamily: "'Cormorant Garamond', serif",
+          fontFamily: "var(--font-cormorant)",
           fontWeight: 300, fontStyle: 'italic',
-          fontSize: 40, color: '#0A0A0A', marginBottom: 16,
+          fontSize: 40, color: 'var(--text-primary)', marginBottom: 16,
         }}>
           All caught up.
         </h2>
-        <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 14, color: 'rgba(10,10,10,0.5)', marginBottom: 48 }}>
+        <p style={{ fontFamily: "var(--font-inter)", fontWeight: 300, fontSize: 14, color: 'var(--text-secondary)', marginBottom: 48 }}>
           {total > 0 ? `Reviewed ${total} cards today.` : "No cards due right now — check back tomorrow."}
           {todayStats.streak > 0 && ` 🔥 ${todayStats.streak} day streak.`}
         </p>
         <button
           onClick={() => router.push('/')}
           style={{
-            background: '#0A0A0A', color: '#FAFAFA',
+            background: 'var(--text-primary)', color: 'var(--bg-primary)',
             border: 'none', padding: '14px 32px',
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "var(--font-inter)",
             fontWeight: 300, fontSize: 11,
             letterSpacing: '0.18em', textTransform: 'uppercase',
-            cursor: 'pointer',
+            cursor: 'pointer', borderRadius: 99,
           }}
         >
           Back to Home
@@ -179,17 +179,17 @@ function ReviewPageInner() {
       {/* Progress bar */}
       <div style={{ marginBottom: 40 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, color: 'rgba(10,10,10,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+          <span style={{ fontFamily: "var(--font-inter)", fontSize: 11, color: 'var(--text-secondary)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
             {remaining} remaining
           </span>
-          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, color: 'rgba(10,10,10,0.4)' }}>
+          <span style={{ fontFamily: "var(--font-inter)", fontSize: 11, color: 'var(--text-secondary)' }}>
             {currentIndex} / {total}
           </span>
         </div>
-        <div style={{ height: 2, background: 'rgba(10,10,10,0.06)', borderRadius: 1 }}>
+        <div style={{ height: 2, background: 'var(--border-color)', borderRadius: 1 }}>
           <div style={{
             height: '100%', borderRadius: 1,
-            background: '#0A0A0A',
+            background: 'var(--accent-red)',
             width: `${progress}%`,
             transition: 'width 0.4s ease',
           }} />
@@ -205,8 +205,8 @@ function ReviewPageInner() {
           exit={{ opacity: 0, y: -16 }}
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            background: '#FFF',
-            border: '1px solid rgba(10,10,10,0.08)',
+            background: 'var(--bg-card)',
+            border: '1px solid var(--border-color)', borderRadius: 24,
             minHeight: 280,
             display: 'flex',
             flexDirection: 'column',
@@ -215,16 +215,17 @@ function ReviewPageInner() {
             padding: 48,
             marginBottom: 32,
             cursor: !revealed ? 'pointer' : 'default',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.02)',
           }}
           onClick={() => !revealed && setRevealed(true)}
         >
           {/* Card front */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: revealed ? 32 : 0 }}>
             <span style={{
-              fontFamily: "'Noto Sans JP', sans-serif",
+              fontFamily: "var(--font-noto-sans-jp)",
               fontWeight: 100,
               fontSize: 72,
-              color: '#0A0A0A',
+              color: 'var(--text-primary)',
               lineHeight: 1,
             }}>
               {frontText}
@@ -240,12 +241,12 @@ function ReviewPageInner() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
-                style={{ textAlign: 'center', borderTop: '1px solid rgba(10,10,10,0.06)', paddingTop: 24, width: '100%' }}
+                style={{ textAlign: 'center', borderTop: '1px solid var(--border-color)', paddingTop: 24, width: '100%' }}
               >
-                <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 13, color: 'rgba(10,10,10,0.5)', marginBottom: 4 }}>
+                <p style={{ fontFamily: "var(--font-inter)", fontWeight: 300, fontSize: 13, color: 'var(--text-secondary)', marginBottom: 4 }}>
                   {currentCard.card_type}
                 </p>
-                <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 12, color: 'rgba(10,10,10,0.3)' }}>
+                <p style={{ fontFamily: "var(--font-inter)", fontWeight: 300, fontSize: 12, color: 'var(--text-secondary)', opacity: 0.8 }}>
                   Interval: {currentCard.interval}d · Ease: {currentCard.easiness.toFixed(1)} · Reps: {currentCard.repetitions}
                 </p>
               </motion.div>
@@ -253,7 +254,7 @@ function ReviewPageInner() {
           </AnimatePresence>
 
           {!revealed && (
-            <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 11, color: 'rgba(10,10,10,0.3)', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: 24 }}>
+            <p style={{ fontFamily: "var(--font-inter)", fontWeight: 300, fontSize: 11, color: 'var(--text-secondary)', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: 24 }}>
               Tap to reveal
             </p>
           )}
@@ -275,21 +276,21 @@ function ReviewPageInner() {
                 onClick={() => handleAnswer(quality)}
                 disabled={answering}
                 style={{
-                  background: '#FAFAFA',
-                  border: '1px solid rgba(10,10,10,0.08)',
-                  padding: '14px 8px',
+                  background: 'var(--bg-primary)',
+                  border: '1px solid var(--border-color)',
+                  padding: '14px 8px', borderRadius: 16,
                   cursor: answering ? 'not-allowed' : 'pointer',
                   opacity: answering ? 0.6 : 1,
                   textAlign: 'center',
                   transition: 'background 0.2s, border-color 0.2s',
                 }}
-                onMouseEnter={e => { if (!answering) (e.currentTarget as HTMLButtonElement).style.background = '#F0F0F0' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#FAFAFA' }}
+                onMouseEnter={e => { if (!answering) (e.currentTarget as HTMLButtonElement).style.background = 'var(--bg-card)' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'var(--bg-primary)' }}
               >
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 13, color: '#0A0A0A', marginBottom: 4 }}>
+                <div style={{ fontFamily: "var(--font-inter)", fontWeight: 500, fontSize: 13, color: 'var(--text-primary)', marginBottom: 4 }}>
                   {label}
                 </div>
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 300, fontSize: 10, color: 'rgba(10,10,10,0.4)', letterSpacing: '0.05em' }}>
+                <div style={{ fontFamily: "var(--font-inter)", fontWeight: 300, fontSize: 10, color: 'var(--text-secondary)', letterSpacing: '0.05em' }}>
                   {desc}
                 </div>
               </button>
@@ -303,10 +304,10 @@ function ReviewPageInner() {
 
 export default function ReviewPage() {
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAFA' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       <Navbar variant="page" />
       <Suspense fallback={<div style={{ height: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 13, color: 'rgba(10,10,10,0.4)' }}>Loading…</span>
+        <span style={{ fontFamily: "var(--font-inter)", fontSize: 13, color: 'var(--text-secondary)' }}>Loading…</span>
       </div>}>
         <ReviewPageInner />
       </Suspense>

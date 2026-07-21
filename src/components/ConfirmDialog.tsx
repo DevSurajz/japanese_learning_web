@@ -113,7 +113,7 @@ export default function ConfirmDialog({
             <h2
               id="confirm-dialog-title"
               style={{
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "var(--font-inter)",
                 fontWeight: 500,
                 fontSize: 18,
                 color: "#0A0A0A",
@@ -127,7 +127,7 @@ export default function ConfirmDialog({
             <p
               id="confirm-dialog-desc"
               style={{
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "var(--font-inter)",
                 fontWeight: 300,
                 fontSize: 14,
                 color: "rgba(10, 10, 10, 0.55)",
@@ -149,7 +149,7 @@ export default function ConfirmDialog({
                 ref={cancelRef}
                 onClick={onCancel}
                 style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "var(--font-inter)",
                   fontWeight: 400,
                   fontSize: 13,
                   letterSpacing: "0.06em",
@@ -174,7 +174,7 @@ export default function ConfirmDialog({
               <button
                 onClick={onConfirm}
                 style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "var(--font-inter)",
                   fontWeight: 400,
                   fontSize: 13,
                   letterSpacing: "0.06em",

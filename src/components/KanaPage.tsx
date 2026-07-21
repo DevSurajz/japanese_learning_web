@@ -87,10 +87,10 @@ export default function KanaPage() {
   
   if (!isLoaded) {
     return (
-      <div style={{ minHeight: "100vh", background: "#f8fafc", padding: "56px 48px", display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <div style={{ width: 120, height: 24, background: "#e2e8f0", borderRadius: 12, marginBottom: 40, animation: "pulse 1.5s infinite ease-in-out" }} />
-        <div style={{ width: 300, height: 64, background: "#e2e8f0", borderRadius: 16, marginBottom: 20, animation: "pulse 1.5s infinite ease-in-out" }} />
-        <div style={{ width: 200, height: 20, background: "#e2e8f0", borderRadius: 10, animation: "pulse 1.5s infinite ease-in-out" }} />
+      <div style={{ minHeight: "100vh", background: "var(--bg-primary)", padding: "56px 48px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ width: 120, height: 24, background: "var(--bg-card)", borderRadius: 12, marginBottom: 40, animation: "pulse 1.5s infinite ease-in-out" }} />
+        <div style={{ width: 300, height: 64, background: "var(--bg-card)", borderRadius: 16, marginBottom: 20, animation: "pulse 1.5s infinite ease-in-out" }} />
+        <div style={{ width: 200, height: 20, background: "var(--bg-card)", borderRadius: 10, animation: "pulse 1.5s infinite ease-in-out" }} />
         <style>{`
           @keyframes pulse {
             0%, 100% { opacity: 1; }
@@ -109,35 +109,35 @@ export default function KanaPage() {
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       style={{
         minHeight: "100vh",
-        background: "#f8fafc",
+        background: "var(--bg-primary)",
         overflowY: "auto",
-        fontFamily: "'Space Grotesk', sans-serif",
+        fontFamily: "var(--font-inter)",
       }}
     >
       <div style={{
         position: "sticky", top: 0, zIndex: 10,
-        background: "rgba(248,250,252,0.9)",
+        background: "var(--bg-primary)",
         backdropFilter: "blur(12px)",
-        borderBottom: "1px solid #e2e8f0",
+        borderBottom: "1px solid var(--border-color)",
         padding: isMobile ? "10px 16px" : "16px 48px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
         flexWrap: "nowrap", overflow: "hidden",
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, overflow: "hidden" }}>
-          <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 100, fontSize: isMobile ? 13 : 18, color: "#64748b", whiteSpace: "nowrap" }}>日本語</span>
-          <span style={{ fontSize: isMobile ? 11 : 13, fontWeight: 500, color: "#1e293b", letterSpacing: "0.02em", whiteSpace: "nowrap" }}>NihongoPath</span>
-          <span style={{ display: isMobile ? "none" : "inline", color: "#cbd5e1", fontSize: 13 }}>/</span>
-          <span style={{ display: isMobile ? "none" : "inline", fontSize: 11, color: "#10b981", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600, whiteSpace: "nowrap" }}>Kana Mastery</span>
+          <span style={{ fontFamily: "var(--font-noto-sans-jp)", fontWeight: 100, fontSize: isMobile ? 13 : 18, color: "var(--text-secondary)", whiteSpace: "nowrap" }}>日本語</span>
+          <span style={{ fontSize: isMobile ? 11 : 13, fontWeight: 500, color: "var(--text-primary)", letterSpacing: "0.02em", whiteSpace: "nowrap" }}>NihongoPath</span>
+          <span style={{ display: isMobile ? "none" : "inline", color: "var(--text-secondary)", fontSize: 13 }}>/</span>
+          <span style={{ display: isMobile ? "none" : "inline", fontSize: 11, color: "var(--accent-red)", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600, whiteSpace: "nowrap" }}>Kana Mastery</span>
         </div>
         <motion.button
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.96 }}
           onClick={handleBack}
           style={{
-            background: "#0f172a", color: "#fff",
-            border: "none", borderRadius: 99,
+            background: "transparent", color: "var(--text-primary)",
+            border: "1px solid var(--border-color)", borderRadius: 99,
             padding: isMobile ? "6px 10px" : "8px 20px",
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "var(--font-inter)",
             fontSize: isMobile ? 10 : 11, fontWeight: 400,
             letterSpacing: "0.12em", textTransform: "uppercase",
             cursor: "pointer",
@@ -156,15 +156,15 @@ export default function KanaPage() {
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} style={{ marginBottom: 40, textAlign: "center" }}>
             <div style={{
               display: "inline-flex", alignItems: "center", gap: 6,
-              background: "#ecfdf5", borderRadius: 99,
+              background: "rgba(217, 56, 30, 0.08)", borderRadius: 99,
               padding: "6px 14px", marginBottom: 20,
             }}>
-              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#34d399", display: "inline-block" }} />
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--accent-red)", display: "inline-block" }} />
             </div>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(48px, 6vw, 72px)", color: "#0f172a", lineHeight: 1 }}>
+            <h1 style={{ fontFamily: "var(--font-cormorant)", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(48px, 6vw, 72px)", color: "var(--text-primary)", lineHeight: 1 }}>
               Kana
             </h1>
-            <p style={{ fontSize: 15, color: "#64748b", marginTop: 12, fontWeight: 300 }}>
+            <p style={{ fontFamily: "var(--font-inter)", fontSize: 15, color: "var(--text-secondary)", marginTop: 12, fontWeight: 300 }}>
               Master Hiragana and Katakana through active recall and targeted practice.
             </p>
           </motion.div>
@@ -172,17 +172,17 @@ export default function KanaPage() {
 
         {/* System Navigation (Hiragana/Katakana) */}
         <div style={{ display: "flex", justifyContent: "center", marginBottom: 32 }}>
-          <div style={{ background: "#e2e8f0", padding: 6, borderRadius: 99, display: "inline-flex", gap: 4 }}>
+          <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-color)", padding: 6, borderRadius: 99, display: "inline-flex", gap: 4 }}>
             {(["Hiragana", "Katakana"] as Tab[]).map(tab => (
               <button
                 key={tab}
                 onClick={() => handleTabChange(tab)}
                 style={{
-                  background: activeTab === tab ? "#fff" : "transparent",
-                  color: activeTab === tab ? "#0f172a" : "#64748b",
+                  background: activeTab === tab ? "var(--text-primary)" : "transparent",
+                  color: activeTab === tab ? "var(--bg-primary)" : "var(--text-secondary)",
                   padding: "10px 32px",
                   borderRadius: 99, border: "none", cursor: "pointer",
-                  fontFamily: "'Space Grotesk', sans-serif", fontSize: 13, fontWeight: 500, letterSpacing: "0.05em",
+                  fontFamily: "var(--font-inter)", fontSize: 13, fontWeight: 500, letterSpacing: "0.05em",
                   boxShadow: activeTab === tab ? "0 2px 8px rgba(0,0,0,0.05)" : "none",
                   transition: "all 0.2s ease",
                 }}
@@ -201,11 +201,11 @@ export default function KanaPage() {
               onClick={() => handleModeChange(m)}
               style={{
                 background: "transparent",
-                color: mode === m ? "#0f172a" : "#94a3b8",
+                color: mode === m ? "var(--text-primary)" : "var(--text-secondary)",
                 padding: "8px 0",
-                border: "none", borderBottom: `2px solid ${mode === m ? "#0f172a" : "transparent"}`,
+                border: "none", borderBottom: `2px solid ${mode === m ? "var(--text-primary)" : "transparent"}`,
                 cursor: "pointer",
-                fontFamily: "'Space Grotesk', sans-serif", fontSize: 12, fontWeight: 600,
+                fontFamily: "var(--font-inter)", fontSize: 12, fontWeight: 600,
                 letterSpacing: "0.1em", textTransform: "uppercase",
                 transition: "all 0.2s ease",
               }}
@@ -226,9 +226,9 @@ export default function KanaPage() {
               href="/review?filter=weak&type=kana"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 8,
-                background: '#fff7ed', border: '1px solid #fed7aa',
-                color: '#c2410c', padding: '8px 20px', borderRadius: 99,
-                fontFamily: "'Space Grotesk', sans-serif",
+                background: 'rgba(217, 56, 30, 0.08)', border: '1px solid var(--border-color)',
+                color: 'var(--accent-red)', padding: '8px 20px', borderRadius: 99,
+                fontFamily: "var(--font-inter)",
                 fontSize: 11, fontWeight: 600, letterSpacing: '0.12em',
                 textTransform: 'uppercase', textDecoration: 'none',
               }}

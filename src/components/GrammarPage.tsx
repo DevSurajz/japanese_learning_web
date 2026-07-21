@@ -13,27 +13,27 @@ const ExampleItem = React.memo(function ExampleItem({ ex, isMobile }: { ex: Reco
     <div>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
         <p style={{
-          fontFamily: "'Noto Sans JP', sans-serif",
+          fontFamily: "var(--font-noto-sans-jp)",
           fontWeight: 400,
           fontSize: isMobile ? 16 : 18,
-          color: "#0A0A0A",
+          color: "var(--text-primary)",
         }}>{ex.japanese}</p>
         {ex.japanese ? <SpeakButton text={ex.japanese} rate={0.75} /> : null}
       </div>
       {ex.romaji && (
         <p style={{
-          fontFamily: "'Space Grotesk', sans-serif",
+          fontFamily: "var(--font-inter)",
           fontWeight: 300,
           fontSize: 13,
-          color: "rgba(10,10,10,0.4)",
+          color: "var(--text-secondary)",
           marginBottom: 2,
         }}>{ex.romaji}</p>
       )}
       <p style={{
-        fontFamily: "'Space Grotesk', sans-serif",
+        fontFamily: "var(--font-inter)",
         fontWeight: 300,
         fontSize: isMobile ? 14 : 15,
-        color: "rgba(10,10,10,0.6)",
+        color: "var(--text-secondary)", opacity: 0.8,
       }}>{ex.english}</p>
     </div>
   )
@@ -42,40 +42,40 @@ const ExampleItem = React.memo(function ExampleItem({ ex, isMobile }: { ex: Reco
 const PracticeItem = React.memo(function PracticeItem({ prac, index }: { prac: Record<string, any>; index: number }) {
   return (
     <details style={{
-      background: "#FAFAFA",
-      border: "1px solid rgba(10,10,10,0.06)",
+      background: "var(--bg-primary)",
+      border: "1px solid var(--border-color)",
       padding: "12px 16px",
       borderRadius: 4,
       cursor: "pointer",
     }}>
       <summary style={{
-        fontFamily: "'Noto Sans JP', sans-serif",
+        fontFamily: "var(--font-noto-sans-jp)",
         fontWeight: 400,
         fontSize: 15,
-        color: "#0A0A0A",
+        color: "var(--text-primary)",
         outline: "none",
         listStyle: "none",
       }}>
-        <span style={{ fontSize: 13, marginRight: 8, color: "rgba(10,10,10,0.3)" }}>Q{index + 1}.</span>
+        <span style={{ fontSize: 13, marginRight: 8, color: "var(--text-secondary)" }}>Q{index + 1}.</span>
         {prac.question}
       </summary>
       <div style={{
         marginTop: 12,
         paddingTop: 12,
-        borderTop: "1px dashed rgba(10,10,10,0.1)",
+        borderTop: "1px dashed var(--border-color)",
       }}>
         <p style={{
-          fontFamily: "'Noto Sans JP', sans-serif",
+          fontFamily: "var(--font-noto-sans-jp)",
           fontWeight: 400,
           fontSize: 15,
           color: "#10b981",
         }}>A: {prac.answer}</p>
         {prac.hint && (
           <p style={{
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "var(--font-inter)",
             fontWeight: 300,
             fontSize: 12,
-            color: "rgba(10,10,10,0.4)",
+            color: "var(--text-secondary)",
             marginTop: 4,
           }}>Hint: {prac.hint}</p>
         )}
@@ -104,22 +104,22 @@ const GrammarItem = React.memo(function GrammarItem({ item, isMobile }: { item: 
     <div style={{
       marginBottom: 48,
       paddingBottom: 48,
-      borderBottom: "1px solid rgba(10,10,10,0.06)",
+      borderBottom: "1px solid var(--border-color)",
     }}>
       <h3 style={{
-        fontFamily: "'Space Grotesk', sans-serif",
+        fontFamily: "var(--font-inter)",
         fontWeight: 600,
         fontSize: isMobile ? 22 : 28,
-        color: "#0A0A0A",
+        color: "var(--text-primary)",
         marginBottom: 16,
         lineHeight: 1.2,
       }}>{item.title}</h3>
       
       <p style={{
-        fontFamily: "'Space Grotesk', sans-serif",
+        fontFamily: "var(--font-inter)",
         fontWeight: 300,
         fontSize: isMobile ? 14 : 16,
-        color: "rgba(10,10,10,0.6)",
+        color: "var(--text-secondary)",
         lineHeight: 1.7,
         marginBottom: 24,
         whiteSpace: "pre-line",
@@ -127,26 +127,26 @@ const GrammarItem = React.memo(function GrammarItem({ item, isMobile }: { item: 
 
       {item.structure && (
         <div style={{
-          background: "rgba(10,10,10,0.02)",
-          border: "1px solid rgba(10,10,10,0.06)",
+          background: "var(--bg-card)",
+          border: "1px solid var(--border-color)",
           borderRadius: 6,
           padding: "16px 20px",
           marginBottom: 32,
         }}>
           <p style={{
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "var(--font-inter)",
             fontWeight: 500,
             fontSize: 11,
             letterSpacing: "0.15em",
             textTransform: "uppercase",
-            color: "rgba(10,10,10,0.4)",
+            color: "var(--text-secondary)",
             marginBottom: 8,
           }}>Structure</p>
           <p style={{
-            fontFamily: "'Noto Sans JP', sans-serif",
+            fontFamily: "var(--font-noto-sans-jp)",
             fontWeight: 400,
             fontSize: isMobile ? 15 : 18,
-            color: "#0A0A0A",
+            color: "var(--text-primary)",
             lineHeight: 1.5,
             whiteSpace: "pre-line",
           }}>{item.structure}</p>
@@ -156,12 +156,12 @@ const GrammarItem = React.memo(function GrammarItem({ item, isMobile }: { item: 
       {showHeavy && item.examples && item.examples.length > 0 && (
         <div style={{ marginBottom: 32 }}>
           <p style={{
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "var(--font-inter)",
             fontWeight: 500,
             fontSize: 11,
             letterSpacing: "0.15em",
             textTransform: "uppercase",
-            color: "rgba(10,10,10,0.4)",
+            color: "var(--text-secondary)",
             marginBottom: 16,
           }}>Examples</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -174,29 +174,29 @@ const GrammarItem = React.memo(function GrammarItem({ item, isMobile }: { item: 
 
       {item.notes && (
         <div style={{
-          borderLeft: "2px solid rgba(10,10,10,0.2)",
+          borderLeft: "2px solid var(--text-secondary)",
           paddingLeft: 16,
           marginBottom: 32,
         }}>
           <p style={{
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "var(--font-inter)",
             fontWeight: 400,
             fontSize: 14,
-            color: "rgba(10,10,10,0.6)",
+            color: "var(--text-secondary)",
             lineHeight: 1.6,
-          }}><span style={{fontWeight: 600, color: "#0A0A0A"}}>Note:</span> {item.notes}</p>
+          }}><span style={{fontWeight: 600, color: "var(--text-primary)"}}>Note:</span> {item.notes}</p>
         </div>
       )}
 
       {showHeavy && item.practice && item.practice.length > 0 && (
         <div>
           <p style={{
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "var(--font-inter)",
             fontWeight: 500,
             fontSize: 11,
             letterSpacing: "0.15em",
             textTransform: "uppercase",
-            color: "rgba(10,10,10,0.4)",
+            color: "var(--text-secondary)",
             marginBottom: 16,
           }}>Practice</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -221,8 +221,8 @@ const LessonCard = React.memo(function LessonCard({ lessonData, index, isMobile 
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
       style={{
-        border: "1px solid rgba(10,10,10,0.08)",
-        background: "#FAFAFA",
+        border: "1px solid var(--border-color)",
+        background: "var(--bg-primary)",
         marginBottom: 24,
         overflow: "hidden",
       }}
@@ -235,34 +235,34 @@ const LessonCard = React.memo(function LessonCard({ lessonData, index, isMobile 
           justifyContent: "space-between",
           alignItems: "center",
           cursor: "pointer",
-          background: isOpen ? "rgba(10,10,10,0.02)" : "transparent",
+          background: isOpen ? "var(--bg-card)" : "transparent",
           transition: "background 0.3s ease",
         }}
       >
         <div>
           <p style={{
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "var(--font-inter)",
             fontWeight: 300,
             fontSize: 11,
             letterSpacing: "0.25em",
             textTransform: "uppercase",
-            color: "rgba(10,10,10,0.4)",
+            color: "var(--text-secondary)",
             marginBottom: 8,
           }}>{lessonData.lesson.toUpperCase()}</p>
           <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
             <h2 style={{
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "var(--font-inter)",
               fontWeight: 400,
               fontSize: isMobile ? 24 : 32,
-              color: "#0A0A0A",
+              color: "var(--text-primary)",
               lineHeight: 1,
             }}>{lessonData.lessonTitle || lessonData.lesson}</h2>
             {lessonData.lessonJapanese && (
               <span style={{
-                fontFamily: "'Noto Sans JP', sans-serif",
+                fontFamily: "var(--font-noto-sans-jp)",
                 fontWeight: 300,
                 fontSize: isMobile ? 18 : 22,
-                color: "rgba(10,10,10,0.3)",
+                color: "var(--text-secondary)",
               }}>
                 {lessonData.lessonJapanese}
               </span>
@@ -270,10 +270,10 @@ const LessonCard = React.memo(function LessonCard({ lessonData, index, isMobile 
           </div>
         </div>
         <div style={{
-          fontFamily: "'Space Grotesk', sans-serif",
+          fontFamily: "var(--font-inter)",
           fontWeight: 300,
           fontSize: 24,
-          color: "rgba(10,10,10,0.3)",
+          color: "var(--text-secondary)",
           transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
           transition: "transform 0.3s ease",
         }}>+</div>
@@ -289,11 +289,11 @@ const LessonCard = React.memo(function LessonCard({ lessonData, index, isMobile 
           >
             <div style={{
               padding: isMobile ? "32px 20px 0" : "48px 64px 0",
-              borderTop: "1px solid rgba(10,10,10,0.04)",
-              background: "#FFF",
+              borderTop: "1px solid var(--border-color)",
+              background: "var(--bg-primary)",
             }}>
               {!grammarItems ? (
-                <div style={{ padding: "40px", textAlign: "center", color: "rgba(10,10,10,0.3)", fontFamily: "'Space Grotesk', sans-serif" }}>Loading...</div>
+                <div style={{ padding: "40px", textAlign: "center", color: "var(--text-secondary)", fontFamily: "var(--font-inter)" }}>Loading...</div>
               ) : (
                 grammarItems.map((item: Record<string, any>, idx: number) => (
                   <GrammarItem key={idx} item={item} isMobile={isMobile} />
@@ -314,8 +314,8 @@ function GrammarHero() {
     <section
       style={{
         padding: isMobile ? "80px 24px 60px" : "120px 48px 80px",
-        background: "#FAFAFA",
-        borderBottom: "1px solid rgba(10,10,10,0.08)",
+        background: "var(--bg-primary)",
+        borderBottom: "1px solid var(--border-color)",
       }}
     >
       <div style={{ maxWidth: 800 }}>
@@ -326,16 +326,16 @@ function GrammarHero() {
           style={{
             display: "flex", gap: 16, alignItems: "center",
             marginBottom: 40,
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "var(--font-inter)",
             fontWeight: 300, fontSize: 11,
             letterSpacing: "0.18em", textTransform: "uppercase",
-            color: "rgba(10,10,10,0.4)",
+            color: "var(--text-secondary)",
           }}
         >
           <span>JLPT N5 → N1</span>
-          <span style={{ color: "rgba(10,10,10,0.15)" }}>／</span>
+          <span style={{ color: "var(--border-color)" }}>／</span>
           <span>文法</span>
-          <span style={{ color: "rgba(10,10,10,0.15)" }}>／</span>
+          <span style={{ color: "var(--border-color)" }}>／</span>
         </motion.div>
 
         <motion.h1
@@ -343,10 +343,10 @@ function GrammarHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            fontFamily: "'Cormorant Garamond', serif",
+            fontFamily: "var(--font-cormorant)",
             fontWeight: 300, lineHeight: 1.0,
             fontSize: "clamp(64px, 10vw, 120px)",
-            color: "#0A0A0A",
+            color: "var(--text-primary)",
             marginBottom: 32,
           }}
         >
@@ -359,9 +359,9 @@ function GrammarHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "var(--font-inter)",
             fontWeight: 300, fontSize: 16,
-            lineHeight: 1.8, color: "rgba(10,10,10,0.55)",
+            lineHeight: 1.8, color: "var(--text-secondary)", opacity: 0.8,
             maxWidth: 480,
           }}
         >
@@ -384,34 +384,34 @@ export default function GrammarPage() {
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       style={{
         minHeight: "100vh",
-        background: "#FAFAFA",
-        fontFamily: "'Space Grotesk', sans-serif",
+        background: "var(--bg-primary)",
+        fontFamily: "var(--font-inter)",
       }}
     >
       <div style={{
         position: "sticky", top: 0, zIndex: 10,
-        background: "rgba(250,250,250,0.9)",
+        background: "var(--bg-primary)",
         backdropFilter: "blur(12px)",
-        borderBottom: "1px solid rgba(10,10,10,0.08)",
+        borderBottom: "1px solid var(--border-color)",
         padding: isMobile ? "10px 16px" : "16px 48px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
         flexWrap: "nowrap", overflow: "hidden",
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, overflow: "hidden" }}>
-          <span style={{ fontFamily: "'Noto Sans JP', sans-serif", fontWeight: 100, fontSize: isMobile ? 13 : 18, color: "rgba(10,10,10,0.4)", whiteSpace: "nowrap" }}>日本語</span>
-          <span style={{ fontSize: isMobile ? 11 : 13, fontWeight: 300, color: "#0A0A0A", letterSpacing: "0.02em", whiteSpace: "nowrap" }}>NihongoPath</span>
-          <span style={{ display: isMobile ? "none" : "inline", color: "rgba(10,10,10,0.15)", fontSize: 13 }}>/</span>
-          <span style={{ display: isMobile ? "none" : "inline", fontSize: 11, color: "rgba(10,10,10,0.4)", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 400, whiteSpace: "nowrap" }}>Grammar Reference</span>
+          <span style={{ fontFamily: "var(--font-noto-sans-jp)", fontWeight: 100, fontSize: isMobile ? 13 : 18, color: "var(--text-secondary)", whiteSpace: "nowrap" }}>日本語</span>
+          <span style={{ fontSize: isMobile ? 11 : 13, fontWeight: 300, color: "var(--text-primary)", letterSpacing: "0.02em", whiteSpace: "nowrap" }}>NihongoPath</span>
+          <span style={{ display: isMobile ? "none" : "inline", color: "var(--border-color)", fontSize: 13 }}>/</span>
+          <span style={{ display: isMobile ? "none" : "inline", fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 400, whiteSpace: "nowrap" }}>Grammar Reference</span>
         </div>
         <motion.button
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.96 }}
           onClick={() => router.push('/')}
           style={{
-            background: "#0A0A0A", color: "#FAFAFA",
-            border: "none", borderRadius: 99,
+            background: "transparent", color: "var(--text-primary)",
+            border: "1px solid var(--border-color)", borderRadius: 99,
             padding: isMobile ? "6px 12px" : "8px 20px",
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "var(--font-inter)",
             fontSize: isMobile ? 10 : 11, fontWeight: 300,
             letterSpacing: "0.12em", textTransform: "uppercase",
             cursor: "pointer",
