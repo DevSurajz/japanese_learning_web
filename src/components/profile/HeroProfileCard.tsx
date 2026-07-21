@@ -11,6 +11,7 @@ export default function HeroProfileCard({ profile, levelInfo, onEditClick }: Her
   const joinDate = new Date(profile.created_at ?? Date.now()).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
 
   return (
+    <div style={{
       background: 'var(--bg-primary)',
       backgroundImage: 'linear-gradient(to right, var(--bg-primary), rgba(255, 255, 255, 0)), url("/profile_torii.png")',
       backgroundSize: 'cover',
